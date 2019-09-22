@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\TicketModel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,7 +11,7 @@ class TicketsController extends AbstractController
 {
     private $ticketModel;
 
-    public function __construct($ticketModel)
+    public function __construct(TicketModel $ticketModel)
     {
         $this->ticketModel = $ticketModel;
     }

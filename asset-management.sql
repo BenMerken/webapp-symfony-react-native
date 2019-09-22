@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS `rooms`;
 CREATE TABLE IF NOT EXISTS `rooms`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
-  `hapinessScore` int(11) DEFAULT 0,
+  `happinessScore` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 );
 
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `rooms`(
 -- Inserting dummy data into table `rooms`
 --
 
-INSERT INTO `rooms` (`id`, `name`, `hapinessScore`) VALUES
+INSERT INTO `rooms` (`id`, `name`, `happinessScore`) VALUES
 (443, 'B051', 3445),
 (444, 'B052', 1000),
 (445, 'B053', 5000);

@@ -40,8 +40,8 @@ class RoomsController extends AbstractController
     }
 
     /**
-     * @Route("/rooms/{name}", methods={"GET"}, name="getRoomsById")
-     */
+     * @Route("/rooms/{id}", methods={"GET"}, name="getRoomsById")
+
     public function getRoomByName(Request $request, $name)
     {
         $statuscode = 200;
@@ -55,6 +55,51 @@ class RoomsController extends AbstractController
             $statuscode = 500;
         }
 
+        return new JsonResponse($room, $statuscode);
+    }
+     */
+    /**
+     * @Route("/rooms/{name}", methods={"GET"}, name="HappinessScoreRoom")
+     * @param $name
+     * @return JsonResponse
+     */
+    public function getHappinessScoreRoom($name)
+    {
+        $statuscode = 200;
+        $room = null;
+        try {
+            $room = $this->roomModel->getHappinessScoreRoom($name);
+            if ($room == null) {
+                $statuscode = 404;
+            }
+        } catch (\InvalidArgumentException $exception) {
+            $statuscode = 400;
+        } catch (\PDOException $exception) {
+            $statuscode = 500;
+        }
+        return new JsonResponse($room, $statuscode);
+    }
+
+    /**
+     * @Route("/rooms/{name}/{happyOrNot}", methods={"GET","PUT"}, name="HappyOrNot")
+     * @param $name
+     * @param $happyOrNot
+     * @return JsonResponse
+     */
+    public function updateRoomHappinessScore($name, $happyOrNot)
+    {
+        $statuscode = 200;
+        $room = null;
+        try {
+            $room = $this->roomModel->updateHappinessScoreRoom($name, $happyOrNot);
+            if ($room == null) {
+                $statuscode = 404;
+            }
+        } catch (\InvalidArgumentException $exception) {
+            $statuscode = 400;
+        } catch (\PDOException $exception) {
+            $statuscode = 500;
+        }
         return new JsonResponse($room, $statuscode);
     }
 }

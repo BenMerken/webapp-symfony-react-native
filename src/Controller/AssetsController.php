@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\AssetModel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,7 +11,7 @@ class AssetsController extends AbstractController
 {
     private $assetModel;
 
-    public function __construct($assetModel)
+    public function __construct(AssetModel $assetModel)
     {
         $this->assetModel = $assetModel;
     }
