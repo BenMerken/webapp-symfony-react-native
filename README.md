@@ -7,7 +7,7 @@ In your VM log into your MySql server (username and password may vary)
 
 ![alt text][img_LogIntoMySql]
 
-Create the database name (asset-management) and use it
+Create the database name (asset-management-tool) and use it
 
 ![alt text][img_CreateDatabase]
 
@@ -19,6 +19,15 @@ If there were no errors your output and tables should look like this
 
 ![alt text][img_SuccesQuery]
 ![alt text][img_SuccesCreatingDatabaseAndTables]
+
+### Preventing SQL-injection
+
+By using prepared statements in the backend SQL-injection is prevented. When using prepared statements user input is converted
+into string literals. This prevents code from being injected and executed into queries that might be used for malpractice.  
+
+### Implementation of CSRF
+
+https://symfony.com/doc/current/security/csrf.html
 
 ### Credits
 
