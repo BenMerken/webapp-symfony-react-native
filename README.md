@@ -29,6 +29,16 @@ into string literals. This prevents code from being injected and executed into q
 
 https://symfony.com/doc/current/security/csrf.html
 
+CSRF - or Cross-site request forgery - is a method by which a malicious user attempts to make your legitimate users unknowingly submit data that they don't intend to submit.
+
+Before we can use CSRF protection we have to install it in our project
+![alt text][img_CSRFInstall]
+
+After this we have to enable CSRF protection in the framework.yaml in the config/packages directory
+
+![alt text][img_EnablingCSRF]
+
+
 ### Code coverage
 
 Code is being covered by writing PHPUnit tests. By using this command, coverage gets exported to html in the "Coverage" directory
@@ -45,3 +55,5 @@ Peter Janssen & Ben Merken @ Hogeschool PXL, Hasselt, 2019.
 [img_SuccesQuery]:ImagesReadme/Succes%20Query.PNG "Every Query succeeded"
 [img_SuccesCreatingDatabaseAndTables]:ImagesReadme/Succes%20Creating%20Database%20and%20Tables.PNG "Succes creating database and tables"
 [img_CodeCoverage]:ImagesReadme/Code%20coverage.PNG "Code coverage"
+[img_CSRFInstall]:ImagesReadme/CSRF%20install.PNG "CSRF Install"
+[img_EnablingCSRF]:ImagesReadme/Enabling%20CSRF.PNG "CSRF Enabled"
