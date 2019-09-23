@@ -9,41 +9,43 @@ use InvalidArgumentException;
 class PDOAssetModel implements AssetModel
 {
     private $connection;
+    private $pdo;
 
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
+        $this->pdo = $this->connection->getPDO();
     }
 
-    public function getTicketsOfAsset($nameAsset)
+    public function getAssets()
     {
-        //Get id of asset out of database by using the name of the asset
-        $this->validateNameAsset($nameAsset);
-        $pdo = $this->connection->getPDO();
-        $statement = $pdo->prepare('SELECT id from assets WHERE assetName=:nameAsset');
-        $statement->bindParam(':nameAsset', $nameAsset, \PDO::PARAM_STR);
+        $statement = $this->pdo->prepare("SELECT * FROM assets;");
         $statement->execute();
-        $id = $statement->fetchColumn();
+        $statement->bindColumn(1, $id, \PDO::PARAM_INT);
+        $statement->bindColumn(2, $roomId, \PDO::PARAM_INT);
+        $statement->bindColumn(3, $name, \PDO::PARAM_STR);
 
-        $tickets = null;
-        if ($id !== null) {
-            //get all tickets of asset by using the id of the asset
-            $statement = $pdo->prepare('SELECT * from tickets WHERE assetId=:id');
-            $statement->bindParam(':id', $id, \PDO::PARAM_INT);
-            $statement->execute();
-            $statement->bindColumn(1, $id, \PDO::PARAM_INT);
-            $statement->bindColumn(2, $assetId, \PDO::PARAM_INT);
-            $statement->bindColumn(3, $numberOfVotes, \PDO::PARAM_INT);
-            $statement->bindColumn(4, $description, \PDO::PARAM_STR);
+        $assets = [];
 
-            if ($statement->fetch(\PDO::FETCH_BOUND)) {
-                $tickets = ['id' => $id, 'assetId' => $assetId, 'numberOfVotes' => $numberOfVotes, 'description' => $description];
-            }
+        while ($statement->fetch(\PDO::FETCH_BOUND)) {
+            $asset = [
+                'id' => $id,
+                'roomId' => $roomId,
+                'name' => $name
+            ];
+            $assets[] = $asset;
         }
-        return $tickets;
+
+        return $assets;
     }
 
-    private function validateNameAsset($nameAsset)
+    public function createTicketByAssetName($assetName)
+    {
+        $this->validateAssetName($assetName);
+        // TODO: Implement createTicketByAssetName($assetName) method.
+    }
+
+    private function validateAssetName($nameAsset)
     {
         if ($nameAsset === null) {
             throw new InvalidArgumentException("The name of the asset can't be null");
@@ -54,15 +56,5 @@ class PDOAssetModel implements AssetModel
         if (!is_string($nameAsset)) {
             throw new InvalidArgumentException("The name of the asset must be of type string");
         }
-    }
-
-    public function getAssets($nameAsset)
-    {
-        // TODO: Implement getAssets() method.
-    }
-
-    public function getAssetsById($nameAsset)
-    {
-        // TODO: Implement getAssetsById() method.
     }
 }

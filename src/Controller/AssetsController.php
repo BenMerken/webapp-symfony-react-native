@@ -18,6 +18,7 @@ class AssetsController extends AbstractController
 
     /**
      * @Route("/assets", methods={"GET"}, name="getAssets")
+     * @return JsonResponse
      */
     public function getAssets()
     {
@@ -39,15 +40,17 @@ class AssetsController extends AbstractController
     }
 
     /**
-     * @Route("/assets/{id}", methods={"GET"}, name="getAssetsById")
+     * @Route("/assets/{name}", methods={"GET"}, name="createTicketByAssetName")
+     * @param $assetName
+     * @return JsonResponse
      */
-    public function getAssetById($id)
+    public function createTicketByAssetName($assetName)
     {
         $statuscode = 200;
         $asset = null;
 
         try {
-            $room = $this->assetModel->getAssetsById($id);
+
         } catch (\InvalidArgumentException $exception) {
             $statuscode = 400;
         } catch (\PDOException $exception) {
