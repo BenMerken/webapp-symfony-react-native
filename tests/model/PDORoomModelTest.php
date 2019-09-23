@@ -60,7 +60,25 @@ class PDORoomModelTest extends TestCase
         return [
             ['id' => '1', 'name' => 'testname1', 'happinessScore' => '5'],
             ['id' => '2', 'name' => 'testname2', 'happinessScore' => '10'],
-            ['id' => '3', 'name' => 'testname3', 'happinessScore' => '2']
+            ['id' => '3', 'name' => 'testname3', 'happinessScore' => '2'],
+            ['id' => '4', 'name' => 'testname4', 'happinessScore' => '5']
+        ];
+    }
+
+    public function providerInvalidRoomNames()
+    {
+        return [
+            [null],
+            [str_repeat('k', 46)],
+            [45]
+        ];
+    }
+
+    public function providerInvalidHappyOrNotValues()
+    {
+        return [
+            ['name' => 'testname1', 'happyOrNot' => null],
+            ['name' => 'testname2', 'happyOrNot' => 45]
         ];
     }
 
@@ -73,11 +91,75 @@ class PDORoomModelTest extends TestCase
     public function testFindHappinessScoreByRoomName($id, $name, $happinessScore)
     {
         $roomModel = new PDORoomModel($this->connection);
-        $expectedRoom = ['id' => $id, 'name' => $name, 'score' => $happinessScore];
+        $expectedRoom = ['id' => $id, 'name' => $name, 'happinessScore' => $happinessScore];
         $actualRoom = $roomModel->getHappinessScoreRoom($name);
 
         $this->assertEquals('array', gettype($actualRoom));
-        $this->assertArrayHasKey('score', $actualRoom);
-        $this->assertEquals($expectedRoom['score'], $actualRoom['score']);
+        $this->assertArrayHasKey('happinessScore', $actualRoom);
+        $this->assertEquals($expectedRoom['happinessScore'], $actualRoom['happinessScore']);
+    }
+
+    /**
+     * @dataProvider providerInvalidRoomNames()
+     * @param $name
+     */
+    public function testInvalidInputFindHappinessScoreByRoomName($name)
+    {
+        $roomModel = new PDORoomModel($this->connection);
+        $this->expectException(InvalidArgumentException::class);
+        $roomModel->getHappinessScoreRoom($name);
+    }
+
+    /**
+     * @dataProvider providerRooms()
+     * @param $id
+     * @param $name
+     * @param $happinessScore
+     */
+    public function testHappyOrNotFunction($id, $name, $happinessScore)
+    {
+        $roomModel = new PDORoomModel($this->connection);
+        $expectedRoom = ['id' => $id, 'name' => $name, 'happinessScore' => $happinessScore];
+
+        $roomModel->updateHappinessScoreRoom($name, 'happy');
+        $actualRoom = $roomModel->getHappinessScoreRoom($name);
+        $this->assertEquals($expectedRoom['happinessScore'] + 2, $actualRoom['happinessScore']);
+
+        $roomModel->updateHappinessScoreRoom($name, 'unhappy');
+        $actualRoom = $roomModel->getHappinessScoreRoom($name);
+        $this->assertEquals($expectedRoom['happinessScore'], $actualRoom['happinessScore']);
+
+        $roomModel->updateHappinessScoreRoom($name, 'somewhatHappy');
+        $actualRoom = $roomModel->getHappinessScoreRoom($name);
+        $this->assertEquals($expectedRoom['happinessScore'] + 1, $actualRoom['happinessScore']);
+
+        $roomModel->updateHappinessScoreRoom($name, 'somewhatUnHappy');
+        $actualRoom = $roomModel->getHappinessScoreRoom($name);
+        $this->assertEquals($expectedRoom['happinessScore'], $actualRoom['happinessScore']);
+
+        $roomModel->updateHappinessScoreRoom($name, 'default');
+        $actualRoom = $roomModel->getHappinessScoreRoom($name);
+        $this->assertEquals($expectedRoom['happinessScore'], $actualRoom['happinessScore']);
+    }
+
+    /**
+     * @dataProvider providerInvalidHappyOrNotValues()
+     * @param $name
+     * @param $happyOrNot
+     */
+    public function testInvalidInputHappyOrNotFunction($name, $happyOrNot)
+    {
+        $roomModel = new PDORoomModel($this->connection);
+        $this->expectException(InvalidArgumentException::class);
+        $roomModel->updateHappinessScoreRoom($name, $happyOrNot);
+    }
+
+    public function testGetRooms()
+    {
+        $roomModel = new PDORoomModel($this->connection);
+        $expectedRooms = $this->providerRooms();
+        $actualRooms = $roomModel->getRooms();
+        $this->assertEquals('array', gettype($actualRooms));
+        $this->assertEquals($expectedRooms, $actualRooms);
     }
 }

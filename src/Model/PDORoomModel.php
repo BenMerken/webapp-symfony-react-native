@@ -2,6 +2,8 @@
 
 namespace App\Model;
 
+use InvalidArgumentException;
+
 class PDORoomModel implements RoomModel
 {
     private $connection;
@@ -64,6 +66,7 @@ class PDORoomModel implements RoomModel
         $statement = $pdo->prepare('UPDATE rooms SET happinessScore = happinessScore + :happyOrNotValue');
         $statement->bindParam(':happyOrNotValue', $happinessValue, \PDO::PARAM_STR);
         $statement->execute();
+        return $this->getRoomByName($nameRoom);
     }
 
     public function getHappinessScoreRoom($nameRoom)
@@ -76,7 +79,7 @@ class PDORoomModel implements RoomModel
         $statement->bindColumn(1, $happinessScore, \PDO::PARAM_INT);
         $happinessScoreRoom = null;
         if ($statement->fetch(\PDO::FETCH_BOUND)) {
-            $happinessScoreRoom = ['score' => $happinessScore];
+            $happinessScoreRoom = ['happinessScore' => $happinessScore];
         }
         return $happinessScoreRoom;
     }

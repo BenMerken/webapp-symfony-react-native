@@ -29,6 +29,12 @@ into string literals. This prevents code from being injected and executed into q
 
 https://symfony.com/doc/current/security/csrf.html
 
+### Code coverage
+
+Code is being covered by writing PHPUnit tests. By using this command, coverage gets exported to html in the "Coverage" directory
+
+![alt text][img_CodeCoverage]
+
 ### Credits
 
 Peter Janssen & Ben Merken @ Hogeschool PXL, Hasselt, 2019.
@@ -38,3 +44,4 @@ Peter Janssen & Ben Merken @ Hogeschool PXL, Hasselt, 2019.
 [img_CreateTablesAndInsert]:ImagesReadme/Creating%20tables%20and%20inserting%20dummydata.PNG "Create tables and Insert"
 [img_SuccesQuery]:ImagesReadme/Succes%20Query.PNG "Every Query succeeded"
 [img_SuccesCreatingDatabaseAndTables]:ImagesReadme/Succes%20Creating%20Database%20and%20Tables.PNG "Succes creating database and tables"
+[img_CodeCoverage]:ImagesReadme/Code%20coverage.PNG "Code coverage"

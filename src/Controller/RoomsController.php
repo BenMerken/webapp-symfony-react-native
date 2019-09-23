@@ -41,7 +41,7 @@ class RoomsController extends AbstractController
 
     /**
      * @Route("/rooms/{id}", methods={"GET"}, name="getRoomsById")
-
+     */
     public function getRoomByName(Request $request, $name)
     {
         $statuscode = 200;
@@ -57,9 +57,9 @@ class RoomsController extends AbstractController
 
         return new JsonResponse($room, $statuscode);
     }
-     */
+
     /**
-     * @Route("/rooms/{name}", methods={"GET"}, name="HappinessScoreRoom")
+     * @Route("/rooms/{name}/score", methods={"GET"}, name="HappinessScoreRoom")
      * @param $name
      * @return JsonResponse
      */
@@ -81,7 +81,7 @@ class RoomsController extends AbstractController
     }
 
     /**
-     * @Route("/rooms/{name}/{happyOrNot}", methods={"GET","PUT"}, name="HappyOrNot")
+     * @Route("/rooms/{name}/{happyOrNot}", methods={"POST"}, name="HappyOrNot")
      * @param $name
      * @param $happyOrNot
      * @return JsonResponse
