@@ -58,10 +58,10 @@ class PDORoomModelTest extends TestCase
     public function providerRooms()
     {
         return [
-            ['id' => '1', 'name' => 'testname1', 'happinessScore' => '5'],
-            ['id' => '2', 'name' => 'testname2', 'happinessScore' => '10'],
-            ['id' => '3', 'name' => 'testname3', 'happinessScore' => '2'],
-            ['id' => '4', 'name' => 'testname4', 'happinessScore' => '5']
+            ['id' => 1, 'name' => 'testname1', 'happinessScore' => 5],
+            ['id' => 2, 'name' => 'testname2', 'happinessScore' => 10],
+            ['id' => 3, 'name' => 'testname3', 'happinessScore' => 2],
+            ['id' => 4, 'name' => 'testname4', 'happinessScore' => 5]
         ];
     }
 
@@ -79,6 +79,17 @@ class PDORoomModelTest extends TestCase
         return [
             ['name' => 'testname1', 'happyOrNot' => null],
             ['name' => 'testname2', 'happyOrNot' => 45]
+        ];
+    }
+
+    public function providerHappyOrNotUserInput()
+    {
+        return [
+            ['name' => 'testname1', 'happyOrNot' => 'happy', 'expectedHappinessScore' => 7],
+            ['name' => 'testname2', 'happyOrNot' => 'unhappy', 'expectedHappinessScore' => 8],
+            ['name' => 'testname3', 'happyOrNot' => 'somewhatHappy', 'expectedHappinessScore' => 3],
+            ['name' => 'testname4', 'happyOrNot' => 'somewhatUnHappy', 'expectedHappinessScore' => 4],
+            ['name' => 'testname4', 'happyOrNot' => 'Fdeze ding', 'expectedHappinessScore' => 5]
         ];
     }
 
@@ -111,35 +122,17 @@ class PDORoomModelTest extends TestCase
     }
 
     /**
-     * @dataProvider providerRooms()
-     * @param $id
+     * @dataProvider providerHappyOrNotUserInput()
      * @param $name
-     * @param $happinessScore
+     * @param $happyOrNot
+     * @param $expectedHappinessScore
      */
-    public function testHappyOrNotFunction($id, $name, $happinessScore)
+    public function testHappyOrNotFunction($name, $happyOrNot, $expectedHappinessScore)
     {
         $roomModel = new PDORoomModel($this->connection);
-        $expectedRoom = ['id' => $id, 'name' => $name, 'happinessScore' => $happinessScore];
-
-        $roomModel->updateHappinessScoreRoom($name, 'happy');
-        $actualRoom = $roomModel->getHappinessScoreRoom($name);
-        $this->assertEquals($expectedRoom['happinessScore'] + 2, $actualRoom['happinessScore']);
-
-        $roomModel->updateHappinessScoreRoom($name, 'unhappy');
-        $actualRoom = $roomModel->getHappinessScoreRoom($name);
-        $this->assertEquals($expectedRoom['happinessScore'], $actualRoom['happinessScore']);
-
-        $roomModel->updateHappinessScoreRoom($name, 'somewhatHappy');
-        $actualRoom = $roomModel->getHappinessScoreRoom($name);
-        $this->assertEquals($expectedRoom['happinessScore'] + 1, $actualRoom['happinessScore']);
-
-        $roomModel->updateHappinessScoreRoom($name, 'somewhatUnHappy');
-        $actualRoom = $roomModel->getHappinessScoreRoom($name);
-        $this->assertEquals($expectedRoom['happinessScore'], $actualRoom['happinessScore']);
-
-        $roomModel->updateHappinessScoreRoom($name, 'default');
-        $actualRoom = $roomModel->getHappinessScoreRoom($name);
-        $this->assertEquals($expectedRoom['happinessScore'], $actualRoom['happinessScore']);
+        $roomModel->updateHappinessScoreRoom($name, $happyOrNot);
+        $actualHappinessScore = $roomModel->getHappinessScoreRoom($name);
+        $this->assertEquals($expectedHappinessScore, $actualHappinessScore['happinessScore']);
     }
 
     /**
