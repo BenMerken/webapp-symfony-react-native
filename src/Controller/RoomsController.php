@@ -83,18 +83,19 @@ class RoomsController extends AbstractController
     }
 
     /**
-     * @Route("/rooms/{name}/{happyOrNot}", methods={"POST"}, name="HappyOrNot")
+     * @Route("/rooms/{name}/happyOrNot", methods={"PATCH"}, name="HappyOrNot")
      * @param Request $request
      * @param $name
-     * @param $happyOrNot
      * @return JsonResponse
      */
-    public function updateRoomHappinessScore(Request $request,$name, $happyOrNot)
+    public function updateRoomHappinessScore(Request $request, $name)
     {
-        $submittedToken = $request->request->get('token');
-
         $statuscode = 200;
         $room = null;
+        $date = json_decode($request->getContent(), true);
+
+        $happyOrNot = $date['happyOrNot'];
+
         try {
             $room = $this->roomModel->updateHappinessScoreRoom($name, $happyOrNot);
             if ($room == null) {

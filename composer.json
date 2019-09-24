@@ -14,7 +14,8 @@
         "symfony/maker-bundle": "^1.13",
         "symfony/security-csrf": "4.3.*",
         "symfony/twig-bundle": "4.3.*",
-        "symfony/yaml": "4.3.*"
+        "symfony/yaml": "4.3.*",
+        "ext-json": "*"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^4.3",
