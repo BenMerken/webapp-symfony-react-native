@@ -108,4 +108,27 @@ class RoomsController extends AbstractController
         }
         return new JsonResponse($room, $statuscode);
     }
+
+    /**
+     * @Route("/rooms/scoreLowerThan/{score}", methods={"GET"}, name="HapinessScoreLowerThan")
+     * @param $score
+     * @return JsonResponse
+     */
+    public function getRoomsWithHappinessScoreLessThan($score)
+    {
+        $statuscode = 200;
+        $rooms = null;
+
+        try {
+            $rooms = $this->roomModel->getRoomsWithHappinessScoreLessThan($score);
+            if ($rooms == null) {
+                $statuscode = 404;
+            }
+        } catch (\InvalidArgumentException $exception) {
+            $statuscode = 400;
+        } catch (\PDOException $exception) {
+            $statuscode = 500;
+        }
+        return new JsonResponse($rooms, $statuscode);
+    }
 }

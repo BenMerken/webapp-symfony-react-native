@@ -41,7 +41,7 @@ class PDORoomModel implements RoomModel
     {
         $this->validateName($name);
         $statement = $this->pdo->prepare('SELECT * from rooms WHERE name=:name;');
-        $statement->bindParam(':name', $name, \PDO::PARAM_INT);
+        $statement->bindParam(':name', $name, \PDO::PARAM_STR);
         $statement->execute();
         $statement->bindColumn(1, $id, \PDO::PARAM_INT);
         $statement->bindColumn(2, $name, \PDO::PARAM_STR);
@@ -104,6 +104,29 @@ class PDORoomModel implements RoomModel
         }
     }
 
+    public function getRoomsWithHappinessScoreLessThan($score)
+    {
+        $this->validateLowerThanHappinessScore($score);
+        $pdo = $this->connection->getPDO();
+        $statement = $pdo->prepare('SELECT * from rooms WHERE happinessScore<:score');
+        $statement->bindParam(':score', $score, \PDO::PARAM_INT);
+        $statement->execute();
+        $statement->bindColumn(1, $id, \PDO::PARAM_INT);
+        $statement->bindColumn(2, $name, \PDO::PARAM_STR);
+        $statement->bindColumn(3, $happinessScore, \PDO::PARAM_INT);
+        $rooms = null;
+        while ($statement->fetch(\PDO::FETCH_BOUND)) {
+            $room = [
+                'id' => $id,
+                'name' => $name,
+                'happinessScore' => $happinessScore
+            ];
+            $rooms[] = $room;
+        }
+
+        return $rooms;
+    }
+
     private function validateName($nameRoom)
     {
         if ($nameRoom === null) {
@@ -132,4 +155,21 @@ class PDORoomModel implements RoomModel
             throw new InvalidArgumentException("The happyOrNot value can't be empty");
         }
     }
+
+    private function validateLowerThanHappinessScore($lowerThanHappinessScore)
+    {
+        if ($lowerThanHappinessScore === null) {
+            throw new InvalidArgumentException("The value of the LowerThanHappinessScore can't be null");
+        }
+        if (!is_string($lowerThanHappinessScore)) {
+            throw new InvalidArgumentException("The value of the LowerThanHappinessScore must be of type string");
+        }
+        if (strlen($lowerThanHappinessScore) > 11) {
+            throw new InvalidArgumentException("The value of the LowerThanHappinessScore can't be infinity");
+        }
+        if (empty($lowerThanHappinessScore)) {
+            throw new InvalidArgumentException("The value of the LowerThanHappinessScore can't be infinity");
+        }
+    }
+
 }
