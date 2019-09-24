@@ -112,6 +112,9 @@ class PDORoomModel implements RoomModel
         if (strlen($nameRoom) > 45) {
             throw new InvalidArgumentException("The name of the room can't be that long");
         }
+        if (empty($nameRoom)) {
+            throw new InvalidArgumentException("The name of the room can't be empty");
+        }
         if (!is_string($nameRoom)) {
             throw new InvalidArgumentException("The name of the room must be of type string");
         }
@@ -124,6 +127,9 @@ class PDORoomModel implements RoomModel
         }
         if (!is_string($happyOrNot)) {
             throw new InvalidArgumentException("The happyOrNot value must be of type string");
+        }
+        if (empty($happyOrNot)) {
+            throw new InvalidArgumentException("The happyOrNot value can't be empty");
         }
     }
 }

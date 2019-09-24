@@ -13,7 +13,7 @@ class PDORoomModelTest extends TestCase
         $user = 'root';
         $password = 'root';
         $database = 'testroomdb';
-        $server = '192.168.33.22';
+        $server = 'localhost:3306';
         $this->connection = new Connection("mysql:host=$server;dbname=$database", $user, $password);
         $this->connection->getPDO()->setAttribute(
             PDO::ATTR_ERRMODE,
@@ -44,7 +44,7 @@ class PDORoomModelTest extends TestCase
         $user = 'root';
         $password = 'root';
         $database = 'testroomdb';
-        $server = '192.168.33.22';
+        $server = 'localhost:3306';
         $this->connection = new Connection("mysql:host=$server;dbname=$database", $user, $password);
         $this->connection->getPDO()->setAttribute(
             PDO::ATTR_ERRMODE,
@@ -70,7 +70,8 @@ class PDORoomModelTest extends TestCase
         return [
             [null],
             [str_repeat('k', 46)],
-            [45]
+            [45],
+            [""]
         ];
     }
 
@@ -78,7 +79,8 @@ class PDORoomModelTest extends TestCase
     {
         return [
             ['name' => 'testname1', 'happyOrNot' => null],
-            ['name' => 'testname2', 'happyOrNot' => 45]
+            ['name' => 'testname2', 'happyOrNot' => 45],
+            ['name' => 'testname3', ""]
         ];
     }
 

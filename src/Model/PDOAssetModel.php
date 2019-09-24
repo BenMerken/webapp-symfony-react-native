@@ -80,6 +80,9 @@ class PDOAssetModel implements AssetModel
         if (strlen($nameAsset) > 45) {
             throw new InvalidArgumentException("The name of the asset can't be that long");
         }
+        if (empty($nameAsset)) {
+            throw new InvalidArgumentException("The name of the asset can't be empty");
+        }
         if (!is_string($nameAsset)) {
             throw new InvalidArgumentException("The name of the asset must be of type string");
         }
@@ -87,6 +90,17 @@ class PDOAssetModel implements AssetModel
 
     private function validateDescription($description)
     {
-        // TODO: implement
+        if ($description === null) {
+            throw new InvalidArgumentException("The description can't be null");
+        }
+        if (strlen($description) > 90) {
+            throw new InvalidArgumentException("The description can't be that long");
+        }
+        if (empty($description)) {
+            throw new InvalidArgumentException("The description can't be empty");
+        }
+        if (!is_string($description)) {
+            throw new InvalidArgumentException("The description must be of type string");
+        }
     }
 }
