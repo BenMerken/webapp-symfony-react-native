@@ -5,6 +5,7 @@ namespace App\Model;
 
 
 use InvalidArgumentException;
+use Symfony\Component\HttpFoundation\Request;
 
 class PDOAssetModel implements AssetModel
 {
@@ -39,10 +40,36 @@ class PDOAssetModel implements AssetModel
         return $assets;
     }
 
-    public function createTicketByAssetName($assetName)
+    public function createTicketByAssetName($assetName, $description)
     {
         $this->validateAssetName($assetName);
-        // TODO: Implement createTicketByAssetName($assetName) method.
+        $this->validateDescription($description);
+
+        $selectQuery = "SELECT id FROM assets WHERE name = :assetName;";
+        $selectStatement = $this->pdo->prepare($selectQuery);
+        $selectStatement->bindParam(':assetName', $assetName, \PDO::PARAM_STR);
+        $selectStatement->bindColumn(1, $id, \PDO::PARAM_INT);
+        $selectStatement->execute();
+
+        $assetId = null;
+
+        if ($selectStatement->fetch(\PDO::FETCH_BOUND)) {
+            $assetId = $id;
+        }
+
+        $insertQuery = "INSERT INTO tickets(`assetId`, `description`)
+                        VALUES(:assetId, :description);";
+        $insertStatement = $this->pdo->prepare($insertQuery);
+        $insertStatement->bindParam(':assetId', $assetId, \PDO::PARAM_INT);
+        $insertStatement->bindParam(":description", $description, \PDO::PARAM_STR);
+        $insertStatement->execute();
+
+        return [
+            'id' => intval($this->pdo->lastInsertId()),
+            'assetId' => $assetId,
+            'numberOfVotes' => 0,
+            'description' => $description
+        ];
     }
 
     private function validateAssetName($nameAsset)
@@ -56,5 +83,10 @@ class PDOAssetModel implements AssetModel
         if (!is_string($nameAsset)) {
             throw new InvalidArgumentException("The name of the asset must be of type string");
         }
+    }
+
+    private function validateDescription($description)
+    {
+        // TODO: implement
     }
 }

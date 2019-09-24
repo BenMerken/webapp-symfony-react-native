@@ -7,5 +7,5 @@ namespace App\Model;
 interface AssetModel
 {
     public function getAssets();
-    public function createTicketByAssetName($assetName);
+    public function createTicketByAssetName($assetName, $description);
 }
