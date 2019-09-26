@@ -22,9 +22,7 @@ class PDORoomModel implements RoomModel
         $statement->bindColumn(1, $id, \PDO::PARAM_INT);
         $statement->bindColumn(2, $name, \PDO::PARAM_STR);
         $statement->bindColumn(3, $happinessScore, \PDO::PARAM_INT);
-
         $rooms = [];
-
         while ($statement->fetch(\PDO::FETCH_BOUND)) {
             $room = [
                 'id' => $id,
@@ -33,7 +31,6 @@ class PDORoomModel implements RoomModel
             ];
             $rooms[] = $room;
         }
-
         return $rooms;
     }
 
@@ -46,13 +43,10 @@ class PDORoomModel implements RoomModel
         $statement->bindColumn(1, $id, \PDO::PARAM_INT);
         $statement->bindColumn(2, $name, \PDO::PARAM_STR);
         $statement->bindColumn(3, $happinessScore, \PDO::PARAM_INT);
-
         $room = null;
-
         if ($statement->fetch(\PDO::FETCH_BOUND)) {
             $room = ['id' => $id, 'name' => $name, 'happinessScore' => $happinessScore];
         }
-
         return $room;
     }
 
@@ -63,10 +57,13 @@ class PDORoomModel implements RoomModel
         $happinessValue = $this->calculateHappinessValue($happyOrNot);
 
         $pdo = $this->connection->getPDO();
-        $statement = $pdo->prepare('UPDATE rooms SET happinessScore = happinessScore + :happyOrNotValue');
-        $statement->bindParam(':happyOrNotValue', $happinessValue, \PDO::PARAM_STR);
+        $statement = $pdo->prepare('UPDATE rooms SET happinessScore = happinessScore + :happyOrNotValue WHERE name=:name;');
+        $statement->bindParam(':happyOrNotValue', $happinessValue, \PDO::PARAM_INT);
+        $statement->bindParam(':name', $nameRoom, \PDO::PARAM_STR);
         $statement->execute();
-        return $this->getRoomByName($nameRoom);
+
+        $room = $this->getRoomByName($nameRoom);
+        return $room;
     }
 
     public function getHappinessScoreRoom($nameRoom)
@@ -161,14 +158,8 @@ class PDORoomModel implements RoomModel
         if ($lowerThanHappinessScore === null) {
             throw new InvalidArgumentException("The value of the LowerThanHappinessScore can't be null");
         }
-        if (!is_string($lowerThanHappinessScore)) {
-            throw new InvalidArgumentException("The value of the LowerThanHappinessScore must be of type string");
-        }
-        if (strlen($lowerThanHappinessScore) > 11) {
-            throw new InvalidArgumentException("The value of the LowerThanHappinessScore can't be infinity");
-        }
-        if (empty($lowerThanHappinessScore)) {
-            throw new InvalidArgumentException("The value of the LowerThanHappinessScore can't be infinity");
+        if (!is_int($lowerThanHappinessScore)) {
+            throw new InvalidArgumentException("The value of the LowerThanHappinessScore must be of type int");
         }
     }
 

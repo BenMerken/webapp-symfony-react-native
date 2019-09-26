@@ -87,29 +87,27 @@ class PDORoomModelTest extends TestCase
     public function providerHappyOrNotUserInput()
     {
         return [
-            ['name' => 'testname1', 'happyOrNot' => 'happy', 'expectedHappinessScore' => '7'],
-            ['name' => 'testname2', 'happyOrNot' => 'unhappy', 'expectedHappinessScore' => '8'],
-            ['name' => 'testname3', 'happyOrNot' => 'somewhatHappy', 'expectedHappinessScore' => '3'],
-            ['name' => 'testname4', 'happyOrNot' => 'somewhatUnHappy', 'expectedHappinessScore' => '4'],
-            ['name' => 'testname4', 'happyOrNot' => 'Fdeze ding', 'expectedHappinessScore' => '5']
+            ['name' => 'testname1', 'happyOrNot' => 'happy', 'expectedHappinessScore' => 7],
+            ['name' => 'testname2', 'happyOrNot' => 'unhappy', 'expectedHappinessScore' => 8],
+            ['name' => 'testname3', 'happyOrNot' => 'somewhatHappy', 'expectedHappinessScore' => 3],
+            ['name' => 'testname4', 'happyOrNot' => 'somewhatUnHappy', 'expectedHappinessScore' => 4],
+            ['name' => 'testname4', 'happyOrNot' => 'Fdeze ding', 'expectedHappinessScore' => 5]
         ];
     }
 
     public function providerLowerThanHappinessScores()
     {
         return [
-            ['score' => '6', 'amountOfRoomsWithHappinessScoreLowerThan' => 3],
-            ['score' => '11', 'amountOfRoomsWithHappinessScoreLowerThan' => 4]
+            ['score' => 6, 'amountOfRoomsWithHappinessScoreLowerThan' => 3],
+            ['score' => 11, 'amountOfRoomsWithHappinessScoreLowerThan' => 4]
         ];
     }
 
     public function providerInvalidInputLowerThanHappinessScores()
     {
         return [
-            ['score' => 20],
-            ['score' => null],
-            ['score' => ''],
-            ['score' => '99999999999999999']
+            ['score' => '20'],
+            ['score' => null]
         ];
     }
 

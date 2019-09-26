@@ -18,83 +18,51 @@ class RoomsController extends AbstractController
     }
 
     /**
-     * @Route("/rooms", methods={"GET"}, name="getRooms")
+     * @Route("/rooms", methods={"GET"}, name="GetHappinessScoreRoom")
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function getRooms()
+    public function getHappinessScoreRoom(Request $request)
     {
         $statuscode = 200;
+        $room = null;
         $rooms = null;
 
+        $name = $request->query->get('name');
+        $score = (int)$request->query->get('lowerThanScore');
+
         try {
-            $rooms = $this->roomModel->getRooms();
-            if ($rooms == null) {
-                $statuscode = 404;
+            if ($name) {
+                $room = $this->roomModel->getHappinessScoreRoom($name);
+                return new JsonResponse($room, $statuscode);
             }
+            if ($score) {
+                $room = $this->roomModel->getRoomsWithHappinessScoreLessThan($score);
+                return new JsonResponse($room, $statuscode);
+            }
+            $rooms = $this->roomModel->getRooms();
         } catch (\InvalidArgumentException $exception) {
             $statuscode = 400;
         } catch (\PDOException $exception) {
             $statuscode = 500;
         }
-
         return new JsonResponse($rooms, $statuscode);
     }
 
-    /**
-     * @Route("/rooms/{name}", methods={"GET"}, name="getRoomsByName")
-     * @param $name
-     * @return JsonResponse
-     */
-    public function getRoomByName($name)
-    {
-        $statuscode = 200;
-        $room = null;
-
-        try {
-            $room = $this->roomModel->getRoomByName($name);
-        } catch (\InvalidArgumentException $exception) {
-            $statuscode = 400;
-        } catch (\PDOException $exception) {
-            $statuscode = 500;
-        }
-
-        return new JsonResponse($room, $statuscode);
-    }
 
     /**
-     * @Route("/rooms/{name}/score", methods={"GET"}, name="HappinessScoreRoom")
-     * @param $name
-     * @return JsonResponse
-     */
-    public function getHappinessScoreRoom($name)
-    {
-        $statuscode = 200;
-        $room = null;
-        try {
-            $room = $this->roomModel->getHappinessScoreRoom($name);
-            if ($room == null) {
-                $statuscode = 404;
-            }
-        } catch (\InvalidArgumentException $exception) {
-            $statuscode = 400;
-        } catch (\PDOException $exception) {
-            $statuscode = 500;
-        }
-        return new JsonResponse($room, $statuscode);
-    }
-
-    /**
-     * @Route("/rooms/{name}/happyOrNot", methods={"PATCH"}, name="HappyOrNot")
+     * @Route("/rooms/happyOrNot", methods={"PATCH"}, name="HappyOrNot")
      * @param Request $request
-     * @param $name
      * @return JsonResponse
      */
-    public function updateRoomHappinessScore(Request $request, $name)
+    public function updateRoomHappinessScore(Request $request)
     {
         $statuscode = 200;
         $room = null;
         $date = json_decode($request->getContent(), true);
 
-        $happyOrNot = $date['happyOrNot'];
+        $happyOrNot = $date['happiness'];
+        $name = $date['name'];
 
         try {
             $room = $this->roomModel->updateHappinessScoreRoom($name, $happyOrNot);
@@ -107,28 +75,5 @@ class RoomsController extends AbstractController
             $statuscode = 500;
         }
         return new JsonResponse($room, $statuscode);
-    }
-
-    /**
-     * @Route("/rooms/scoreLowerThan/{score}", methods={"GET"}, name="HapinessScoreLowerThan")
-     * @param $score
-     * @return JsonResponse
-     */
-    public function getRoomsWithHappinessScoreLessThan($score)
-    {
-        $statuscode = 200;
-        $rooms = null;
-
-        try {
-            $rooms = $this->roomModel->getRoomsWithHappinessScoreLessThan($score);
-            if ($rooms == null) {
-                $statuscode = 404;
-            }
-        } catch (\InvalidArgumentException $exception) {
-            $statuscode = 400;
-        } catch (\PDOException $exception) {
-            $statuscode = 500;
-        }
-        return new JsonResponse($rooms, $statuscode);
     }
 }
