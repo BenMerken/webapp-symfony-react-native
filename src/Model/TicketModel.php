@@ -9,4 +9,6 @@ interface TicketModel
     public function getTickets();
 
     public function getTicketById($id);
+
+    public function incrementNumberOfVotes($id);
 }
