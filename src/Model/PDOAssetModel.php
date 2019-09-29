@@ -4,103 +4,31 @@
 namespace App\Model;
 
 
-use InvalidArgumentException;
-use Symfony\Component\HttpFoundation\Request;
+use PDO;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PDOAssetModel implements AssetModel
 {
     private $connection;
-    private $pdo;
 
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
-        $this->pdo = $this->connection->getPDO();
     }
 
-    public function getAssets()
+
+    public function getIdForName($name)
     {
-        $statement = $this->pdo->prepare("SELECT * FROM assets;");
-        $statement->execute();
-        $statement->bindColumn(1, $id, \PDO::PARAM_INT);
-        $statement->bindColumn(2, $roomId, \PDO::PARAM_INT);
-        $statement->bindColumn(3, $name, \PDO::PARAM_STR);
+        $pdo = $this->connection->getPDO();
+        $query = "SELECT id from assets WHERE name = :name;";
+        $statement = $pdo->prepare($query);
+        $statement->bindParam(":name", $name, PDO::PARAM_STR);
+        $statement->bindColumn(1, $id, PDO::PARAM_INT);
 
-        $assets = [];
-
-        while ($statement->fetch(\PDO::FETCH_BOUND)) {
-            $asset = [
-                'id' => $id,
-                'roomId' => $roomId,
-                'name' => $name
-            ];
-            $assets[] = $asset;
+        if (!($id = $statement->execute())) {
+            throw new NotFoundHttpException("No asset found for name = $name.");
         }
 
-        return $assets;
-    }
-
-    public function createTicketByAssetName($assetName, $description)
-    {
-        $this->validateAssetName($assetName);
-        $this->validateDescription($description);
-
-        $selectQuery = "SELECT id FROM assets WHERE name = :assetName;";
-        $selectStatement = $this->pdo->prepare($selectQuery);
-        $selectStatement->bindParam(':assetName', $assetName, \PDO::PARAM_STR);
-        $selectStatement->bindColumn(1, $id, \PDO::PARAM_INT);
-        $selectStatement->execute();
-
-        $assetId = null;
-
-        if ($selectStatement->fetch(\PDO::FETCH_BOUND)) {
-            $assetId = $id;
-        }
-
-        $insertQuery = "INSERT INTO tickets(`assetId`, `description`)
-                        VALUES(:assetId, :description);";
-        $insertStatement = $this->pdo->prepare($insertQuery);
-        $insertStatement->bindParam(':assetId', $assetId, \PDO::PARAM_INT);
-        $insertStatement->bindParam(":description", $description, \PDO::PARAM_STR);
-        $insertStatement->execute();
-
-        return [
-            'id' => intval($this->pdo->lastInsertId()),
-            'assetId' => $assetId,
-            'numberOfVotes' => 0,
-            'description' => $description
-        ];
-    }
-
-    private function validateAssetName($nameAsset)
-    {
-        if ($nameAsset === null) {
-            throw new InvalidArgumentException("The name of the asset can't be null");
-        }
-        if (strlen($nameAsset) > 45) {
-            throw new InvalidArgumentException("The name of the asset can't be that long");
-        }
-        if (empty($nameAsset)) {
-            throw new InvalidArgumentException("The name of the asset can't be empty");
-        }
-        if (!is_string($nameAsset)) {
-            throw new InvalidArgumentException("The name of the asset must be of type string");
-        }
-    }
-
-    private function validateDescription($description)
-    {
-        if ($description === null) {
-            throw new InvalidArgumentException("The description can't be null");
-        }
-        if (strlen($description) > 90) {
-            throw new InvalidArgumentException("The description can't be that long");
-        }
-        if (empty($description)) {
-            throw new InvalidArgumentException("The description can't be empty");
-        }
-        if (!is_string($description)) {
-            throw new InvalidArgumentException("The description must be of type string");
-        }
+        return $id;
     }
 }

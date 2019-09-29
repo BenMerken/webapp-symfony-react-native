@@ -6,9 +6,9 @@ namespace App\Model;
 
 interface TicketModel
 {
-    public function getTickets();
+    public function getTicketsByAssetName($assetName);
 
-    public function getTicketById($id);
+    public function createTicketForAsset($assetName, $jsonData);
 
     public function incrementNumberOfVotes($id);
 }

@@ -4,7 +4,7 @@ namespace App\Tests\model;
 
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
-class PDOAssetModelTest extends TestCase
+class PDOTicketModelTest extends TestCase
 {
     public function setUp()
     {
