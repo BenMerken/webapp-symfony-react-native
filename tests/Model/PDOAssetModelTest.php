@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Tests\model;
+namespace App\Tests\Model;
 
 use App\Model\Connection;
 use App\Model\PDOAssetModel;
 use PDO;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -12,6 +13,7 @@ class PDOAssetModelTest extends TestCase
 {
     private $connection;
     private $pdo;
+    private $assetModel;
 
     public function setUp()
     {
@@ -20,6 +22,7 @@ class PDOAssetModelTest extends TestCase
         $this->pdo = $this->connection->getPDO();
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->pdo->exec($sql);
+        $this->assetModel = new PDOAssetModel($this->connection);
     }
 
     public function tearDown()
@@ -44,13 +47,32 @@ class PDOAssetModelTest extends TestCase
         ];
     }
 
+    public function providerValidName()
+    {
+        return [
+            ["Valid Asset name"],
+            ["This is a valid asset nameeeeeeeeeeeeeeeeeeee"]
+        ];
+    }
+
+    public function providerInvalidName()
+    {
+        return [
+            [null],
+            [123],
+            [[]],
+            ["This is not a valid asset nameeeeeeeeeeeeeeeee"],
+            ["1234"],
+            [""]
+        ];
+    }
+
     /**
      * @dataProvider providerExistingNamesAndIds
      */
     public function testGetIdForName_existingNamesAndIds_true($expectedId, $name)
     {
-        $assetModel = new PDOAssetModel($this->connection);
-        $actualId = $assetModel->getIdForName($name);
+        $actualId = $this->assetModel->getIdForName($name);
         $this->assertEquals($expectedId, $actualId);
     }
 
@@ -60,9 +82,26 @@ class PDOAssetModelTest extends TestCase
     public function testGetIdFromName_nonExistingName_throwsNotFoundHttpException($name)
     {
         $exceptionMessage = "No asset found for name = $name.";
-        $assetModel = new PDOAssetModel($this->connection);
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage($exceptionMessage);
-        $assetModel->getIdForName($name);
+        $this->assetModel->getIdForName($name);
+    }
+
+    /**
+    * @dataProvider providerValidName
+     */
+    public function testValidateName_validName_noExceptionThrown($name)
+    {
+        $this->assertNull($this->assetModel->validateName($name));
+    }
+
+    /**
+     * @dataProvider providerInvalidName
+     */
+    public function testValidateName_invalidName_throwsInvalidArgumentException($name)
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->assetModel->validateName($name);
     }
 }

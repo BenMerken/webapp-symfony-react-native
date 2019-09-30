@@ -1,7 +1,11 @@
 <?php
 
+namespace App\Tests\Model;
+
 use App\Model\Connection;
 use App\Model\PDORoomModel;
+use PDO;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 class PDORoomModelTest extends TestCase

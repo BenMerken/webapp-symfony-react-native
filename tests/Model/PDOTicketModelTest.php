@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\model;
+namespace App\Tests\Model;
 
 use App\Model\Connection;
 use App\Model\PDOAssetModel;

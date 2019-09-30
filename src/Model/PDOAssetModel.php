@@ -4,6 +4,7 @@
 namespace App\Model;
 
 
+use InvalidArgumentException;
 use PDO;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -19,6 +20,8 @@ class PDOAssetModel implements AssetModel
 
     public function getIdForName($name)
     {
+        $this->validateName($name);
+
         $pdo = $this->connection->getPDO();
         $query = "SELECT id FROM assets WHERE name = :name;";
         $statement = $pdo->prepare($query);
@@ -31,5 +34,12 @@ class PDOAssetModel implements AssetModel
         }
 
         return $id;
+    }
+
+    public function validateName($name)
+    {
+        if (!(is_string($name) && strlen($name) <= 45 && strlen($name) >= 5)) {
+            throw new InvalidArgumentException("The name must be a string no longer than 45 characters and no less than 5");
+        }
     }
 }
