@@ -48,7 +48,8 @@ CREATE TABLE IF NOT EXISTS `assets`
 INSERT INTO `assets` (`id`, `roomId`, `name`)
 VALUES (223, 443, 'beamer'),
        (224, 444, 'computer'),
-       (225, 445, 'router');
+       (225, 445, 'router'),
+       (226, 443, 'asset-without-tickets');
 
 -- --------------------------------------------------------
 

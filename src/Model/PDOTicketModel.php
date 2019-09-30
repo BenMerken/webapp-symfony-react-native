@@ -68,6 +68,8 @@ class PDOTicketModel implements TicketModel
         $statement->bindParam(":assetId", $assetId);
         $statement->bindParam(":description", $description);
         $statement->execute();
+
+        return $statement->rowCount();
     }
 
     public function incrementNumberOfVotes($id)
@@ -84,31 +86,31 @@ class PDOTicketModel implements TicketModel
         }
     }
 
-    private function validateAssetName($assetName)
+    public function validateAssetName($assetName)
     {
         if (!($assetName && is_string($assetName) && strlen($assetName) <= 45)) {
             throw new InvalidArgumentException("The assetName must be a string, no longer than 45 characters.");
         }
     }
 
-    private function validateTicketData($jsonData)
+    public function validateTicketData($jsonData)
     {
         if (!(isset($jsonData["description"]))) {
             throw new InvalidArgumentException("The JSON data is not valid");
         }
     }
 
-    private function validateDescription($description)
+    public function validateDescription($description)
     {
-        if (!(is_string($description) && strlen($description) <= 90)) {
-            throw new InvalidArgumentException("The description must be a string, no longer than 90 characters.");
+        if (!(is_string($description) && strlen($description) <= 90 && strlen($description) >= 15)) {
+            throw new InvalidArgumentException("The description must be a string, no longer than 90  and no less than 15.");
         }
     }
 
-    private function validateId($id)
+    public function validateId($id)
     {
-        if (!preg_match("/^[1-9]\d*$/", $id)) {
-            throw new InvalidArgumentException("The id must be a number.");
+        if (!preg_match("/^([1-9][0-9]*)$/", $id)) {
+            throw new InvalidArgumentException("The id must be a natural number greater than 0.");
         }
     }
 }
