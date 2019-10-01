@@ -18,7 +18,7 @@ class PDOAssetModelTest extends TestCase
     public function setUp()
     {
         $sql = file_get_contents(__DIR__ . "/../../asset-management-sqlite.sql");
-        $this->connection = new Connection("sqlite:memory:");
+        $this->connection = new Connection("sqlite::memory:");
         $this->pdo = $this->connection->getPDO();
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->pdo->exec($sql);
