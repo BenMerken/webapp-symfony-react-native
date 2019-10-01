@@ -3,6 +3,7 @@
 namespace App\Tests\Model;
 
 use App\Model\Connection;
+use App\Model\PDOAssetModel;
 use App\Model\PDORoomModel;
 use PDO;
 use InvalidArgumentException;
@@ -11,61 +12,33 @@ use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 class PDORoomModelTest extends TestCase
 {
     private $connection;
+    private $pdo;
+    private $roomModel;
 
     public function setUp()
     {
-        $user = 'root';
-        $password = 'root';
-        $database = 'testroomdb';
-        $server = 'localhost:3306';
-        $this->connection = new Connection("mysql:host=$server;dbname=$database", $user, $password);
-        $this->connection->getPDO()->setAttribute(
-            PDO::ATTR_ERRMODE,
-            PDO::ERRMODE_EXCEPTION
-        );
-        $this->connection->getPDO()->exec('DROP TABLE IF EXISTS rooms');
-        $this->connection->getPDO()->exec('CREATE TABLE rooms (
-                        id INT, 
-                        name VARCHAR(45),
-                        happinessScore INT,
-                        PRIMARY KEY (id)
-                   )');
-
-        $rooms = $this->providerRooms();
-        foreach ($rooms as $room) {
-            $statement = $this->connection->getPDO()->prepare('INSERT INTO rooms (id, name, happinessScore)
-                                              VALUES (:id,:name, :happinessScore)');
-            $statement->bindParam(':id', $room['id'], \PDO::PARAM_INT);
-            $statement->bindParam(':name', $room['name'], \PDO::PARAM_STR);
-            $statement->bindParam(':happinessScore', $room['happinessScore'], \PDO::PARAM_INT);
-            $statement->execute();
-        }
+        $sql = file_get_contents(__DIR__ . "/../../asset-management-sqlite.sql");
+        $this->connection = new Connection("sqlite::memory:");
+        $this->pdo = $this->connection->getPDO();
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->pdo->exec($sql);
+        $this->roomModel = new PDORoomModel($this->connection);
     }
 
 
     public function tearDown()
     {
-        $user = 'root';
-        $password = 'root';
-        $database = 'testroomdb';
-        $server = 'localhost:3306';
-        $this->connection = new Connection("mysql:host=$server;dbname=$database", $user, $password);
-        $this->connection->getPDO()->setAttribute(
-            PDO::ATTR_ERRMODE,
-            PDO::ERRMODE_EXCEPTION
-        );
-        $this->connection->getPDO()->exec('DROP TABLE IF EXISTS rooms');
         $this->connection = null;
+        $this->pdo = null;
     }
 
 
     public function providerRooms()
     {
         return [
-            ['id' => 1, 'name' => 'testname1', 'happinessScore' => 5],
-            ['id' => 2, 'name' => 'testname2', 'happinessScore' => 10],
-            ['id' => 3, 'name' => 'testname3', 'happinessScore' => 2],
-            ['id' => 4, 'name' => 'testname4', 'happinessScore' => 5]
+            ['id' => 443, 'name' => 'B051', 'happinessScore' => 3445],
+            ['id' => 444, 'name' => 'B052', 'happinessScore' => 1000],
+            ['id' => 445, 'name' => 'B053', 'happinessScore' => 5000]
         ];
     }
 
@@ -82,28 +55,28 @@ class PDORoomModelTest extends TestCase
     public function providerInvalidHappyOrNotValues()
     {
         return [
-            ['name' => 'testname1', 'happyOrNot' => null],
-            ['name' => 'testname2', 'happyOrNot' => 45],
-            ['name' => 'testname3', ""]
+            ['name' => 'B051', 'happyOrNot' => null],
+            ['name' => 'B052', 'happyOrNot' => 45],
+            ['name' => 'B053', ""]
         ];
     }
 
     public function providerHappyOrNotUserInput()
     {
         return [
-            ['name' => 'testname1', 'happyOrNot' => 'happy', 'expectedHappinessScore' => 7],
-            ['name' => 'testname2', 'happyOrNot' => 'unhappy', 'expectedHappinessScore' => 8],
-            ['name' => 'testname3', 'happyOrNot' => 'somewhatHappy', 'expectedHappinessScore' => 3],
-            ['name' => 'testname4', 'happyOrNot' => 'somewhatUnHappy', 'expectedHappinessScore' => 4],
-            ['name' => 'testname4', 'happyOrNot' => 'Fdeze ding', 'expectedHappinessScore' => 5]
+            ['name' => 'B051', 'happyOrNot' => 'happy', 'expectedHappinessScore' => 3445 + 2],
+            ['name' => 'B052', 'happyOrNot' => 'unhappy', 'expectedHappinessScore' => 1000 - 2],
+            ['name' => 'B053', 'happyOrNot' => 'somewhatHappy', 'expectedHappinessScore' => 5000 + 1],
+            ['name' => 'B053', 'happyOrNot' => 'somewhatUnHappy', 'expectedHappinessScore' => 4999],
+            ['name' => 'B053', 'happyOrNot' => 'kkk', 'expectedHappinessScore' => 5000]
         ];
     }
 
     public function providerLowerThanHappinessScores()
     {
         return [
-            ['score' => 6, 'amountOfRoomsWithHappinessScoreLowerThan' => 3],
-            ['score' => 11, 'amountOfRoomsWithHappinessScoreLowerThan' => 4]
+            ['score' => 5001, 'amountOfRoomsWithHappinessScoreLowerThan' => 3],
+            ['score' => 2000, 'amountOfRoomsWithHappinessScoreLowerThan' => 1]
         ];
     }
 
@@ -111,7 +84,8 @@ class PDORoomModelTest extends TestCase
     {
         return [
             ['score' => '20'],
-            ['score' => null]
+            ['score' => null],
+            ['score' => ""]
         ];
     }
 
