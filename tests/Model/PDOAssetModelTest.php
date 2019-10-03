@@ -51,7 +51,8 @@ class PDOAssetModelTest extends TestCase
     {
         return [
             ["Valid Asset name"],
-            ["This is a valid asset nameeeeeeeeeeeeeeeeeeee"]
+            [str_repeat("1a2b3", 9)],
+            [str_repeat("a", 44)]
         ];
     }
 
@@ -61,7 +62,7 @@ class PDOAssetModelTest extends TestCase
             [null],
             [123],
             [[]],
-            ["This is not a valid asset nameeeeeeeeeeeeeeeee"],
+            [str_repeat("a", 46)],
             ["1234"],
             [""]
         ];

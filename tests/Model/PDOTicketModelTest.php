@@ -98,7 +98,8 @@ class PDOTicketModelTest extends TestCase
     public function providerValidAssetName()
     {
         return [
-            ["This is a valid asset nameeeeeeeeeeeeeeeeeeee"],
+            [str_repeat("a", 44)],
+            [str_repeat("abcde", 9)],
             ["valid"],
             ["v"],
         ];
@@ -107,7 +108,9 @@ class PDOTicketModelTest extends TestCase
     public function providerInvalidAssetName()
     {
         return [
-            ["This is not a valid asset nameeeeeeeeeeeeeeeee"]
+            [str_repeat("a", 46)],
+            [123],
+            [null],
         ];
     }
 
@@ -174,7 +177,7 @@ class PDOTicketModelTest extends TestCase
     {
         return [
             ["too short"],
-            ["waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaay too long"],
+            [str_repeat("a", 96)],
             [""],
         ];
     }
