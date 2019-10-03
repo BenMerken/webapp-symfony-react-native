@@ -61,6 +61,7 @@ class PDOTicketModel implements TicketModel
 
         $description = $jsonData["description"];
         $this->validateDescription($description);
+        $assetId = $this->assetModel->getIdForName($assetName);
 
         $pdo = $this->connection->getPDO();
         $insertQuery = "INSERT INTO tickets(assetId, description) VALUES(:assetId, :description);";

@@ -6,6 +6,13 @@
 -- --------------------------------------------------------
 
 --
+-- Drop and create the database again
+--
+
+DROP DATABASE `asset-management-tool`;
+CREATE DATABASE `asset-management-tool`;
+
+--
 -- Tablestructure for table `rooms`
 --
 
