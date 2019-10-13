@@ -95,7 +95,7 @@ class PDORoomModelTest extends TestCase
      * @param $name
      * @param $happinessScore
      */
-    public function testFindHappinessScoreByRoomName($id, $name, $happinessScore)
+    public function testGetHappinessScoreRoomFromRoomName_existingIdsScoreAndName_true($id, $name, $happinessScore)
     {
         $roomModel = new PDORoomModel($this->connection);
         $expectedRoom = ['id' => $id, 'name' => $name, 'happinessScore' => $happinessScore];
@@ -110,7 +110,7 @@ class PDORoomModelTest extends TestCase
      * @dataProvider providerInvalidRoomNames()
      * @param $name
      */
-    public function testInvalidInputFindHappinessScoreByRoomName($name)
+    public function testGetHappinessScoreRoomFromRoomName_invalidRoomName_throwsInvalidArgumentException($name)
     {
         $roomModel = new PDORoomModel($this->connection);
         $this->expectException(InvalidArgumentException::class);
@@ -123,7 +123,7 @@ class PDORoomModelTest extends TestCase
      * @param $happyOrNot
      * @param $expectedHappinessScore
      */
-    public function testHappyOrNotFunction($name, $happyOrNot, $expectedHappinessScore)
+    public function testUpdateHappinessScoreRoom_existingRoom_true($name, $happyOrNot, $expectedHappinessScore)
     {
         $roomModel = new PDORoomModel($this->connection);
         $roomModel->updateHappinessScoreRoom($name, $happyOrNot);
@@ -136,7 +136,7 @@ class PDORoomModelTest extends TestCase
      * @param $name
      * @param $happyOrNot
      */
-    public function testInvalidInputHappyOrNotFunction($name, $happyOrNot)
+    public function testUpdateHappinessScoreRoom_invalidHappyOrNotValues_throwsInvalidArgumentException($name, $happyOrNot)
     {
         $roomModel = new PDORoomModel($this->connection);
         $this->expectException(InvalidArgumentException::class);
@@ -144,7 +144,7 @@ class PDORoomModelTest extends TestCase
     }
 
 
-    public function testGetRooms()
+    public function testGetRoomsReturnsAllRooms_true()
     {
         $roomModel = new PDORoomModel($this->connection);
         $expectedRooms = $this->providerRooms();
@@ -158,7 +158,7 @@ class PDORoomModelTest extends TestCase
      * @param $score
      * @param $amountOfRoomsWithHappinessScoreLessThan
      */
-    public function testGetRoomsWithHappinessScoreLowerThan($score, $amountOfRoomsWithHappinessScoreLessThan)
+    public function testGetRoomsWithHappinessScoreLessThan_validScoreAndExpectedAmount_true($score, $amountOfRoomsWithHappinessScoreLessThan)
     {
         $roomModel = new PDORoomModel($this->connection);
         $expectedAmountOfRooms = $amountOfRoomsWithHappinessScoreLessThan;
@@ -173,7 +173,7 @@ class PDORoomModelTest extends TestCase
      * @dataProvider providerInvalidInputLowerThanHappinessScores()
      * @param $score
      */
-    public function testInvalidInputGetRoomsWithHappinessScoreLowerThan($score)
+    public function testGetRoomsWithHappinessScoreLessThan_invalidScore_throwsInvalidArgumentException($score)
     {
         $roomModel = new PDORoomModel($this->connection);
         $this->expectException(InvalidArgumentException::class);
