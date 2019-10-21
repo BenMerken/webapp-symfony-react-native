@@ -97,7 +97,7 @@ class PDORoomModel implements RoomModel
                 return -2;
                 break;
             default:
-                return 0;
+                throw new InvalidArgumentException("You gave an invalid happinessScore.");
         }
     }
 

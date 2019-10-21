@@ -57,7 +57,8 @@ class PDORoomModelTest extends TestCase
         return [
             ['name' => 'B051', 'happyOrNot' => null],
             ['name' => 'B052', 'happyOrNot' => 45],
-            ['name' => 'B053', ""]
+            ['name' => 'B053', ""],
+            ['name' => 'B053', 'happyOrNot' => 'kkk']
         ];
     }
 
@@ -68,7 +69,6 @@ class PDORoomModelTest extends TestCase
             ['name' => 'B052', 'happyOrNot' => 'unhappy', 'expectedHappinessScore' => 1000 - 2],
             ['name' => 'B053', 'happyOrNot' => 'somewhatHappy', 'expectedHappinessScore' => 5000 + 1],
             ['name' => 'B053', 'happyOrNot' => 'somewhatUnHappy', 'expectedHappinessScore' => 4999],
-            ['name' => 'B053', 'happyOrNot' => 'kkk', 'expectedHappinessScore' => 5000]
         ];
     }
 
