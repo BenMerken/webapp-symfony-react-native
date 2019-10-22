@@ -1,0 +1,556 @@
+{
+	"info": {
+		"_postman_id": "2594a10b-f175-495a-af21-e92feaa555c7",
+		"name": "Web & Mobile: WP1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "I",
+			"item": [
+				{
+					"name": "PATCH happinessScore for happy +2 200 OK",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/rooms/B051/happy",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"rooms",
+								"B051",
+								"happy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH happinessScore for somewhatHappy +1 200 OK",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/rooms/B051/somewhatHappy",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"rooms",
+								"B051",
+								"somewhatHappy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH happinessScore for somewhatUnhappy -1 200 OK",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/rooms/B051/somewhatUnhappy",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"rooms",
+								"B051",
+								"somewhatUnhappy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH happinessScore for unhappy -2 200 OK",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/rooms/B051/unhappy",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"rooms",
+								"B051",
+								"unhappy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH happinessScore for sunhappy 400 Bad Request",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/rooms/B051/sunhappy",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"rooms",
+								"B051",
+								"sunhappy"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "II",
+			"item": [
+				{
+					"name": "GET happinessScore for roomName 200 OK",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/rooms/B051",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"rooms",
+								"B051"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET happinessScore for non-existing Room 404 Not Found",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/rooms/B999",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"rooms",
+								"B999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET happinessScore for too long Room 400 Bad Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/rooms/pppppppppppppppppppppppppppppppppppppppppppppp",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"rooms",
+								"pppppppppppppppppppppppppppppppppppppppppppppp"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "III",
+			"item": [
+				{
+					"name": "POST new Ticket for assetName 201 Created",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"description\": \"This beamer is busted pls fix!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://symfony01.local/tickets?assetName=beamer",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"tickets"
+							],
+							"query": [
+								{
+									"key": "assetName",
+									"value": "beamer"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST new Ticket for no Description 400 Bad Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/tickets?assetName=beamer",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"tickets"
+							],
+							"query": [
+								{
+									"key": "assetName",
+									"value": "beamer"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST new Ticket for non-string assetName 400 Bad Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"description\": \"'t Is kapot!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://symfony01.local/tickets?assetName=123",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"tickets"
+							],
+							"query": [
+								{
+									"key": "assetName",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "IV",
+			"item": [
+				{
+					"name": "GET Tickets for assetName 200 OK",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://symfony01.local/tickets?assetName=beamer",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"tickets"
+							],
+							"query": [
+								{
+									"key": "assetName",
+									"value": "beamer"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Tickets for non-existent assetName 404 Not Found",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://symfony01.local/tickets?assetName=somethingElse",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"tickets"
+							],
+							"query": [
+								{
+									"key": "assetName",
+									"value": "somethingElse"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Tickets for empty assetName 400 Bad Request",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://symfony01.local/tickets?assetName=",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"tickets"
+							],
+							"query": [
+								{
+									"key": "assetName",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Tickets for non-string assetName 400 Bad Request",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://symfony01.local/tickets?assetName=123",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"tickets"
+							],
+							"query": [
+								{
+									"key": "assetName",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "V",
+			"item": [
+				{
+					"name": "PATCH numberOfVotes for ticketId 204 No Content",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/tickets/32",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"tickets",
+								"32"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH numberOfVotes for non-existent ticketId 404 Not Found",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/tickets/999999",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"tickets",
+								"999999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH numberOfVotes for non-int ticketId 400 Bad Request",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/tickets/blah",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"tickets",
+								"blah"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "VI",
+			"item": [
+				{
+					"name": "GET happinessScore lower than valid score 200 OK",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/rooms?lowerThanScore=5001",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"rooms"
+							],
+							"query": [
+								{
+									"key": "lowerThanScore",
+									"value": "5001"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET happinessScore too low valid score 404 Not Found",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://symfony01.local/rooms?lowerThanScore=999",
+							"protocol": "http",
+							"host": [
+								"symfony01",
+								"local"
+							],
+							"path": [
+								"rooms"
+							],
+							"query": [
+								{
+									"key": "lowerThanScore",
+									"value": "999"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
