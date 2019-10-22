@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "2594a10b-f175-495a-af21-e92feaa555c7",
+		"_postman_id": "5b38bd6f-e349-416f-bbca-68bf2e7399bd",
 		"name": "Web & Mobile: WP1",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,11 +14,10 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/rooms/B051/happy",
+							"raw": "http://{{url}}/rooms/B051/happy",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"rooms",
@@ -35,11 +34,10 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/rooms/B051/somewhatHappy",
+							"raw": "http://{{url}}/rooms/B051/somewhatHappy",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"rooms",
@@ -56,16 +54,15 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/rooms/B051/somewhatUnhappy",
+							"raw": "http://{{url}}/rooms/B051/somewhatUnHappy",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"rooms",
 								"B051",
-								"somewhatUnhappy"
+								"somewhatUnHappy"
 							]
 						}
 					},
@@ -77,11 +74,10 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/rooms/B051/unhappy",
+							"raw": "http://{{url}}/rooms/B051/unhappy",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"rooms",
@@ -98,11 +94,10 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/rooms/B051/sunhappy",
+							"raw": "http://{{url}}/rooms/B051/sunhappy",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"rooms",
@@ -125,11 +120,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/rooms/B051",
+							"raw": "http://{{url}}/rooms/B051",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"rooms",
@@ -145,11 +139,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/rooms/B999",
+							"raw": "http://{{url}}/rooms/B999",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"rooms",
@@ -165,11 +158,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/rooms/pppppppppppppppppppppppppppppppppppppppppppppp",
+							"raw": "http://{{url}}/rooms/pppppppppppppppppppppppppppppppppppppppppppppp",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"rooms",
@@ -207,11 +199,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://symfony01.local/tickets?assetName=beamer",
+							"raw": "http://{{url}}/tickets?assetName=beamer",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"tickets"
@@ -232,11 +223,10 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/tickets?assetName=beamer",
+							"raw": "http://{{url}}/tickets?assetName=beamer",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"tickets"
@@ -273,11 +263,10 @@
 							}
 						},
 						"url": {
-							"raw": "http://symfony01.local/tickets?assetName=123",
+							"raw": "http://{{url}}/tickets?assetName=123",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"tickets"
@@ -311,11 +300,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://symfony01.local/tickets?assetName=beamer",
+							"raw": "http://{{url}}/tickets?assetName=beamer",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"tickets"
@@ -343,11 +331,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://symfony01.local/tickets?assetName=somethingElse",
+							"raw": "http://{{url}}/tickets?assetName=somethingElse",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"tickets"
@@ -375,11 +362,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://symfony01.local/tickets?assetName=",
+							"raw": "http://{{url}}/tickets?assetName=",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"tickets"
@@ -407,11 +393,10 @@
 							}
 						],
 						"url": {
-							"raw": "http://symfony01.local/tickets?assetName=123",
+							"raw": "http://{{url}}/tickets?assetName=123",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"tickets"
@@ -438,11 +423,10 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/tickets/32",
+							"raw": "http://{{url}}/tickets/32",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"tickets",
@@ -458,11 +442,10 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/tickets/999999",
+							"raw": "http://{{url}}/tickets/999999",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"tickets",
@@ -478,11 +461,10 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/tickets/blah",
+							"raw": "http://{{url}}/tickets/blah",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"tickets",
@@ -504,11 +486,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/rooms?lowerThanScore=5001",
+							"raw": "http://{{url}}/rooms?lowerThanScore=5001",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"rooms"
@@ -529,11 +510,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://symfony01.local/rooms?lowerThanScore=999",
+							"raw": "http://{{url}}/rooms?lowerThanScore=999",
 							"protocol": "http",
 							"host": [
-								"symfony01",
-								"local"
+								"{{url}}"
 							],
 							"path": [
 								"rooms"
@@ -550,6 +530,36 @@
 				}
 			],
 			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "52554c1f-306e-4694-ae9e-fdb0d736f925",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "2f616fdb-a344-4564-8cc4-76c252c6b750",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "6b2f75b2-d58c-4f79-a88c-d6b005d3fdc2",
+			"key": "url",
+			"value": "symfony01.local",
+			"type": "string"
 		}
 	],
 	"protocolProfileBehavior": {}

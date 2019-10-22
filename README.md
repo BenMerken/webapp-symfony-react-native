@@ -1,5 +1,9 @@
 # Project Web and Mobile
 
+### Testing the app with postman
+In this repo we have provided a postman collection (Web & Mobile- WP1.postman_collection.json) which you can import into your postman locally.
+You only need to edit the collection variable from symfony01.local to the url you use to host the api.
+
 ### Creating database and tables with dummy data
 For this project we will use a database consisting out of rooms, assets and tickets. This database will be created as follows:
 
