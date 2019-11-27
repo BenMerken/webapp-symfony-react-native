@@ -12,7 +12,7 @@ type Props = {
 const RoomsList: React.FunctionComponent<Props> = ({rooms, isLoading}): JSX.Element => {
 
     const renderItem = ({item}: { item: Room }): JSX.Element => (
-        <View style={styles.articleContainer}>
+        <View style={styles.roomContainer}>
             <RoomPreview {...item}/>
         </View>
     );
@@ -20,7 +20,7 @@ const RoomsList: React.FunctionComponent<Props> = ({rooms, isLoading}): JSX.Elem
     const RenderSeparator = () => <View style={styles.separator}/>;
 
     return (
-        <View style={styles.articleContainer}>
+        <View style={styles.roomContainer}>
             {isLoading
                 ? (<Text>Loading...</Text>)
                 : (
