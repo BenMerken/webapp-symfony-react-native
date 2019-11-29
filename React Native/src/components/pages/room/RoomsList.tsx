@@ -1,15 +1,22 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {View, Text, FlatList} from "react-native";
 import RoomPreview from '../../ui/room/RoomPreview';
 import {styles} from "./RoomsList.styles";
-import {Room} from "../../../data/room/room";
+import {Room} from "../../../data";
+import {getRoomList} from "../../../redux/modules/room";
+import {connect} from 'react-redux';
 
 type Props = {
     rooms: Room[];
     isLoading: boolean;
+    getRoomList: () => (dispatch: any) => Promise<void>;
 };
 
-const RoomsList: React.FunctionComponent<Props> = ({rooms, isLoading}): JSX.Element => {
+const RoomsList: React.FunctionComponent<Props> = ({rooms, isLoading, getRoomList}): JSX.Element => {
+
+    useEffect(() => {
+        getRoomList();
+    },[]);
 
     const renderItem = ({item}: { item: Room }): JSX.Element => (
         <View style={styles.roomContainer}>
@@ -35,4 +42,15 @@ const RoomsList: React.FunctionComponent<Props> = ({rooms, isLoading}): JSX.Elem
     );
 };
 
-export default RoomsList;
+const mapStateToProps = state => ({
+    rooms: state.rooms.list,
+    isLoading: state.rooms.isLoadingList
+});
+
+const mapDispatchToProps = dispatch => ({
+    getRoomList: () => dispatch(getRoomList())
+});
+
+const RoomsListPage = connect(mapStateToProps, mapDispatchToProps)(RoomsList);
+
+export default RoomsListPage;
