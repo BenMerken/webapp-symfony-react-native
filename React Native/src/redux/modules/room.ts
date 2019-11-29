@@ -8,9 +8,9 @@ const BASE_URL = 'http://192.168.33.22/rooms/';
 
 // --- Action Types ---
 
-export const LOAD_ROOM_LIST = 'LOAD_ROOM_LIST';
-export const LOAD_ROOM_LIST_SUCCESS = 'LOAD_ROOM_LIST_SUCCESS';
-export const LOAD_ROOM_LIST_FAIL = 'LOAD_ROOM_LIST_FAIL';
+export const LOAD_ROOM_LIST = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST';
+export const LOAD_ROOM_LIST_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_SUCCESS';
+export const LOAD_ROOM_LIST_FAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_FAIL';
 
 type GetRoomListAction = {
     type: typeof LOAD_ROOM_LIST;
@@ -70,10 +70,9 @@ const getRoomListFail = () => ({
 
 // --- Reducer ---
 
-const roomReducer: Reducer<RoomState, ActionTypes> = (
+const reducer: Reducer<RoomState, ActionTypes> = (
     state = {
         list: [],
-
         isLoadingList: true,
     },
     action
@@ -90,4 +89,4 @@ const roomReducer: Reducer<RoomState, ActionTypes> = (
     }
 };
 
-export default roomReducer;
+export default reducer;

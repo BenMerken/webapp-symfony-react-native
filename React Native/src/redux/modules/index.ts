@@ -1,8 +1,6 @@
 import {combineReducers} from "redux";
-import rooms from './room';
+import room from './room';
 
-const rootReducer = combineReducers({
-    rooms
-});
-
-export default rootReducer;
+export default combineReducers({
+    room
+})
