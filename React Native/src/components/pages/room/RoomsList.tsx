@@ -3,8 +3,9 @@ import {View, Text, FlatList} from "react-native";
 import RoomPreview from '../../ui/room/RoomPreview';
 import {styles} from "./RoomsList.styles";
 import {Room} from "../../../data";
-import {getRoomList} from "../../../redux/modules/room";
+import * as roomActions from "../../../redux/modules/room";
 import {connect} from 'react-redux';
+import {bindActionCreators} from "redux";
 
 type Props = {
     rooms: Room[];
@@ -16,7 +17,7 @@ const RoomsList: React.FunctionComponent<Props> = ({rooms, isLoading, getRoomLis
 
     useEffect(() => {
         getRoomList();
-    },[]);
+    }, []);
 
     const renderItem = ({item}: { item: Room }): JSX.Element => (
         <View style={styles.roomContainer}>
@@ -43,12 +44,12 @@ const RoomsList: React.FunctionComponent<Props> = ({rooms, isLoading, getRoomLis
 };
 
 const mapStateToProps = state => ({
-    rooms: state.rooms.list,
-    isLoading: state.rooms.isLoadingList
+    rooms: state.room.list,
+    isLoading: state.room.isLoadingList
 });
 
 const mapDispatchToProps = dispatch => ({
-    getRoomList: () => dispatch(getRoomList())
+    getRoomList: bindActionCreators(roomActions.getRoomList, dispatch)
 });
 
 const RoomsListPage = connect(mapStateToProps, mapDispatchToProps)(RoomsList);
