@@ -1,5 +1,8 @@
-export const LOAD_ROOM_LIST = 'LOAD_ROOM_LIST';
-export const LOAD_ROOM_LIST_SUCCESS = 'LOAD_ROOM_LIST_SUCCESS';
-export const LOAD_ROOM_LIST_FAIL = 'LOAD_ROOM_LIST_FAIL';
+import {combineReducers} from "redux";
+import rooms from './room';
 
-export const LOAD_ROOM_DETAIL = 'LOAD_ROOM_DETAIL';
+const rootReducer = combineReducers({
+    rooms
+});
+
+export default rootReducer;
