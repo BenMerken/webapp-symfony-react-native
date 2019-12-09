@@ -44,7 +44,7 @@ const RoomsList: React.FunctionComponent<Props> = ({rooms, isLoading, getRoomLis
 };
 
 const mapStateToProps = state => ({
-    rooms: state.room.list,
+    rooms: state.room.list.data,
     isLoading: state.room.isLoadingList
 });
 

@@ -1,5 +1,5 @@
 import React from "react";
-import {View} from "react-native";
+import {View, Text} from "react-native";
 
 type Props = {
     size: number;
@@ -15,7 +15,9 @@ const CircleDetail: React.FunctionComponent<Props> = (detail) => {
     };
 
     return (
-        <View style={detailStyle}>{detail.text}</View>
+        <View style={detailStyle}>
+            <Text>{detail.text}</Text>
+        </View>
     );
 };
 

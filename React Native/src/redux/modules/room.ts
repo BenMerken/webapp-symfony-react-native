@@ -45,7 +45,7 @@ export const getRoomList = () => {
     return async dispatch => {
         dispatch(setIsLoadingList());
         try {
-            const {rooms}: {rooms: Room[]} = await axios.get(BASE_URL);
+            const rooms: Room[] = await axios.get(BASE_URL);
             dispatch(getRoomListSuccess(rooms));
         } catch (error) {
             dispatch(getRoomListFail());

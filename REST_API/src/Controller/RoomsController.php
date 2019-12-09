@@ -35,7 +35,10 @@ class RoomsController extends AbstractController
         } catch (\PDOException $exception) {
             $statuscode = 500;
         }
-        return new JsonResponse($rooms, $statuscode);
+        $response = new JsonResponse($rooms, $statuscode);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
     }
 
     /**
