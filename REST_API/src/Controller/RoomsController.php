@@ -18,6 +18,30 @@ class RoomsController extends AbstractController
     }
 
     /**
+     * @Route("/rooms/", methods={"GET"}, name="GetRooms")
+     */
+    public function getRooms()
+    {
+        $statuscode = 200;
+        $rooms = null;
+
+        try {
+            $rooms = $this->roomModel->getRooms();
+            if ($rooms == null) {
+                $statuscode = 404;
+            }
+        } catch (\InvalidArgumentException $exception) {
+            $statuscode = 400;
+        } catch (\PDOException $exception) {
+            $statuscode = 500;
+        }
+        $response = new JsonResponse($rooms, $statuscode);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
+    }
+
+    /**
      * @Route("/rooms/{name}", methods={"GET"}, name="GetHappinessScoreRoom")
      * @param $name
      * @return JsonResponse

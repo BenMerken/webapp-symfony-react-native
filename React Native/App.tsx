@@ -5,14 +5,14 @@ import RoomsList from './src/components/pages/room/RoomsList';
 import {Provider} from 'react-redux';
 import configureStore from "./src/redux/configureStore";
 
-const App: React.FC = () => {
+const App: React.FunctionComponent = () => {
     const Stack = createStackNavigator({
         Home: {
             screen: RoomsList
         }
     });
 
-    const store = configureStore;
+    const store = configureStore();
     const AppContainer = createAppContainer(Stack);
 
     return (

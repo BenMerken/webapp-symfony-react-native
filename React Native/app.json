@@ -1,4 +1,6 @@
 {
+  "name": "PXLAssetManagementTool",
+  "displayName": "PXL Asset Management Tool",
   "expo": {
     "name": "PE-react-native",
     "slug": "PE-react-native",

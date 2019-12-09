@@ -1,4 +1,5 @@
 export type Room = {
-    name: string,
-    happinessScore: number
+    id: number;
+    name: string;
+    happinessScore: number;
 };
