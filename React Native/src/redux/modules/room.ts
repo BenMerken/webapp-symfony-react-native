@@ -4,13 +4,17 @@ import axios from "axios";
 
 // --- API ---
 
-const BASE_URL = 'http://192.168.33.22/rooms/';
+const BASE_URL = 'http://192.168.0.197:8000/rooms/';
 
 // --- Action Types ---
 
 export const LOAD_ROOM_LIST = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST';
 export const LOAD_ROOM_LIST_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_SUCCESS';
 export const LOAD_ROOM_LIST_FAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_FAIL';
+
+export const LOAD_ROOM_DETAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL';
+export const LOAD_ROOM_DETAIL_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL_SUCCESS';
+export const LOAD_ROOM_DETAIL_FAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL_FAIL';
 
 type GetRoomListAction = {
     type: typeof LOAD_ROOM_LIST;
@@ -27,10 +31,28 @@ type GetRoomListActionFail = {
     payload: [];
 };
 
+type GetRoomDetailAction = {
+    type: typeof LOAD_ROOM_DETAIL;
+    payload: { name: string }
+};
+
+type GetRoomDetailActionSuccess = {
+    type: typeof LOAD_ROOM_DETAIL_SUCCESS;
+    payload: { data: Room }
+};
+
+type GetRoomDetailActionFail = {
+    type: typeof LOAD_ROOM_DETAIL_FAIL;
+    payload: {}
+};
+
 type ActionTypes =
     | GetRoomListAction
     | GetRoomListActionSuccess
     | GetRoomListActionFail
+    | GetRoomDetailAction
+    | GetRoomDetailActionSuccess
+    | GetRoomDetailActionFail
 
 // --- State Type ---
 

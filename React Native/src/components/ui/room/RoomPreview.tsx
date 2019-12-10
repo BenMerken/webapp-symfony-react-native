@@ -9,13 +9,13 @@ type Props = {
 };
 
 const RoomPreview: React.FunctionComponent<Props> = (room): JSX.Element => (
-    <View style={styles.container}>
-        <View style={styles.header}>
-            <TouchableOpacity>
+    <TouchableOpacity>
+        <View style={styles.container}>
+            <View style={styles.header}>
                 <RoomPreviewBody {...room}/>
-            </TouchableOpacity>
+            </View>
         </View>
-    </View>
+    </TouchableOpacity>
 );
 
 export default RoomPreview;

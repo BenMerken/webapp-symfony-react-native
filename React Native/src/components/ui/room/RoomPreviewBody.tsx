@@ -12,10 +12,9 @@ const RoomPreviewBody: React.FunctionComponent<Props> = (room) => {
     return (
         <View style={styles.row}>
             <CircleDetail
-                size={36}
                 text={room.happinessScore.toString()}
             />
-            <Text>{room.name}</Text>
+            <Text style={styles.roomName}>Room {room.name}</Text>
         </View>
     );
 };

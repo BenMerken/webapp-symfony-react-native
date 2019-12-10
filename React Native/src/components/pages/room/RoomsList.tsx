@@ -6,6 +6,8 @@ import {Room} from "../../../data";
 import * as roomActions from "../../../redux/modules/room";
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
+import {NavigationStackOptions} from "react-navigation-stack";
+import {useNavigation} from "../../../hooks";
 
 type Props = {
     rooms: Room[];
@@ -13,7 +15,10 @@ type Props = {
     getRoomList: () => (dispatch: any) => Promise<void>;
 };
 
-const RoomsList: React.FunctionComponent<Props> = ({rooms, isLoading, getRoomList}): JSX.Element => {
+const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: NavigationStackOptions }
+    = ({rooms, isLoading, getRoomList}): JSX.Element => {
+    const navigation = useNavigation();
+    const navigateRoom = (name: string) => navigation.navigate('Room', {name: name});
 
     useEffect(() => {
         getRoomList();

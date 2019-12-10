@@ -1,22 +1,16 @@
 import React from "react";
 import {View, Text} from "react-native";
+import {styles} from './CircleDetail.styles';
 
 type Props = {
-    size: number;
     text?: string;
 };
 
 const CircleDetail: React.FunctionComponent<Props> = (detail) => {
-    const detailStyle = {
-        width: detail.size,
-        height: detail.size,
-        borderRadius: detail.size / 2,
-        backgroundColor: '#00BCD4'
-    };
 
     return (
-        <View style={detailStyle}>
-            <Text>{detail.text}</Text>
+        <View style={styles.detailStyle}>
+            <Text style={styles.detailText}>{detail.text}</Text>
         </View>
     );
 };

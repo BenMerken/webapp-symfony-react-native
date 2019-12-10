@@ -7,7 +7,7 @@ import configureStore from "./src/redux/configureStore";
 
 const App: React.FunctionComponent = () => {
     const Stack = createStackNavigator({
-        Home: {
+        Rooms: {
             screen: RoomsList
         }
     });
