@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Platform} from "react-native";
+import {Colors} from "../../../styles/_colors";
 
 const size = 72;
 
@@ -11,10 +11,6 @@ export const styles = StyleSheet.create({
         width: size,
         height: size,
         borderRadius: size / 2,
-        backgroundColor: '#00BCD4'
-    },
-    detailText: {
-        fontSize: size - 2 * size,
-        lineHeight: this.fontSize
+        backgroundColor: Colors.primary
     }
 });

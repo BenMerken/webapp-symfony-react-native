@@ -10,7 +10,7 @@ const CircleDetail: React.FunctionComponent<Props> = (detail) => {
 
     return (
         <View style={styles.detailStyle}>
-            <Text style={styles.detailText}>{detail.text}</Text>
+            <Text>{detail.text}</Text>
         </View>
     );
 };

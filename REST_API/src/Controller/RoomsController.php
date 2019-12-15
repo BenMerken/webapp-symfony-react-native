@@ -46,14 +46,14 @@ class RoomsController extends AbstractController
      * @param $name
      * @return JsonResponse
      */
-    public function getHappinessScoreRoom($name)
+    public function getRoomByName($name)
     {
         $statuscode = 200;
         $happinessScoreRoom = null;
 
         try {
 
-            $happinessScoreRoom = $this->roomModel->getHappinessScoreRoom($name);
+            $happinessScoreRoom = $this->roomModel->getRoomByName($name);
 
             if ($happinessScoreRoom == null) {
                 $statuscode = 404;
