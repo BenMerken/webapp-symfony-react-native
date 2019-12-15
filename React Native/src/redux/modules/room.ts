@@ -59,6 +59,8 @@ type ActionTypes =
 type RoomState = {
     list: Room[];
     isLoadingList: boolean;
+    detail: Room;
+    isLoadingDetail: boolean;
 };
 
 // --- Action Creators
@@ -90,12 +92,41 @@ const getRoomListFail = () => ({
     payload: {}
 });
 
+export const getRoom = (name: string) => {
+    return async dispatch => {
+        dispatch(setIsLoadingDetail());
+        try {
+            const room: Room = await axios.get(BASE_URL + name);
+            dispatch(getRoomDetailSuccess(room));
+        } catch (error) {
+            dispatch(getRoomDetailFail())
+        }
+    };
+};
+
+const setIsLoadingDetail = () => ({
+    type: LOAD_ROOM_DETAIL,
+    payload: {}
+});
+
+const getRoomDetailSuccess = (room: Room) => ({
+    type: LOAD_ROOM_DETAIL_SUCCESS,
+    payload: {data: room}
+});
+
+const getRoomDetailFail = () => ({
+    type: LOAD_ROOM_DETAIL_FAIL,
+    payload: {}
+});
+
 // --- Reducer ---
 
 const reducer: Reducer<RoomState, ActionTypes> = (
     state = {
         list: [],
         isLoadingList: true,
+        detail: null,
+        isLoadingDetail: true
     },
     action
 ) => {
@@ -106,6 +137,12 @@ const reducer: Reducer<RoomState, ActionTypes> = (
             return {...state, list: action.payload.data, isLoadingList: false};
         case LOAD_ROOM_LIST_FAIL:
             return {...state, isLoadingList: false};
+        case LOAD_ROOM_DETAIL:
+            return {...state, isLoadingDetail: true};
+        case LOAD_ROOM_DETAIL_SUCCESS:
+            return {...state, detail: action.payload.data, isLoadingDetail: false};
+        case LOAD_ROOM_DETAIL_FAIL:
+            return {...state, isLoadingDetail: false};
         default:
             return state;
     }
