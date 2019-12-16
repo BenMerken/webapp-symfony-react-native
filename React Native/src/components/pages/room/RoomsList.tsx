@@ -3,9 +3,11 @@ import {View, Text, FlatList} from "react-native";
 import RoomPreview from '../../ui/room/RoomPreview';
 import {styles} from "./RoomsList.styles";
 import {Room} from "../../../data";
-import * as roomActions from "../../../redux/modules/room";
+import {getRoomList} from "../../../redux/modules/room";
 import {connect} from 'react-redux';
-import {bindActionCreators} from "redux";
+import {useNavigation} from "../../../hooks";
+import {Colors} from "../../../styles/_colors";
+import {bindActionCreators} from 'redux'
 
 type Props = {
     rooms: Room[];
@@ -13,15 +15,18 @@ type Props = {
     getRoomList: () => (dispatch: any) => Promise<void>;
 };
 
-const RoomsList: React.FunctionComponent<Props> = ({rooms, isLoading, getRoomList}): JSX.Element => {
+const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
+    = (props): JSX.Element => {
+    const navigation = useNavigation();
+    const navigateRoom = (name: string, roomId: number) => navigation.navigate('Room', {name, roomId});
 
     useEffect(() => {
-        getRoomList();
+        props.getRoomList();
     }, []);
 
     const renderItem = ({item}: { item: Room }): JSX.Element => (
         <View style={styles.roomContainer}>
-            <RoomPreview {...item}/>
+            <RoomPreview {...item} navigateRoom={navigateRoom}/>
         </View>
     );
 
@@ -29,11 +34,11 @@ const RoomsList: React.FunctionComponent<Props> = ({rooms, isLoading, getRoomLis
 
     return (
         <View style={styles.roomContainer}>
-            {isLoading
+            {props.isLoading
                 ? (<Text>Loading...</Text>)
                 : (
                     <FlatList
-                        data={rooms}
+                        data={props.rooms}
                         renderItem={renderItem}
                         ItemSeparatorComponent={RenderSeparator}
                         keyExtractor={room => room.name}
@@ -43,13 +48,23 @@ const RoomsList: React.FunctionComponent<Props> = ({rooms, isLoading, getRoomLis
     );
 };
 
+RoomsList.navigationOptions = () => ({
+    title: 'List of rooms',
+    headerStyle: {
+        backgroundColor: Colors.primary
+    },
+    headerTitleStyle: {
+        color: Colors.fontLight
+    },
+});
+
 const mapStateToProps = state => ({
-    rooms: state.room.list.data,
+    rooms: state.room.list,
     isLoading: state.room.isLoadingList
 });
 
 const mapDispatchToProps = dispatch => ({
-    getRoomList: bindActionCreators(roomActions.getRoomList, dispatch)
+    getRoomList: bindActionCreators(getRoomList, dispatch)
 });
 
 const RoomsListPage = connect(mapStateToProps, mapDispatchToProps)(RoomsList);

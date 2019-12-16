@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native'
 
 export const styles = StyleSheet.create({
     row: {
@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
         width: 77,
         height: 72
     },
-    roomName: {
+    assetName: {
         color: "#999",
         fontSize: 44,
     },

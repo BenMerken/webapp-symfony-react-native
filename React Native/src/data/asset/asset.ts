@@ -1,6 +1,5 @@
-import {Room} from "../room/room";
-
 export type Asset = {
-    room: Room,
+    id: number,
+    roomId: number,
     name: string
 }

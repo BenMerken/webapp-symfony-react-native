@@ -11,6 +11,7 @@
 
 DROP DATABASE `asset-management-tool`;
 CREATE DATABASE `asset-management-tool`;
+USE `asset-management-tool`;
 
 --
 -- Tablestructure for table `rooms`
@@ -52,9 +53,10 @@ CREATE TABLE IF NOT EXISTS `assets`(
 --
 
 INSERT INTO `assets` (`id`, `roomId`, `name`) VALUES
-(223, 443, 'beamer'),
-(224, 444, 'computer'),
-(225, 445, 'router');
+(223, 443, 'beamer in Room B051'),
+(224, 443, 'computer in Room B051'),
+(225, 444, 'computer in Room B052'),
+(226, 445, 'router in Room B053');
 
 -- --------------------------------------------------------
 
