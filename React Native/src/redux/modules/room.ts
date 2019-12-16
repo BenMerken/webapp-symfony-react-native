@@ -4,7 +4,7 @@ import axios from "axios";
 
 // --- API ---
 
-const BASE_URL = 'http://192.168.0.197:8000/rooms/';
+const BASE_URL = 'http://localhost:8000/rooms/';
 
 // --- Action Types ---
 
@@ -63,7 +63,7 @@ type RoomState = {
     isLoadingDetail: boolean;
 };
 
-// --- Action Creators
+// --- Action Creators ---
 
 export const getRoomList = () => {
     return async dispatch => {
