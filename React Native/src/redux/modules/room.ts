@@ -23,7 +23,7 @@ type GetRoomListAction = {
 
 type GetRoomListActionSuccess = {
     type: typeof LOAD_ROOM_LIST_SUCCESS;
-    payload: { data: Room[] };
+    payload: Room[];
 };
 
 type GetRoomListActionFail = {
@@ -38,7 +38,7 @@ type GetRoomDetailAction = {
 
 type GetRoomDetailActionSuccess = {
     type: typeof LOAD_ROOM_DETAIL_SUCCESS;
-    payload: { data: Room }
+    payload: Room
 };
 
 type GetRoomDetailActionFail = {
@@ -69,8 +69,8 @@ export const getRoomList = () => {
     return async dispatch => {
         dispatch(setIsLoadingList());
         try {
-            const rooms: Room[] = await axios.get(BASE_URL);
-            dispatch(getRoomListSuccess(rooms));
+            const response = await axios.get(BASE_URL);
+            dispatch(getRoomListSuccess(response.data));
         } catch (error) {
             dispatch(getRoomListFail());
         }
@@ -84,7 +84,7 @@ const setIsLoadingList = () => ({
 
 const getRoomListSuccess = (rooms: Room[]) => ({
     type: LOAD_ROOM_LIST_SUCCESS,
-    payload: {data: rooms}
+    payload: rooms
 });
 
 const getRoomListFail = () => ({
@@ -96,8 +96,8 @@ export const getRoom = (name: string) => {
     return async dispatch => {
         dispatch(setIsLoadingDetail());
         try {
-            const room: Room = await axios.get(BASE_URL + name);
-            dispatch(getRoomDetailSuccess(room));
+            const response = await axios.get(BASE_URL + name);
+            dispatch(getRoomDetailSuccess(response.data));
         } catch (error) {
             dispatch(getRoomDetailFail())
         }
@@ -111,7 +111,7 @@ const setIsLoadingDetail = () => ({
 
 const getRoomDetailSuccess = (room: Room) => ({
     type: LOAD_ROOM_DETAIL_SUCCESS,
-    payload: {data: room}
+    payload: room
 });
 
 const getRoomDetailFail = () => ({
@@ -134,13 +134,13 @@ const reducer: Reducer<RoomState, ActionTypes> = (
         case LOAD_ROOM_LIST:
             return {...state, isLoadingList: true};
         case LOAD_ROOM_LIST_SUCCESS:
-            return {...state, list: action.payload.data, isLoadingList: false};
+            return {...state, list: action.payload, isLoadingList: false};
         case LOAD_ROOM_LIST_FAIL:
             return {...state, isLoadingList: false};
         case LOAD_ROOM_DETAIL:
             return {...state, isLoadingDetail: true};
         case LOAD_ROOM_DETAIL_SUCCESS:
-            return {...state, detail: action.payload.data, isLoadingDetail: false};
+            return {...state, detail: action.payload, isLoadingDetail: false};
         case LOAD_ROOM_DETAIL_FAIL:
             return {...state, isLoadingDetail: false};
         default:

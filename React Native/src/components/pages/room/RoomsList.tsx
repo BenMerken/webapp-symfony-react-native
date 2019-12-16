@@ -59,7 +59,7 @@ RoomsList.navigationOptions = () => ({
 });
 
 const mapStateToProps = state => ({
-    rooms: state.room.list.data,
+    rooms: state.room.list,
     isLoading: state.room.isLoadingList
 });
 
