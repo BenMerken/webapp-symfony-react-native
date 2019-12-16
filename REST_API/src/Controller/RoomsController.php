@@ -49,13 +49,13 @@ class RoomsController extends AbstractController
     public function getRoomByName($name)
     {
         $statuscode = 200;
-        $happinessScoreRoom = null;
+        $room = null;
 
         try {
 
-            $happinessScoreRoom = $this->roomModel->getRoomByName($name);
+            $room = $this->roomModel->getRoomByName($name);
 
-            if ($happinessScoreRoom == null) {
+            if ($room == null) {
                 $statuscode = 404;
             }
         } catch (\InvalidArgumentException $exception) {
@@ -63,7 +63,10 @@ class RoomsController extends AbstractController
         } catch (\PDOException $exception) {
             $statuscode = 500;
         }
-        return new JsonResponse($happinessScoreRoom, $statuscode);
+        $response = new JsonResponse($room, $statuscode);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
     }
 
     /**
