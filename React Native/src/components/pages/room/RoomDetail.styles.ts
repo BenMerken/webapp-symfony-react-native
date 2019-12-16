@@ -1,8 +1,10 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
     separator: {
-        marginHorizontal: 8, borderBottomWidth: 1, borderBottomColor: '#CCC'
+        marginHorizontal: 8,
+        borderBottomWidth: 1,
+        borderBottomColor: '#CCC'
     },
     loadingContainer: {
         flex: 1,

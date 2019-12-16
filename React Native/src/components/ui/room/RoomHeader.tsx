@@ -1,17 +1,20 @@
-import React, {useEffect} from "react";
-import {View, Text} from "react-native";
-import {Room} from "../../../data";
+import React from "react";
+import {View} from "react-native";
+import {styles} from "./RoomHeader.styles";
+import {H1, H2} from "../headers/TextHeaders";
 
 type Props = {
-    id: number;
     name: string;
     happinessScore: number;
 };
 
-const RoomHeader: React.FunctionComponent<Props> = (props): JSX.Element => {
+const RoomHeader: React.FunctionComponent<Props> = (room): JSX.Element => {
     return (
-        <View>
-            <Text>Under construction!</Text>
+        <View style={styles.header}>
+            <H1>Room {room.name}</H1>
+            <View style={styles.roomRow}>
+                <H2>Current happiness score: {room.happinessScore}</H2>
+            </View>
         </View>
     );
 };

@@ -5,6 +5,7 @@ import RoomsListPage from './src/components/pages/room/RoomsList';
 import {Provider} from 'react-redux';
 import configureStore from "./src/redux/configureStore";
 import RoomDetailPage from "./src/components/pages/room/RoomDetail";
+import AssetDetailPage from "./src/components/pages/asset/AssetDetail";
 
 const App: React.FunctionComponent = () => {
     const Stack = createStackNavigator({
@@ -13,6 +14,9 @@ const App: React.FunctionComponent = () => {
         },
         Room: {
             screen: RoomDetailPage
+        },
+        Asset: {
+            screen: AssetDetailPage
         }
     });
 
