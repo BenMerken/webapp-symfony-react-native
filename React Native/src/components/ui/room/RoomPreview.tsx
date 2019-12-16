@@ -7,11 +7,11 @@ type Props = {
     id: number;
     name: string;
     happinessScore: number;
-    navigateRoom: (name: string) => void;
+    navigateRoom: (name: string, roomId: number) => void;
 };
 
 const RoomPreview: React.FunctionComponent<Props> = (room): JSX.Element => (
-    <TouchableOpacity onPress={() => room.navigateRoom(room.name)}>
+    <TouchableOpacity onPress={() => room.navigateRoom(room.name, room.id)}>
         <View style={styles.container}>
             <View style={styles.header}>
                 <RoomPreviewBody {...room}/>

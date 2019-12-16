@@ -18,7 +18,7 @@ type Props = {
 const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
     = (props): JSX.Element => {
     const navigation = useNavigation();
-    const navigateRoom = (name: string) => navigation.navigate('Room', {name});
+    const navigateRoom = (name: string, roomId: number) => navigation.navigate('Room', {name, roomId});
 
     useEffect(() => {
         props.getRoomList();

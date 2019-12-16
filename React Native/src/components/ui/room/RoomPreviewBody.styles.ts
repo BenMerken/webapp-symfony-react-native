@@ -4,12 +4,11 @@ export const styles = StyleSheet.create({
     row: {
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'space-between',
         marginTop: 8
     },
-    happinessScore: {
-        fontSize: 22,
-        fontWeight: "500"
+    detail: {
+        width: 77,
+        height: 72
     },
     roomName: {
         color: "#999",

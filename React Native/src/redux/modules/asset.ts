@@ -4,7 +4,7 @@ import axios from "axios";
 
 // --- API ---
 
-const BASE_URL = 'http://localhos:8000/assets/';
+const BASE_URL = 'http://localhost:8000/assets/';
 
 // --- Action Types ---
 
@@ -46,7 +46,7 @@ export const getAssetList = (roomId: number) => {
         dispatch(setIsLoadingList());
         try {
             const response = await axios.get(`${BASE_URL}?roomId=${roomId}`);
-            dispatch(response.data);
+            dispatch(getAssetListSuccess(response.data));
         } catch (error) {
             dispatch(getAssetListFail());
         }

@@ -1,9 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+    separator: {
+        marginHorizontal: 8, borderBottomWidth: 1, borderBottomColor: '#CCC'
+    },
     loadingContainer: {
         flex: 1,
-        justifyContent: "center"
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     bodyContainer: {
         marginHorizontal: 16,

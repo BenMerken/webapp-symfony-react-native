@@ -11,9 +11,11 @@ type Props = {
 const RoomPreviewBody: React.FunctionComponent<Props> = (room) => {
     return (
         <View style={styles.row}>
-            <CircleDetail
-                text={room.happinessScore.toString()}
-            />
+            <View style={styles.detail}>
+                <CircleDetail
+                    text={room.happinessScore.toString()}
+                />
+            </View>
             <Text style={styles.roomName}>Room {room.name}</Text>
         </View>
     );

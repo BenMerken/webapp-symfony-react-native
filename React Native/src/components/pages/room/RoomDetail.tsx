@@ -1,44 +1,67 @@
 import React, {useEffect} from 'react';
-import {Room} from '../../../data';
+import {Asset, Room} from '../../../data';
 import {useNavigation} from '../../../hooks';
 import {connect} from 'react-redux';
 import {getRoom} from "../../../redux/modules/room";
-import {View, Text} from "react-native";
+import {getAssetList} from "../../../redux/modules/asset";
+import {View, Text, FlatList} from "react-native";
 import {styles} from "./RoomDetail.styles";
 import {Colors} from "../../../styles/_colors";
 import {bindActionCreators} from 'redux';
+import RoomHeader from "../../ui/room/RoomHeader";
+import AssetPreview from "../../ui/asset/AssetPreview";
 
 type Props = {
     room: Room;
-    isLoading: boolean;
-    getRoom: any;
+    isLoadingRoom: boolean;
+    getRoom: (name: string) => (dispatch: any) => Promise<void>;
+    assets: Asset[];
+    isLoadingAssets: boolean;
+    getAssetList: (id: number) => (dispatch: any) => Promise<void>
 };
 
 const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } = (props): JSX.Element => {
     const navigation = useNavigation();
-    const {name} = navigation.state.params;
+    const name = navigation.state.params.name;
+    const id = navigation.state.params.roomId;
 
     useEffect(() => {
         props.getRoom(name);
-    }, [name]);
+        props.getAssetList(id);
+    }, [name, id]);
+
+    const renderItem = ({item}: { item: Asset }): JSX.Element => (
+        <View>
+            <Text>{id}</Text>
+            <AssetPreview {...item}/>
+        </View>
+    );
+
+    const renderSeparator = () => <View style={styles.separator}/>;
 
     return (
-        <View>
-            {props.isLoading
+        <View style={styles.loadingContainer}>
+            {props.isLoadingRoom || props.isLoadingAssets
                 ? (
                     <Text>Loading...</Text>
                 )
                 : (
-                    <>
-                        <Text style={styles.bodyContainer}>{props.room.name}</Text>
-                    </>
+                    <View style={styles.bodyContainer}>
+                        <RoomHeader {...props.room}/>
+                        <FlatList
+                            data={props.assets}
+                            renderItem={renderItem}
+                            ItemSeparatorComponent={renderSeparator}
+                            keyExtractor={asset => asset.name}
+                        />
+                    </View>
                 )}
         </View>
     );
 };
 
 RoomDetail.navigationOptions = () => ({
-    title: 'Room',
+    title: 'Room details',
     headerStyle: {
         backgroundColor: Colors.primaryDark
     },
@@ -52,11 +75,14 @@ RoomDetail.navigationOptions = () => ({
 
 const mapStateToProps = state => ({
     room: state.room.detail,
-    isLoading: state.room.isLoadingDetail
+    isLoadingRoom: state.room.isLoadingDetail,
+    assets: state.asset.list,
+    isLoadingAssets: state.asset.isLoadingList
 });
 
 const mapDispatchToProps = dispatch => ({
-    getRoom: bindActionCreators(getRoom, dispatch)
+    getRoom: bindActionCreators(getRoom, dispatch),
+    getAssetList: bindActionCreators(getAssetList, dispatch)
 });
 
 const RoomDetailPage = connect(mapStateToProps, mapDispatchToProps)(RoomDetail);
