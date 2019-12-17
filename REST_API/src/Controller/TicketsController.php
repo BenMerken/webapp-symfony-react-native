@@ -22,7 +22,7 @@ class TicketsController extends AbstractController
     }
 
     /**
-     * @Route("/tickets", methods={"GET"}, name="getTicketsByAssetName")
+     * @Route("/tickets/", methods={"GET"}, name="getTicketsByAssetName")
      */
     public function getTicketsByAssetName(Request $request)
     {
