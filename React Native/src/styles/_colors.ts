@@ -5,4 +5,6 @@ export const Colors = {
     accentDark: '#818a91',
     fontDark: '#000',
     fontLight: '#fff',
-}
+    listItemSeparator: '#CCC',
+    transparentText: '#999'
+};

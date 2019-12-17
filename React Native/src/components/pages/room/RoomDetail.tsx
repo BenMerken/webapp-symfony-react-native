@@ -37,7 +37,7 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
         </View>
     );
 
-    const renderSeparator = () => <View style={styles.separator}/>;
+    const renderSeparator = (): JSX.Element => <View style={styles.separator}/>;
 
     return (
         <View style={styles.loadingContainer}>
@@ -61,7 +61,7 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
 };
 
 RoomDetail.navigationOptions = () => ({
-    title: 'Room details',
+    title: 'Room details & assets',
     headerStyle: {
         backgroundColor: Colors.primaryDark
     },

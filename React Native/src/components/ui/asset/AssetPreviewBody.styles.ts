@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native'
+import {Colors} from "../../../styles/_colors";
 
 export const styles = StyleSheet.create({
     row: {
@@ -11,7 +12,7 @@ export const styles = StyleSheet.create({
         height: 72
     },
     assetName: {
-        color: "#999",
-        fontSize: 44,
+        color: Colors.transparentText,
+        fontSize: 22,
     },
 });

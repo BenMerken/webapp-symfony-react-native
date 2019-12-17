@@ -1,10 +1,13 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {Ticket} from "../../../data";
-import {View, Text} from "react-native";
+import {View, Text, FlatList} from "react-native";
 import {bindActionCreators} from "redux";
 import {getTicketList} from "../../../redux/modules/ticket";
 import {useNavigation} from "../../../hooks";
+import TicketPreview from "../../ui/ticket/TicketPreview";
+import {styles} from "./TicketsList.styles";
+import {Colors} from "../../../styles/_colors";
 
 type Props = {
     tickets: Ticket[];
@@ -20,6 +23,14 @@ const TicketsList: React.FunctionComponent<Props> & { navigationOptions?: any } 
         props.getTicketList(assetName);
     }, [assetName]);
 
+    const renderItem = ({item}: { item: Ticket }): JSX.Element => (
+        <View style={styles.ticketContainer}>
+            <TicketPreview {...item}/>
+        </View>
+    );
+
+    const renderSeparator = (): JSX.Element => <View style={styles.separator}/>;
+
     return (
         <View>
             {props.isLoading
@@ -27,10 +38,27 @@ const TicketsList: React.FunctionComponent<Props> & { navigationOptions?: any } 
                     <Text>Loading tickets...</Text>
                 )
                 : (
-                    <Text>Under construction!</Text>
+                    <FlatList
+                        data={props.tickets}
+                        renderItem={renderItem}
+                        ItemSeparatorComponent={renderSeparator}
+                        keyExtractor={ticket => ticket.description}/>
                 )}
         </View>
     );
+};
+
+TicketsList.navigationOptions = {
+    title: 'Tickets',
+    headerStyle: {
+        backgroundColor: Colors.primaryDark
+    },
+    headerTitleStyle: {
+        color: Colors.fontLight
+    },
+    headerBackTitleStyle: {
+        color: Colors.fontLight
+    }
 };
 
 const mapStateToProps = state => ({

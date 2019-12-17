@@ -1,10 +1,11 @@
 import {StyleSheet} from 'react-native';
+import {Colors} from "../../../styles/_colors";
 
 export const styles = StyleSheet.create({
     separator: {
         marginHorizontal: 8,
         borderBottomWidth: 1,
-        borderBottomColor: '#CCC'
+        borderBottomColor: Colors.listItemSeparator
     },
     loadingContainer: {
         flex: 1,
