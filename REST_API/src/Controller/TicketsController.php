@@ -47,7 +47,10 @@ class TicketsController extends AbstractController
             $statuscode = 500;
         }
 
-        return new JsonResponse($tickets, $statuscode);
+        $response = new JsonResponse($tickets, $statuscode);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
     }
 
     /**

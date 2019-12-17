@@ -22,7 +22,7 @@ type Props = {
 
 const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } = (props): JSX.Element => {
     const navigation = useNavigation();
-    const navigateAsset = (id: number) => navigation.navigate('Asset', {id});
+    const navigateTicket = (assetName: string) => navigation.navigate('Tickets', {assetName});
     const name = navigation.state.params.name;
     const id = navigation.state.params.roomId;
 
@@ -33,7 +33,7 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
 
     const renderItem = ({item}: { item: Asset }): JSX.Element => (
         <View>
-            <AssetPreview {...item} navigateAsset={navigateAsset}/>
+            <AssetPreview {...item} navigateTicket={navigateTicket}/>
         </View>
     );
 

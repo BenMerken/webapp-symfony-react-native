@@ -8,12 +8,12 @@ type Props = {
     id: number;
     roomId: number;
     name: string;
-    navigateAsset: (id: number) => void;
+    navigateTicket: (assetName: string) => void;
 };
 
 const AssetPreview: React.FunctionComponent<Props> = (asset): JSX.Element => {
     return (
-        <TouchableOpacity onPress={() => asset.navigateAsset(asset.id)}>
+        <TouchableOpacity onPress={() => asset.navigateTicket(asset.name)}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <AssetPreviewBody {...asset}/>

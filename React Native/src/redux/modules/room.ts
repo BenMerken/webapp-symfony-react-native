@@ -1,7 +1,6 @@
 import {Room} from "../../data";
 import {Reducer} from "react";
 import axios from "axios";
-import {getAssetList} from "./asset";
 
 // --- API ---
 
@@ -53,7 +52,7 @@ type ActionTypes =
     | GetRoomListActionFail
     | GetRoomDetailAction
     | GetRoomDetailActionSuccess
-    | GetRoomDetailActionFail
+    | GetRoomDetailActionFail;
 
 // --- State Type ---
 
