@@ -39,9 +39,6 @@ class AssetsController extends AbstractController
         } catch (PDOException $exception) {
             $statuscode = 500;
         }
-        $response = new JsonResponse($assets, $statuscode);
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return new JsonResponse($assets, $statuscode);
     }
 }

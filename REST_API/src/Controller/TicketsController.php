@@ -47,10 +47,7 @@ class TicketsController extends AbstractController
             $statuscode = 500;
         }
 
-        $response = new JsonResponse($tickets, $statuscode);
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return new JsonResponse($tickets, $statuscode);
     }
 
     /**
@@ -80,7 +77,7 @@ class TicketsController extends AbstractController
     }
 
     /**
-     * @Route("/tickets/{id}", methods={"PATCH"}, name="incrementNumberOfVotes")
+     * @Route("/tickets/{id}", methods={"PATCH", "OPTIONS"}, name="incrementNumberOfVotes")
      */
     public function incrementNumberOfVotes($id)
     {
