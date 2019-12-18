@@ -35,7 +35,7 @@ type GetTicketListActionFail = {
 
 type UpvoteTicketAction = {
     type: typeof UPVOTE_TICKET;
-    payload: { data: number };
+    payload: {};
 };
 
 type UpvoteTicketActionSuccess = {
@@ -144,8 +144,8 @@ const reducer: Reducer<TicketState, ActionTypes> = (
                 ...state,
                 list: state.list.map(ticket => ticket.id === action.payload.data ? {
                     ...ticket,
-                    numberOfVotes: ++ticket.numberOfVotes
-                } : ticket),
+                    numberOfVotes: ticket.numberOfVotes + 1
+                } : {...ticket}),
                 isUpvotingTicket: false
             };
         case UPVOTE_TICKET_FAIL:
