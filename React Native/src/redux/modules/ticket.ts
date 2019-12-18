@@ -8,13 +8,13 @@ const BASE_URL = 'http://localhost:8000/tickets/';
 
 // --- Action Types ---
 
-export const LOAD_TICKET_LIST = 'PXLAssetManagementTool/room/LOAD_TICKET_LIST';
-export const LOAD_TICKET_LIST_SUCCESS = 'PXLAssetManagementTool/room/LOAD_TICKET_LIST_SUCCESS';
-export const LOAD_TICKET_LIST_FAIL = 'PXLAssetManagementTool/room/LOAD_TICKET_LIST_FAIL';
+const LOAD_TICKET_LIST = 'PXLAssetManagementTool/room/LOAD_TICKET_LIST';
+const LOAD_TICKET_LIST_SUCCESS = 'PXLAssetManagementTool/room/LOAD_TICKET_LIST_SUCCESS';
+const LOAD_TICKET_LIST_FAIL = 'PXLAssetManagementTool/room/LOAD_TICKET_LIST_FAIL';
 
-export const UPVOTE_TICKET = 'PXLAssetManagementTool/room/UPVOTE_TICKET';
-export const UPVOTE_TICKET_SUCCESS = 'PXLAssetManagementTool/room/UPVOTE_TICKET_SUCCESS';
-export const UPVOTE_TICKET_FAIL = 'PXLAssetManagementTool/room/UPVOTE_TICKET_FAIL';
+const UPVOTE_TICKET = 'PXLAssetManagementTool/room/UPVOTE_TICKET';
+const UPVOTE_TICKET_SUCCESS = 'PXLAssetManagementTool/room/UPVOTE_TICKET_SUCCESS';
+const UPVOTE_TICKET_FAIL = 'PXLAssetManagementTool/room/UPVOTE_TICKET_FAIL';
 
 // -- Action Creators ---
 
