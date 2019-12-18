@@ -32,7 +32,7 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
     }, [name, id]);
 
     const renderItem = ({item}: { item: Asset }): JSX.Element => (
-        <View>
+        <View style={styles.assetListContainer}>
             <AssetPreview {...item} navigateTicket={navigateTicket}/>
         </View>
     );
@@ -40,14 +40,16 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
     const renderSeparator = (): JSX.Element => <View style={styles.separator}/>;
 
     return (
-        <View style={styles.loadingContainer}>
+        <View style={styles.bodyContainer}>
             {props.isLoadingRoom || props.isLoadingAssets
                 ? (
                     <Text>Loading...</Text>
                 )
                 : (
                     <View style={styles.bodyContainer}>
-                        <RoomHeader {...props.room}/>
+                        <View style={styles.headerContainer}>
+                            <RoomHeader {...props.room}/>
+                        </View>
                         <FlatList
                             data={props.assets}
                             renderItem={renderItem}

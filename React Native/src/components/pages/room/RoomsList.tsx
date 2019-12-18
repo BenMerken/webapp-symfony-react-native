@@ -33,7 +33,7 @@ const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
     const RenderSeparator = (): JSX.Element => <View style={styles.separator}/>;
 
     return (
-        <View style={styles.roomContainer}>
+        <View>
             {props.isLoading
                 ? (<Text>Loading...</Text>)
                 : (

@@ -7,16 +7,20 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: Colors.listItemSeparator
     },
-    loadingContainer: {
+    bodyContainer: {
+        flex: 1
+    },
+    headerContainer: {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
     },
-    bodyContainer: {
+    assetListContainer: {
+        flex: 2,
         marginHorizontal: 16,
-        paddingVertical: 16,
+        paddingBottom: 16,
         borderBottomWidth: 1,
-        borderBottomColor: '#BBB'
+        borderBottomColor: Colors.accentLight
     }
 });
