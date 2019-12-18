@@ -12,6 +12,10 @@ const LOAD_TICKET_LIST = 'PXLAssetManagementTool/room/LOAD_TICKET_LIST';
 const LOAD_TICKET_LIST_SUCCESS = 'PXLAssetManagementTool/room/LOAD_TICKET_LIST_SUCCESS';
 const LOAD_TICKET_LIST_FAIL = 'PXLAssetManagementTool/room/LOAD_TICKET_LIST_FAIL';
 
+const LOAD_TICKET_DETAIL = 'PXLAssetManagementTool/room/LOAD_TICKET_DETAIL';
+const LOAD_TICKET_DETAIL_SUCCESS = 'PXLAssetManagementTool/room/LOAD_TICKET_SUCCESS';
+const LOAD_TICKET_DETAIL_FAIL = 'PXLAssetManagementTool/room/LOAD_TICKET_FAIL';
+
 const UPVOTE_TICKET = 'PXLAssetManagementTool/room/UPVOTE_TICKET';
 const UPVOTE_TICKET_SUCCESS = 'PXLAssetManagementTool/room/UPVOTE_TICKET_SUCCESS';
 const UPVOTE_TICKET_FAIL = 'PXLAssetManagementTool/room/UPVOTE_TICKET_FAIL';
@@ -33,6 +37,21 @@ type GetTicketListActionFail = {
     payload: [];
 };
 
+type GetTicketDetailAction = {
+    type: typeof LOAD_TICKET_DETAIL;
+    payload: { id: number };
+};
+
+type GetTicketDetailActionSuccess = {
+    type: typeof LOAD_TICKET_DETAIL_SUCCESS;
+    payload: Ticket;
+};
+
+type GetTicketDetailActionFail = {
+    type: typeof LOAD_TICKET_DETAIL_FAIL;
+    payload: {};
+};
+
 type UpvoteTicketAction = {
     type: typeof UPVOTE_TICKET;
     payload: {};
@@ -52,6 +71,9 @@ type ActionTypes =
     | GetTicketListAction
     | GetTicketListActionSuccess
     | GetTicketListActionFail
+    | GetTicketDetailAction
+    | GetTicketDetailActionSuccess
+    | GetTicketDetailActionFail
     | UpvoteTicketAction
     | UpvoteTicketActionSuccess
     | UpvoteTicketActionFail;
@@ -61,7 +83,9 @@ type ActionTypes =
 type  TicketState = {
     list: Ticket[];
     isLoadingList: boolean;
-    isUpvotingTicket: boolean
+    detail: Ticket;
+    isLoadingDetail: boolean;
+    isUpvotingTicket: boolean;
 };
 
 // --- Action Creators ---
@@ -90,6 +114,33 @@ const getTicketListSuccess = (tickets: Ticket[]) => ({
 
 const getTicketListFail = () => ({
     type: LOAD_TICKET_LIST_FAIL,
+    payload: {}
+});
+
+export const getTicket = (id: number) => {
+    return async dispatch => {
+        dispatch(setIsLoadingDetail());
+        try {
+            const response = await axios.get(`${BASE_URL}${id}`);
+            dispatch(getTicketSuccess(response.data));
+        } catch (error) {
+            dispatch(getTicketFail());
+        }
+    };
+};
+
+const setIsLoadingDetail = () => ({
+    type: LOAD_TICKET_DETAIL,
+    payload: {}
+});
+
+const getTicketSuccess = (ticket: Ticket) => ({
+    type: LOAD_TICKET_DETAIL_SUCCESS,
+    payload: ticket
+});
+
+const getTicketFail = () => ({
+    type: LOAD_TICKET_DETAIL_FAIL,
     payload: {}
 });
 
@@ -126,6 +177,8 @@ const reducer: Reducer<TicketState, ActionTypes> = (
     state = {
         list: [],
         isLoadingList: true,
+        detail: null,
+        isLoadingDetail: true,
         isUpvotingTicket: false
     },
     action
@@ -137,6 +190,12 @@ const reducer: Reducer<TicketState, ActionTypes> = (
             return {...state, list: action.payload, isLoadingList: false};
         case LOAD_TICKET_LIST_FAIL:
             return {...state, isLoadingList: false};
+        case LOAD_TICKET_DETAIL:
+            return {...state, isLoadingDetail: true};
+        case LOAD_TICKET_DETAIL_SUCCESS:
+            return {...state, detail: action.payload, isLoadingDetail: false};
+        case LOAD_TICKET_DETAIL_FAIL:
+            return {...state, isLoadingDetail: false};
         case UPVOTE_TICKET:
             return {...state, isUpvotingTicket: true};
         case UPVOTE_TICKET_SUCCESS:
