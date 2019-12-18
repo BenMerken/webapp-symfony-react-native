@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {Ticket} from "../../../data";
 import {View, Text, FlatList} from "react-native";
 import {bindActionCreators} from "redux";
-import {getTicketList} from "../../../redux/modules/ticket";
+import {getTicketList, upvoteTicket} from "../../../redux/modules/ticket";
 import {useNavigation} from "../../../hooks";
 import TicketPreview from "../../ui/ticket/TicketPreview";
 import {styles} from "./TicketsList.styles";
@@ -13,11 +13,16 @@ type Props = {
     tickets: Ticket[];
     isLoading: boolean;
     getTicketList: (assetName: string) => (dispatch: any) => Promise<void>;
+    upvoteTicket: (id: number) => (dispatch: any) => Promise<any>;
 };
 
 const TicketsList: React.FunctionComponent<Props> & { navigationOptions?: any } = (props): JSX.Element => {
     const navigation = useNavigation();
     const assetName = navigation.state.params.assetName;
+
+    const upvoteTicket = (id: number) => {
+        props.upvoteTicket(id);
+    };
 
     useEffect(() => {
         props.getTicketList(assetName);
@@ -25,7 +30,7 @@ const TicketsList: React.FunctionComponent<Props> & { navigationOptions?: any } 
 
     const renderItem = ({item}: { item: Ticket }): JSX.Element => (
         <View style={styles.ticketContainer}>
-            <TicketPreview {...item}/>
+            <TicketPreview {...item} upvoteTicket={upvoteTicket}/>
         </View>
     );
 
@@ -67,7 +72,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    getTicketList: bindActionCreators(getTicketList, dispatch)
+    getTicketList: bindActionCreators(getTicketList, dispatch),
+    upvoteTicket: bindActionCreators(upvoteTicket, dispatch)
 });
 
 const TicketsListPage = connect(mapStateToProps, mapDispatchToProps)(TicketsList);

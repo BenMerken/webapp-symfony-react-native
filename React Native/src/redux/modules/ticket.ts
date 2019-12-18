@@ -12,6 +12,10 @@ export const LOAD_TICKET_LIST = 'PXLAssetManagementTool/room/LOAD_TICKET_LIST';
 export const LOAD_TICKET_LIST_SUCCESS = 'PXLAssetManagementTool/room/LOAD_TICKET_LIST_SUCCESS';
 export const LOAD_TICKET_LIST_FAIL = 'PXLAssetManagementTool/room/LOAD_TICKET_LIST_FAIL';
 
+export const UPVOTE_TICKET = 'PXLAssetManagementTool/room/UPVOTE_TICKET';
+export const UPVOTE_TICKET_SUCCESS = 'PXLAssetManagementTool/room/UPVOTE_TICKET_SUCCESS';
+export const UPVOTE_TICKET_FAIL = 'PXLAssetManagementTool/room/UPVOTE_TICKET_FAIL';
+
 // -- Action Creators ---
 
 type GetTicketListAction = {
@@ -29,16 +33,35 @@ type GetTicketListActionFail = {
     payload: [];
 };
 
+type UpvoteTicketAction = {
+    type: typeof UPVOTE_TICKET;
+    payload: { data: number };
+};
+
+type UpvoteTicketActionSuccess = {
+    type: typeof UPVOTE_TICKET_SUCCESS;
+    payload: { data: number };
+};
+
+type UpvoteTicketActionFail = {
+    type: typeof UPVOTE_TICKET_FAIL;
+    payload: {};
+};
+
 type ActionTypes =
     | GetTicketListAction
     | GetTicketListActionSuccess
-    | GetTicketListActionFail;
+    | GetTicketListActionFail
+    | UpvoteTicketAction
+    | UpvoteTicketActionSuccess
+    | UpvoteTicketActionFail;
 
 // --- State Type ---
 
 type  TicketState = {
     list: Ticket[];
     isLoadingList: boolean;
+    isUpvotingTicket: boolean
 };
 
 // --- Action Creators ---
@@ -70,12 +93,40 @@ const getTicketListFail = () => ({
     payload: {}
 });
 
+export const upvoteTicket = (id: number) => {
+    return async dispatch => {
+        dispatch(setIsUpvotingTicket());
+        try {
+            await axios.patch(`${BASE_URL}${id}`);
+            dispatch(upvoteTicketSuccess(id));
+        } catch (error) {
+            dispatch(upvoteTicketFail());
+        }
+    };
+};
+
+const setIsUpvotingTicket = () => ({
+    type: UPVOTE_TICKET,
+    payload: {}
+});
+
+const upvoteTicketSuccess = (id: number) => ({
+    type: UPVOTE_TICKET_SUCCESS,
+    payload: {data: id}
+});
+
+const upvoteTicketFail = () => ({
+    type: UPVOTE_TICKET_FAIL,
+    payload: {}
+});
+
 // -- Reducer ---
 
 const reducer: Reducer<TicketState, ActionTypes> = (
     state = {
         list: [],
-        isLoadingList: true
+        isLoadingList: true,
+        isUpvotingTicket: false
     },
     action
 ) => {
@@ -86,6 +137,19 @@ const reducer: Reducer<TicketState, ActionTypes> = (
             return {...state, list: action.payload, isLoadingList: false};
         case LOAD_TICKET_LIST_FAIL:
             return {...state, isLoadingList: false};
+        case UPVOTE_TICKET:
+            return {...state, isUpvotingTicket: true};
+        case UPVOTE_TICKET_SUCCESS:
+            return {
+                ...state,
+                list: state.list.map(ticket => ticket.id === action.payload.data ? {
+                    ...ticket,
+                    numberOfVotes: ++ticket.numberOfVotes
+                } : ticket),
+                isUpvotingTicket: false
+            };
+        case UPVOTE_TICKET_FAIL:
+            return {...state, isUpvotingTicket: false};
         default:
             return state;
     }
