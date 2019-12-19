@@ -1,7 +1,6 @@
-import {Asset} from "../asset/asset";
-
 export type Ticket = {
-    asset: Asset,
+    id: number
+    assetId: number,
     numberOfVotes: number,
     description: string
 };

@@ -22,7 +22,7 @@ class TicketsController extends AbstractController
     }
 
     /**
-     * @Route("/tickets", methods={"GET"}, name="getTicketsByAssetName")
+     * @Route("/tickets/", methods={"GET"}, name="getTicketsByAssetName")
      */
     public function getTicketsByAssetName(Request $request)
     {
@@ -77,7 +77,7 @@ class TicketsController extends AbstractController
     }
 
     /**
-     * @Route("/tickets/{id}", methods={"PATCH"}, name="incrementNumberOfVotes")
+     * @Route("/tickets/{id}", methods={"PATCH", "OPTIONS"}, name="incrementNumberOfVotes")
      */
     public function incrementNumberOfVotes($id)
     {

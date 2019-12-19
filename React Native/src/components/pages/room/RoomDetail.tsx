@@ -22,7 +22,7 @@ type Props = {
 
 const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } = (props): JSX.Element => {
     const navigation = useNavigation();
-    const navigateAsset = (id: number) => navigation.navigate('Asset', {id});
+    const navigateTicket = (assetName: string) => navigation.navigate('Tickets', {assetName});
     const name = navigation.state.params.name;
     const id = navigation.state.params.roomId;
 
@@ -32,22 +32,24 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
     }, [name, id]);
 
     const renderItem = ({item}: { item: Asset }): JSX.Element => (
-        <View>
-            <AssetPreview {...item} navigateAsset={navigateAsset}/>
+        <View style={styles.assetListContainer}>
+            <AssetPreview {...item} navigateTicket={navigateTicket}/>
         </View>
     );
 
-    const renderSeparator = () => <View style={styles.separator}/>;
+    const renderSeparator = (): JSX.Element => <View style={styles.separator}/>;
 
     return (
-        <View style={styles.loadingContainer}>
+        <View style={styles.bodyContainer}>
             {props.isLoadingRoom || props.isLoadingAssets
                 ? (
                     <Text>Loading...</Text>
                 )
                 : (
                     <View style={styles.bodyContainer}>
-                        <RoomHeader {...props.room}/>
+                        <View style={styles.headerContainer}>
+                            <RoomHeader {...props.room}/>
+                        </View>
                         <FlatList
                             data={props.assets}
                             renderItem={renderItem}
@@ -61,7 +63,7 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
 };
 
 RoomDetail.navigationOptions = () => ({
-    title: 'Room details',
+    title: 'Room details & assets',
     headerStyle: {
         backgroundColor: Colors.primaryDark
     },

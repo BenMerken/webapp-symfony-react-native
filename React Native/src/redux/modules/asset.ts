@@ -8,9 +8,9 @@ const BASE_URL = 'http://localhost:8000/assets/';
 
 // --- Action Types ---
 
-export const LOAD_ASSET_LIST = 'PXLAssetManagementTool/room/LOAD_ASSET_LIST';
-export const LOAD_ASSET_LIST_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ASSET_LIST_SUCCESS';
-export const LOAD_ASSET_LIST_FAIL = 'PXLAssetManagementTool/room/LOAD_ASSET_LIST_FAIL';
+const LOAD_ASSET_LIST = 'PXLAssetManagementTool/room/LOAD_ASSET_LIST';
+const LOAD_ASSET_LIST_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ASSET_LIST_SUCCESS';
+const LOAD_ASSET_LIST_FAIL = 'PXLAssetManagementTool/room/LOAD_ASSET_LIST_FAIL';
 
 type GetAssetListAction = {
     type: typeof LOAD_ASSET_LIST;

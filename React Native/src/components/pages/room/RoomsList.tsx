@@ -30,10 +30,10 @@ const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
         </View>
     );
 
-    const RenderSeparator = () => <View style={styles.separator}/>;
+    const RenderSeparator = (): JSX.Element => <View style={styles.separator}/>;
 
     return (
-        <View style={styles.roomContainer}>
+        <View>
             {props.isLoading
                 ? (<Text>Loading...</Text>)
                 : (
@@ -54,7 +54,7 @@ RoomsList.navigationOptions = () => ({
         backgroundColor: Colors.primary
     },
     headerTitleStyle: {
-        color: Colors.fontLight
+        color: Colors.fontDark
     },
 });
 

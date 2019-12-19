@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native'
+import {StyleSheet} from "react-native";
 import {Colors} from "../../../styles/_colors";
 
 export const styles = StyleSheet.create({
@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
         width: 77,
         height: 72
     },
-    assetName: {
+    ticketDescription: {
         color: Colors.transparentText,
         fontSize: 22,
     },

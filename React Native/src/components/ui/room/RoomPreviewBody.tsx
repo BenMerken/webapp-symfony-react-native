@@ -8,7 +8,7 @@ type Props = {
     happinessScore: number;
 };
 
-const RoomPreviewBody: React.FunctionComponent<Props> = (room) => {
+const RoomPreviewBody: React.FunctionComponent<Props> = (room): JSX.Element => {
     return (
         <View style={styles.row}>
             <View style={styles.detail}>

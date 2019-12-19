@@ -1,7 +1,6 @@
 import {Room} from "../../data";
 import {Reducer} from "react";
 import axios from "axios";
-import {getAssetList} from "./asset";
 
 // --- API ---
 
@@ -9,13 +8,13 @@ const BASE_URL = 'http://localhost:8000/rooms/';
 
 // --- Action Types ---
 
-export const LOAD_ROOM_LIST = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST';
-export const LOAD_ROOM_LIST_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_SUCCESS';
-export const LOAD_ROOM_LIST_FAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_FAIL';
+const LOAD_ROOM_LIST = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST';
+const LOAD_ROOM_LIST_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_SUCCESS';
+const LOAD_ROOM_LIST_FAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_FAIL';
 
-export const LOAD_ROOM_DETAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL';
-export const LOAD_ROOM_DETAIL_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL_SUCCESS';
-export const LOAD_ROOM_DETAIL_FAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL_FAIL';
+const LOAD_ROOM_DETAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL';
+const LOAD_ROOM_DETAIL_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL_SUCCESS';
+const LOAD_ROOM_DETAIL_FAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL_FAIL';
 
 type GetRoomListAction = {
     type: typeof LOAD_ROOM_LIST;
@@ -53,7 +52,7 @@ type ActionTypes =
     | GetRoomListActionFail
     | GetRoomDetailAction
     | GetRoomDetailActionSuccess
-    | GetRoomDetailActionFail
+    | GetRoomDetailActionFail;
 
 // --- State Type ---
 

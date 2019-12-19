@@ -35,10 +35,7 @@ class RoomsController extends AbstractController
         } catch (\PDOException $exception) {
             $statuscode = 500;
         }
-        $response = new JsonResponse($rooms, $statuscode);
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return new JsonResponse($rooms, $statuscode);
     }
 
     /**
@@ -63,10 +60,8 @@ class RoomsController extends AbstractController
         } catch (\PDOException $exception) {
             $statuscode = 500;
         }
-        $response = new JsonResponse($room, $statuscode);
-        $response->headers->set('Access-Control-Allow-Origin', '*');
 
-        return $response;
+        return new JsonResponse($room, $statuscode);
     }
 
     /**
@@ -91,6 +86,7 @@ class RoomsController extends AbstractController
         } catch (\PDOException $exception) {
             $statuscode = 500;
         }
+
         return new JsonResponse($rooms, $statuscode);
     }
 
@@ -116,6 +112,7 @@ class RoomsController extends AbstractController
         } catch (\PDOException $exception) {
             $statuscode = 500;
         }
+
         return new JsonResponse($room, $statuscode);
     }
 }
