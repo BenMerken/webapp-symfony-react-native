@@ -8,6 +8,8 @@ interface TicketModel
 {
     public function getTicketsByAssetName($assetName);
 
+    public function getTicketById($id);
+
     public function createTicketForAsset($assetName, $jsonData);
 
     public function incrementNumberOfVotes($id);

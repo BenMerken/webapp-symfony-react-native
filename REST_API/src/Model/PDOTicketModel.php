@@ -54,6 +54,29 @@ class PDOTicketModel implements TicketModel
         return $tickets;
     }
 
+    public function getTicketById($id)
+    {
+        $pdo = $this->connection->getPDO();
+        $query = "SELECT * FROM tickets WHERE id = :id;";
+        $statement = $pdo->prepare($query);
+        $statement->bindParam(":id", $id, PDO::PARAM_INT);
+        $statement->bindColumn(1, $id, PDO::PARAM_INT);
+        $statement->bindColumn(2, $assetId, PDO::PARAM_INT);
+        $statement->bindColumn(3, $numberOfVotes, PDO::PARAM_INT);
+        $statement->bindColumn(4, $description, PDO::PARAM_STR);
+        $statement->execute();
+        if ($statement->fetch(PDO::FETCH_BOUND)) {
+            return [
+                "id" => $id,
+                "assetId" => $assetId,
+                "numberOfVotes" => $numberOfVotes,
+                "description" => $description
+            ];
+        }
+
+        return null;
+    }
+
     public function createTicketForAsset($assetName, $jsonData)
     {
         $this->validateAssetName($assetName);
