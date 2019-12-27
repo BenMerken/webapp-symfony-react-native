@@ -1,6 +1,7 @@
 import {Ticket} from "../../data";
 import axios from "axios";
 import {Reducer} from "react";
+import {ToastAndroid} from 'react-native';
 
 // --- API ---
 
@@ -150,8 +151,10 @@ export const upvoteTicket = (id: number) => {
         try {
             await axios.patch(`${BASE_URL}${id}`);
             dispatch(upvoteTicketSuccess(id));
+            ToastAndroid.show('Ticket upvoted successfully.', ToastAndroid.SHORT)
         } catch (error) {
             dispatch(upvoteTicketFail());
+            ToastAndroid.show('This ticket could not be upvoted.', ToastAndroid.SHORT)
         }
     };
 };
