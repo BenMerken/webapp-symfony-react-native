@@ -4,12 +4,13 @@ import {useNavigation} from '../../../hooks';
 import {connect} from 'react-redux';
 import {getRoom} from "../../../redux/modules/room";
 import {getAssetList} from "../../../redux/modules/asset";
-import {View, Text, FlatList} from "react-native";
+import {View, Text, FlatList, TouchableWithoutFeedback} from "react-native";
 import {styles} from "./RoomDetail.styles";
 import {Colors} from "../../../styles/_colors";
 import {bindActionCreators} from 'redux';
 import RoomHeader from "../../ui/room/RoomHeader";
 import AssetPreview from "../../ui/asset/AssetPreview";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 type Props = {
     room: Room;
@@ -62,7 +63,7 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
     );
 };
 
-RoomDetail.navigationOptions = () => ({
+RoomDetail.navigationOptions = ({navigation}) => ({
     title: 'Room details & assets',
     headerStyle: {
         backgroundColor: Colors.primaryDark
@@ -72,7 +73,12 @@ RoomDetail.navigationOptions = () => ({
     },
     headerBackTitleStyle: {
         color: Colors.fontLight
-    }
+    },
+    headerRight: (
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
+            <Icon name="home" style={{fontSize: 20, margin: 14}} color={Colors.fontLight} />
+        </TouchableWithoutFeedback>
+    )
 });
 
 const mapStateToProps = state => ({
