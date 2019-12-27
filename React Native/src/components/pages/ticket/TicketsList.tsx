@@ -63,7 +63,7 @@ TicketsList.navigationOptions = ({navigation}) => ({
     },
     headerRight: (
         <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
-            <Icon name="home" style={{fontSize: 20, margin: 14}} color={Colors.fontLight} />
+            <Icon name="home" style={styles.navigationItem} color={Colors.fontLight} />
         </TouchableWithoutFeedback>
     )
 });

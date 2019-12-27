@@ -36,7 +36,7 @@ const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
     return (
         <View>
             {props.isLoading
-                ? (<Text>Loading...</Text>)
+                ? (<Text>Loading rooms...</Text>)
                 : (
                     <FlatList
                         data={props.rooms}
@@ -59,7 +59,7 @@ RoomsList.navigationOptions = ({navigation}) => ({
     },
     headerRight: (
         <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
-            <Icon name="refresh" style={{fontSize: 20, margin: 14}} color={Colors.fontDark} />
+            <Icon name="refresh" style={styles.navigationItem} color={Colors.fontDark} />
         </TouchableWithoutFeedback>
     )
 });

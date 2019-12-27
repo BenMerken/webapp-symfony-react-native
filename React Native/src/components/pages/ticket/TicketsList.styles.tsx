@@ -9,5 +9,9 @@ export const styles = StyleSheet.create({
     },
     ticketContainer: {
         margin: 8
+    },
+    navigationItem: {
+        fontSize: 20,
+        margin: 14
     }
 });

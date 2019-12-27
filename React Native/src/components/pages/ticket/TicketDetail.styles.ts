@@ -14,5 +14,9 @@ export const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    navigationItem: {
+        fontSize: 20,
+        margin: 14
     }
 });
