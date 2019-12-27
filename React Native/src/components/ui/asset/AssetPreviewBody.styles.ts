@@ -12,6 +12,8 @@ export const styles = StyleSheet.create({
         height: 72
     },
     assetName: {
+        flex: 1,
+        flexWrap: 'wrap',
         color: Colors.transparentText,
         fontSize: 22,
     },
