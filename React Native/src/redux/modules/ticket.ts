@@ -205,6 +205,7 @@ const reducer: Reducer<TicketState, ActionTypes> = (
                     ...ticket,
                     numberOfVotes: ticket.numberOfVotes + 1
                 } : {...ticket}),
+                detail: {...state.detail, numberOfVotes: state.detail.numberOfVotes + 1},
                 isUpvotingTicket: false
             };
         case UPVOTE_TICKET_FAIL:

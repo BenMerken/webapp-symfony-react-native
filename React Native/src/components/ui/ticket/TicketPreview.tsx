@@ -8,22 +8,17 @@ type Props = {
     assetId: number;
     numberOfVotes: number;
     description: string;
-    upvoteTicket: any
+    navigateTicket: (id: number) => void;
 };
 
-const TicketPreview: React.FunctionComponent<Props> = (ticket): JSX.Element => {
-
-    const upvoteTicket = (): void => ticket.upvoteTicket(ticket.id);
-
-    return (
-        <TouchableOpacity onPress={() => upvoteTicket()}>
+const TicketPreview: React.FunctionComponent<Props> = (ticket): JSX.Element => (
+        <TouchableOpacity onPress={() => ticket.navigateTicket(ticket.id)}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <TicketPreviewBody {...ticket} />
                 </View>
             </View>
         </TouchableOpacity>
-    );
-};
+);
 
 export default TicketPreview;

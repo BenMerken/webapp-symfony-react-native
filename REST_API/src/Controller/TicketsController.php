@@ -51,6 +51,28 @@ class TicketsController extends AbstractController
     }
 
     /**
+     * @Route("/tickets/{id}", methods={"GET"}, name="getTicketById")
+     */
+    public function getTicketById($id)
+    {
+        $statuscode = 200;
+        $ticket = null;
+
+        try {
+            $ticket = $this->ticketModel->getTicketById($id);
+            if (!$ticket) {
+                throw new NotFoundHttpException("No tickets were found for id = $id.");
+            }
+        } catch (NotFoundHttpException $exception) {
+            $statuscode = 404;
+        } catch (PDOException $exception) {
+            $statuscode = 500;
+        }
+
+        return new JsonResponse($ticket, $statuscode);
+    }
+
+    /**
      * @Route("/tickets", methods={"POST"}, name="createTicketForAsset")
      */
     public function createTicketForAsset(Request $request)

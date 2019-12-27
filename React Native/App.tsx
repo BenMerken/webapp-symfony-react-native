@@ -6,6 +6,7 @@ import {Provider} from 'react-redux';
 import configureStore from "./src/redux/configureStore";
 import RoomDetailPage from "./src/components/pages/room/RoomDetail";
 import TicketsListPage from "./src/components/pages/ticket/TicketsList";
+import TicketDetailPage from "./src/components/pages/ticket/TicketDetail";
 
 const App: React.FunctionComponent = () => {
     const Stack = createStackNavigator({
@@ -17,6 +18,9 @@ const App: React.FunctionComponent = () => {
         },
         Tickets: {
             screen: TicketsListPage
+        },
+        Ticket: {
+            screen: TicketDetailPage
         }
     });
 
