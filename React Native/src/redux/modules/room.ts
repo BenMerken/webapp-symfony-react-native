@@ -20,6 +20,10 @@ const FILTER_ROOM_LIST = 'PXLAssetManagementTool/room/FILTER_ROOM_LIST';
 const FILTER_ROOM_LIST_SUCCESS = 'PXLAssetManagementTool/room/FILTER_ROOM_LIST_SUCCESS';
 const FILTER_ROOM_LIST_FAIL = 'PXLAssetManagementTool/room/FILTER_ROOM_LIST_FAIL';
 
+const LOAD_ROOM_LIST_BY_HAPPINESS_SCORE = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_BY_HAPPINESS_SCORE';
+const LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_SUCCESS';
+const LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_FAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_FAIL';
+
 type GetRoomListAction = {
     type: typeof LOAD_ROOM_LIST;
     payload: any;
@@ -65,6 +69,21 @@ type FilterRoomListActionFail = {
     payload: [];
 };
 
+type GetRoomListByHappinessScoreAction = {
+    type: typeof LOAD_ROOM_LIST_BY_HAPPINESS_SCORE;
+    payload: any;
+};
+
+type GetRoomListByHappinessScoreActionSuccess = {
+    type: typeof LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_SUCCESS;
+    payload: Room[];
+};
+
+type GetRoomListByHappinessScoreActionFail = {
+    type: typeof LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_FAIL;
+    payload: [];
+};
+
 type ActionTypes =
     | GetRoomListAction
     | GetRoomListActionSuccess
@@ -74,7 +93,10 @@ type ActionTypes =
     | GetRoomDetailActionFail
     | FilterRoomListAction
     | FilterRoomListActionSuccess
-    | FilterRoomListActionFail;
+    | FilterRoomListActionFail
+    | GetRoomListByHappinessScoreAction
+    | GetRoomListByHappinessScoreActionSuccess
+    | GetRoomListByHappinessScoreActionFail;
 
 // --- State Type ---
 
@@ -85,6 +107,8 @@ type RoomState = {
     isLoadingDetail: boolean;
     filteredList: Room[];
     isFilteringList: boolean;
+    listByHappinessScore: Room[];
+    isLoadingListByHappinessScore: boolean;
 };
 
 // --- Action Creators ---
@@ -169,6 +193,33 @@ const filterRoomListFail = (): FilterRoomListActionFail => ({
     payload: []
 });
 
+export const getRoomListByHappinessScore = (happinessScore: number) => {
+    return async dispatch => {
+        dispatch(setIsLoadingListByHappinessScore());
+        try {
+            const response = await axios.get(`${BASE_URL}?lowerThanScore=${happinessScore}`);
+            dispatch(getRoomListByHappinessScoreSuccess(response.data));
+        } catch (error) {
+            dispatch(getRoomListByHappinessScoreFail())
+        }
+    };
+};
+
+const setIsLoadingListByHappinessScore = (): GetRoomListByHappinessScoreAction => ({
+    type: LOAD_ROOM_LIST_BY_HAPPINESS_SCORE,
+    payload: {}
+});
+
+const getRoomListByHappinessScoreSuccess = (rooms: Room[]): GetRoomListByHappinessScoreActionSuccess => ({
+    type: LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_SUCCESS,
+    payload: rooms
+});
+
+const getRoomListByHappinessScoreFail = (): GetRoomListByHappinessScoreActionFail => ({
+    type: LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_FAIL,
+    payload: []
+});
+
 // --- Reducer ---
 
 const reducer: Reducer<RoomState, ActionTypes> = (
@@ -178,7 +229,9 @@ const reducer: Reducer<RoomState, ActionTypes> = (
         detail: null,
         isLoadingDetail: true,
         filteredList: [],
-        isFilteringList: false
+        isFilteringList: false,
+        listByHappinessScore: [],
+        isLoadingListByHappinessScore: false
     },
     action
 ) => {
@@ -205,6 +258,12 @@ const reducer: Reducer<RoomState, ActionTypes> = (
             };
         case FILTER_ROOM_LIST_FAIL:
             return {...state, isFilteringList: false};
+        case LOAD_ROOM_LIST_BY_HAPPINESS_SCORE:
+            return {...state, isLoadingListByHappinessScore: true};
+        case LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_SUCCESS:
+            return {...state, listByHappinessScore: action.payload, isLoadingListByHappinessScore: false};
+        case LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_FAIL:
+            return {...state, listByHappinessScore: action.payload, isLoadingListByHappinessScore: false};
         default:
             return state;
     }
