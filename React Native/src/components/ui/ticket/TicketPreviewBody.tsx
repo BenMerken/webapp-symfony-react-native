@@ -2,6 +2,7 @@ import React from "react";
 import {View, Text} from "react-native";
 import CircleDetail from "../details/CircleDetail";
 import {styles} from "./TicketPreviewBody.styles";
+import {Colors} from "../../../styles/_colors";
 
 type Props = {
     id: number;
@@ -15,6 +16,8 @@ const TicketPreviewBody: React.FunctionComponent<Props> = (ticket): JSX.Element 
         <View style={styles.row}>
             <View style={styles.detail}>
                 <CircleDetail
+                    textColor={Colors.fontPrimary}
+                    backgroundColor={Colors.primaryDark}
                     text={ticket.numberOfVotes.toString()}
                 />
             </View>
