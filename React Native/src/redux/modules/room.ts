@@ -16,6 +16,10 @@ const LOAD_ROOM_DETAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL';
 const LOAD_ROOM_DETAIL_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL_SUCCESS';
 const LOAD_ROOM_DETAIL_FAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL_FAIL';
 
+const FILTER_ROOM_LIST = 'PXLAssetManagementTool/room/FILTER_ROOM_LIST';
+const FILTER_ROOM_LIST_SUCCESS = 'PXLAssetManagementTool/room/FILTER_ROOM_LIST_SUCCESS';
+const FILTER_ROOM_LIST_FAIL = 'PXLAssetManagementTool/room/FILTER_ROOM_LIST_FAIL';
+
 type GetRoomListAction = {
     type: typeof LOAD_ROOM_LIST;
     payload: any;
@@ -33,7 +37,7 @@ type GetRoomListActionFail = {
 
 type GetRoomDetailAction = {
     type: typeof LOAD_ROOM_DETAIL;
-    payload: { name: string }
+    payload: any
 };
 
 type GetRoomDetailActionSuccess = {
@@ -46,13 +50,31 @@ type GetRoomDetailActionFail = {
     payload: {}
 };
 
+type FilterRoomListAction = {
+    type: typeof FILTER_ROOM_LIST;
+    payload: any;
+};
+
+type FilterRoomListActionSuccess = {
+    type: typeof FILTER_ROOM_LIST_SUCCESS;
+    payload: number;
+};
+
+type FilterRoomListActionFail = {
+    type: typeof FILTER_ROOM_LIST_FAIL;
+    payload: [];
+};
+
 type ActionTypes =
     | GetRoomListAction
     | GetRoomListActionSuccess
     | GetRoomListActionFail
     | GetRoomDetailAction
     | GetRoomDetailActionSuccess
-    | GetRoomDetailActionFail;
+    | GetRoomDetailActionFail
+    | FilterRoomListAction
+    | FilterRoomListActionSuccess
+    | FilterRoomListActionFail;
 
 // --- State Type ---
 
@@ -61,6 +83,8 @@ type RoomState = {
     isLoadingList: boolean;
     detail: Room;
     isLoadingDetail: boolean;
+    filteredList: Room[];
+    isFilteringList: boolean;
 };
 
 // --- Action Creators ---
@@ -77,19 +101,19 @@ export const getRoomList = () => {
     }
 };
 
-const setIsLoadingList = () => ({
+const setIsLoadingList = (): GetRoomListAction => ({
     type: LOAD_ROOM_LIST,
     payload: {}
 });
 
-const getRoomListSuccess = (rooms: Room[]) => ({
+const getRoomListSuccess = (rooms: Room[]): GetRoomListActionSuccess => ({
     type: LOAD_ROOM_LIST_SUCCESS,
     payload: rooms
 });
 
-const getRoomListFail = () => ({
+const getRoomListFail = (): GetRoomListActionFail => ({
     type: LOAD_ROOM_LIST_FAIL,
-    payload: {}
+    payload: []
 });
 
 export const getRoom = (name: string) => {
@@ -104,19 +128,45 @@ export const getRoom = (name: string) => {
     };
 };
 
-const setIsLoadingDetail = () => ({
+const setIsLoadingDetail = (): GetRoomDetailAction => ({
     type: LOAD_ROOM_DETAIL,
     payload: {}
 });
 
-const getRoomDetailSuccess = (room: Room) => ({
+const getRoomDetailSuccess = (room: Room): GetRoomDetailActionSuccess => ({
     type: LOAD_ROOM_DETAIL_SUCCESS,
     payload: room
 });
 
-const getRoomDetailFail = () => ({
+const getRoomDetailFail = (): GetRoomDetailActionFail => ({
     type: LOAD_ROOM_DETAIL_FAIL,
     payload: {}
+});
+
+export const filterRoomList = (score: number) => {
+    return async dispatch => {
+        dispatch(setIsFilteringList());
+        try {
+            dispatch(filterRoomListSuccess(score));
+        } catch (error) {
+            dispatch(filterRoomListFail())
+        }
+    };
+};
+
+const setIsFilteringList = (): FilterRoomListAction => ({
+    type: FILTER_ROOM_LIST,
+    payload: {}
+});
+
+const filterRoomListSuccess = (score: number): FilterRoomListActionSuccess => ({
+    type: FILTER_ROOM_LIST_SUCCESS,
+    payload: score
+});
+
+const filterRoomListFail = (): FilterRoomListActionFail => ({
+    type: FILTER_ROOM_LIST_FAIL,
+    payload: []
 });
 
 // --- Reducer ---
@@ -126,7 +176,9 @@ const reducer: Reducer<RoomState, ActionTypes> = (
         list: [],
         isLoadingList: true,
         detail: null,
-        isLoadingDetail: true
+        isLoadingDetail: true,
+        filteredList: [],
+        isFilteringList: false
     },
     action
 ) => {
@@ -134,15 +186,25 @@ const reducer: Reducer<RoomState, ActionTypes> = (
         case LOAD_ROOM_LIST:
             return {...state, isLoadingList: true};
         case LOAD_ROOM_LIST_SUCCESS:
-            return {...state, list: action.payload, isLoadingList: false};
+            return {...state, list: action.payload, filteredList: action.payload, isLoadingList: false};
         case LOAD_ROOM_LIST_FAIL:
-            return {...state, isLoadingList: false};
+            return {...state, list: action.payload, isLoadingList: false};
         case LOAD_ROOM_DETAIL:
             return {...state, isLoadingDetail: true};
         case LOAD_ROOM_DETAIL_SUCCESS:
             return {...state, detail: action.payload, isLoadingDetail: false};
         case LOAD_ROOM_DETAIL_FAIL:
             return {...state, isLoadingDetail: false};
+        case FILTER_ROOM_LIST:
+            return {...state, isFilteringList: true};
+        case FILTER_ROOM_LIST_SUCCESS:
+            return {
+                ...state,
+                filteredList: state.list.filter(room => room.happinessScore >= action.payload),
+                isFilteringList: false
+            };
+        case FILTER_ROOM_LIST_FAIL:
+            return {...state, isFilteringList: false};
         default:
             return state;
     }

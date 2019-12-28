@@ -3,7 +3,7 @@ import {View, Text, FlatList, RefreshControl} from "react-native";
 import RoomPreview from '../../ui/room/RoomPreview';
 import {styles} from "./RoomsList.styles";
 import {Room} from "../../../data";
-import {getRoomList} from "../../../redux/modules/room";
+import {filterRoomList, getRoomList} from "../../../redux/modules/room";
 import {connect} from 'react-redux';
 import {useNavigation} from "../../../hooks";
 import {Colors} from "../../../styles/_colors";
@@ -13,6 +13,9 @@ type Props = {
     rooms: Room[];
     isLoading: boolean;
     getRoomList: () => (dispatch: any) => Promise<void>;
+    filteredRooms: Room[];
+    isFiltering: boolean;
+    filterList: (score: number) => (dispatch: any) => Promise<any>;
 };
 
 const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
@@ -44,7 +47,7 @@ const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
                 ? (<Text>Loading rooms...</Text>)
                 : (
                     <FlatList
-                        data={props.rooms}
+                        data={props.filteredRooms}
                         renderItem={renderItem}
                         ItemSeparatorComponent={RenderSeparator}
                         keyExtractor={room => room.name}
@@ -57,7 +60,7 @@ const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
     );
 };
 
-RoomsList.navigationOptions = ({navigation}) => ({
+RoomsList.navigationOptions = () => ({
     title: 'List of rooms',
     headerStyle: {
         backgroundColor: Colors.primary
@@ -69,11 +72,14 @@ RoomsList.navigationOptions = ({navigation}) => ({
 
 const mapStateToProps = state => ({
     rooms: state.room.list,
-    isLoading: state.room.isLoadingList
+    isLoading: state.room.isLoadingList,
+    filteredRooms: state.room.filteredList,
+    isFiltering: state.room.isFilteringList
 });
 
 const mapDispatchToProps = dispatch => ({
-    getRoomList: bindActionCreators(getRoomList, dispatch)
+    getRoomList: bindActionCreators(getRoomList, dispatch),
+    filterList: bindActionCreators(filterRoomList, dispatch)
 });
 
 const RoomsListPage = connect(mapStateToProps, mapDispatchToProps)(RoomsList);

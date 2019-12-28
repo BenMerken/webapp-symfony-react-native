@@ -40,7 +40,7 @@ type GetTicketListActionFail = {
 
 type GetTicketDetailAction = {
     type: typeof LOAD_TICKET_DETAIL;
-    payload: { id: number };
+    payload: {};
 };
 
 type GetTicketDetailActionSuccess = {
@@ -103,19 +103,19 @@ export const getTicketList = (assetName: string) => {
     };
 };
 
-const setIsLoadingList = () => ({
+const setIsLoadingList = (): GetTicketListAction => ({
     type: LOAD_TICKET_LIST,
     payload: {}
 });
 
-const getTicketListSuccess = (tickets: Ticket[]) => ({
+const getTicketListSuccess = (tickets: Ticket[]): GetTicketListActionSuccess => ({
     type: LOAD_TICKET_LIST_SUCCESS,
     payload: tickets
 });
 
-const getTicketListFail = () => ({
+const getTicketListFail = (): GetTicketListActionFail => ({
     type: LOAD_TICKET_LIST_FAIL,
-    payload: {}
+    payload: []
 });
 
 export const getTicket = (id: number) => {
@@ -130,17 +130,17 @@ export const getTicket = (id: number) => {
     };
 };
 
-const setIsLoadingDetail = () => ({
+const setIsLoadingDetail = (): GetTicketDetailAction => ({
     type: LOAD_TICKET_DETAIL,
     payload: {}
 });
 
-const getTicketSuccess = (ticket: Ticket) => ({
+const getTicketSuccess = (ticket: Ticket): GetTicketDetailActionSuccess => ({
     type: LOAD_TICKET_DETAIL_SUCCESS,
     payload: ticket
 });
 
-const getTicketFail = () => ({
+const getTicketFail = (): GetTicketDetailActionFail => ({
     type: LOAD_TICKET_DETAIL_FAIL,
     payload: {}
 });
@@ -159,17 +159,17 @@ export const upvoteTicket = (id: number) => {
     };
 };
 
-const setIsUpvotingTicket = () => ({
+const setIsUpvotingTicket = (): UpvoteTicketAction => ({
     type: UPVOTE_TICKET,
     payload: {}
 });
 
-const upvoteTicketSuccess = (id: number) => ({
+const upvoteTicketSuccess = (id: number): UpvoteTicketActionSuccess => ({
     type: UPVOTE_TICKET_SUCCESS,
     payload: {data: id}
 });
 
-const upvoteTicketFail = () => ({
+const upvoteTicketFail = (): UpvoteTicketActionFail => ({
     type: UPVOTE_TICKET_FAIL,
     payload: {}
 });

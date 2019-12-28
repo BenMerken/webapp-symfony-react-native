@@ -53,19 +53,19 @@ export const getAssetList = (roomId: number) => {
     }
 };
 
-const setIsLoadingList = () => ({
+const setIsLoadingList = (): GetAssetListAction => ({
     type: LOAD_ASSET_LIST,
     payload: {}
 });
 
-const getAssetListSuccess = (assets: Asset[]) => ({
+const getAssetListSuccess = (assets: Asset[]): GetAssetListActionSuccess => ({
     type: LOAD_ASSET_LIST_SUCCESS,
     payload: assets
 });
 
-const getAssetListFail = () => ({
+const getAssetListFail = (): GetAssetListActionFail => ({
     type: LOAD_ASSET_LIST_FAIL,
-    payload: {}
+    payload: []
 });
 
 // --- Reducer ---
@@ -83,7 +83,7 @@ const reducer: Reducer<AssetState, ActionTypes> = (
         case LOAD_ASSET_LIST_SUCCESS:
             return {...state, list: action.payload, isLoadingList: false};
         case LOAD_ASSET_LIST_FAIL:
-            return {...state, isLoadingList: false};
+            return {...state, list: action.payload, isLoadingList: false};
         default:
             return state;
     }
