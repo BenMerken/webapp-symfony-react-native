@@ -2,6 +2,7 @@ export * from './asset/AssetPreview';
 export * from './asset/AssetPreviewBody';
 export * from './details/CircleDetail';
 export * from './headers/TextHeaders';
+export * from './room/RoomFilterHeader';
 export * from './room/RoomHeader';
 export * from './room/RoomPreview';
 export * from './room/RoomPreviewBody';

@@ -1,6 +1,7 @@
 import {Room} from "../../data";
 import {Reducer} from "react";
 import axios from "axios";
+import {ToastAndroid} from 'react-native';
 
 // --- API ---
 
@@ -197,10 +198,12 @@ export const getRoomListByHappinessScore = (happinessScore: number) => {
     return async dispatch => {
         dispatch(setIsLoadingListByHappinessScore());
         try {
-            const response = await axios.get(`${BASE_URL}?lowerThanScore=${happinessScore}`);
+            const response = await axios.get(`${BASE_URL}?lowerThanScore=${happinessScore.toString()}`);
             dispatch(getRoomListByHappinessScoreSuccess(response.data));
+            ToastAndroid.show('Search completed successfully.', ToastAndroid.SHORT)
         } catch (error) {
-            dispatch(getRoomListByHappinessScoreFail())
+            dispatch(getRoomListByHappinessScoreFail());
+            ToastAndroid.show('An error occurred.', ToastAndroid.SHORT);
         }
     };
 };

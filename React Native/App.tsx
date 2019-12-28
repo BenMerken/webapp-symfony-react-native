@@ -7,11 +7,15 @@ import configureStore from "./src/redux/configureStore";
 import RoomDetailPage from "./src/components/pages/room/RoomDetail";
 import TicketsListPage from "./src/components/pages/ticket/TicketsList";
 import TicketDetailPage from "./src/components/pages/ticket/TicketDetail";
+import RoomsByHappinessScorePage from "./src/components/pages/room/RoomsByHappinessScoreList";
 
 const App: React.FunctionComponent = () => {
     const Stack = createStackNavigator({
         Home: {
             screen: RoomsListPage
+        },
+        RoomsByHappinessScore: {
+            screen: RoomsByHappinessScorePage
         },
         Room: {
             screen: RoomDetailPage
