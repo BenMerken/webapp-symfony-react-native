@@ -26,7 +26,8 @@ class RoomsController extends AbstractController
         $rooms = null;
 
         try {
-            if ($score = (int)$request->query->get('lowerThanScore')) {
+            $score = (int)$request->query->get('lowerThanScore');
+            if ($score) {
                 $rooms = $this->roomModel->getRoomsWithHappinessScoreLessThan($score);
             } else {
                 $rooms = $this->roomModel->getRooms();

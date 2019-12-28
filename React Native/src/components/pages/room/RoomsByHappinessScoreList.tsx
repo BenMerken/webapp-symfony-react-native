@@ -51,10 +51,16 @@ const RoomsByHappinessScoreList: React.FunctionComponent<Props> & { navigationOp
                     />
                 </View>
                 <View style={styles.roomsListContainer}>
-                    {props.list.length === 0
+                    {props.list.length === 0 || props.isLoadingList
                         ? (
                             <View style={styles.noRoomsTextContainer}>
-                                <Text style={styles.noRoomsText}>No rooms to display.</Text>
+                                {props.isLoadingList
+                                    ? (
+                                        <Text style={styles.noRoomsText}>Loading rooms...</Text>
+                                    ) : (
+                                        <Text style={styles.noRoomsText}>No rooms to display.</Text>
+                                    )
+                                }
                             </View>
                         ) : (
                             <FlatList

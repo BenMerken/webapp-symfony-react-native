@@ -25,6 +25,8 @@ export const styles = StyleSheet.create({
     },
     happinessScoreForm: {
         flex: 1,
+        marginHorizontal: 16,
+        marginVertical: 32
     },
     noRoomsTextContainer: {
         flex: 1,
