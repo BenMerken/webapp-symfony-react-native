@@ -57,7 +57,7 @@ type FilterRoomListAction = {
 
 type FilterRoomListActionSuccess = {
     type: typeof FILTER_ROOM_LIST_SUCCESS;
-    payload: number;
+    payload: string;
 };
 
 type FilterRoomListActionFail = {
@@ -143,11 +143,11 @@ const getRoomDetailFail = (): GetRoomDetailActionFail => ({
     payload: {}
 });
 
-export const filterRoomList = (score: number) => {
+export const filterRoomList = (name: string) => {
     return async dispatch => {
         dispatch(setIsFilteringList());
         try {
-            dispatch(filterRoomListSuccess(score));
+            dispatch(filterRoomListSuccess(name));
         } catch (error) {
             dispatch(filterRoomListFail())
         }
@@ -159,9 +159,9 @@ const setIsFilteringList = (): FilterRoomListAction => ({
     payload: {}
 });
 
-const filterRoomListSuccess = (score: number): FilterRoomListActionSuccess => ({
+const filterRoomListSuccess = (name: string): FilterRoomListActionSuccess => ({
     type: FILTER_ROOM_LIST_SUCCESS,
-    payload: score
+    payload: name
 });
 
 const filterRoomListFail = (): FilterRoomListActionFail => ({
@@ -200,7 +200,7 @@ const reducer: Reducer<RoomState, ActionTypes> = (
         case FILTER_ROOM_LIST_SUCCESS:
             return {
                 ...state,
-                filteredList: state.list.filter(room => room.happinessScore >= action.payload),
+                filteredList: state.list.filter(room => room.name.toLowerCase().includes(action.payload.toLowerCase())),
                 isFilteringList: false
             };
         case FILTER_ROOM_LIST_FAIL:

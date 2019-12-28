@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {View, Text, FlatList, RefreshControl} from "react-native";
+import {SearchBar} from "react-native-elements";
 import RoomPreview from '../../ui/room/RoomPreview';
 import {styles} from "./RoomsList.styles";
 import {Room} from "../../../data";
@@ -15,12 +16,13 @@ type Props = {
     getRoomList: () => (dispatch: any) => Promise<void>;
     filteredRooms: Room[];
     isFiltering: boolean;
-    filterList: (score: number) => (dispatch: any) => Promise<any>;
+    filterList: (name: string) => (dispatch: any) => Promise<any>;
 };
 
 const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
     = (props): JSX.Element => {
     const [refreshing, setRefreshing] = useState(false);
+    const [filter, setFilter] = useState('');
     const navigation = useNavigation();
     const navigateRoom = (name: string, roomId: number) => navigation.navigate('Room', {name, roomId});
 
@@ -31,6 +33,11 @@ const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
     const onRefresh = () => {
         setRefreshing(false);
         props.getRoomList();
+    };
+
+    const updateFilter = filter => {
+        setFilter(filter);
+        props.filterList(filter);
     };
 
     const renderItem = ({item}: { item: Room }): JSX.Element => (
@@ -46,15 +53,24 @@ const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
             {props.isLoading
                 ? (<Text>Loading rooms...</Text>)
                 : (
-                    <FlatList
-                        data={props.filteredRooms}
-                        renderItem={renderItem}
-                        ItemSeparatorComponent={RenderSeparator}
-                        keyExtractor={room => room.name}
-                        refreshControl={
-                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-                        }
-                    />
+                    <View>
+                        <SearchBar
+                            placeholder="Enter room name..."
+                            onChangeText={updateFilter}
+                            value={filter}
+                        />
+                        <FlatList
+                            data={props.filteredRooms}
+                            renderItem={renderItem}
+                            ItemSeparatorComponent={RenderSeparator}
+                            keyExtractor={room => room.name}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={refreshing} onRefresh={onRefresh}
+                                />
+                            }
+                        />
+                    </View>
                 )}
         </View>
     );
