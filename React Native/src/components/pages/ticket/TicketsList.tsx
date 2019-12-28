@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {Ticket} from "../../../data";
-import {View, Text, FlatList, TouchableWithoutFeedback} from "react-native";
+import {View, Text, FlatList, TouchableWithoutFeedback, RefreshControl} from "react-native";
 import {bindActionCreators} from "redux";
 import {getTicketList} from "../../../redux/modules/ticket";
 import {useNavigation} from "../../../hooks";
@@ -17,6 +17,7 @@ type Props = {
 };
 
 const TicketsList: React.FunctionComponent<Props> & { navigationOptions?: any } = (props): JSX.Element => {
+    const [refreshing, setRefreshing] = useState(false);
     const navigation = useNavigation();
     const navigateTicket = (id: number) => navigation.navigate('Ticket', {id});
     const assetName = navigation.state.params.assetName;
@@ -24,6 +25,11 @@ const TicketsList: React.FunctionComponent<Props> & { navigationOptions?: any } 
     useEffect(() => {
         props.getTicketList(assetName);
     }, [assetName]);
+
+    const onRefresh = () => {
+        setRefreshing(false);
+        props.getTicketList(assetName);
+    };
 
     const renderItem = ({item}: { item: Ticket }): JSX.Element => (
         <View style={styles.ticketContainer}>
@@ -44,7 +50,11 @@ const TicketsList: React.FunctionComponent<Props> & { navigationOptions?: any } 
                         data={props.tickets}
                         renderItem={renderItem}
                         ItemSeparatorComponent={renderSeparator}
-                        keyExtractor={ticket => ticket.description}/>
+                        keyExtractor={ticket => ticket.description}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                        }
+                    />
                 )}
         </View>
     );

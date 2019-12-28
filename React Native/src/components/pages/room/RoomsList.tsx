@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import {View, Text, FlatList, TouchableWithoutFeedback} from "react-native";
+import React, {useEffect, useState} from "react";
+import {View, Text, FlatList, RefreshControl} from "react-native";
 import RoomPreview from '../../ui/room/RoomPreview';
 import {styles} from "./RoomsList.styles";
 import {Room} from "../../../data";
@@ -7,7 +7,6 @@ import {getRoomList} from "../../../redux/modules/room";
 import {connect} from 'react-redux';
 import {useNavigation} from "../../../hooks";
 import {Colors} from "../../../styles/_colors";
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {bindActionCreators} from 'redux'
 
 type Props = {
@@ -18,12 +17,18 @@ type Props = {
 
 const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
     = (props): JSX.Element => {
+    const [refreshing, setRefreshing] = useState(false);
     const navigation = useNavigation();
     const navigateRoom = (name: string, roomId: number) => navigation.navigate('Room', {name, roomId});
 
     useEffect(() => {
         props.getRoomList();
     }, []);
+
+    const onRefresh = () => {
+        setRefreshing(false);
+        props.getRoomList();
+    };
 
     const renderItem = ({item}: { item: Room }): JSX.Element => (
         <View style={styles.roomContainer}>
@@ -43,6 +48,9 @@ const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
                         renderItem={renderItem}
                         ItemSeparatorComponent={RenderSeparator}
                         keyExtractor={room => room.name}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                        }
                     />
                 )}
         </View>
@@ -57,11 +65,6 @@ RoomsList.navigationOptions = ({navigation}) => ({
     headerTitleStyle: {
         color: Colors.fontDark
     },
-    headerRight: (
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
-            <Icon name="refresh" style={styles.navigationItem} color={Colors.fontDark} />
-        </TouchableWithoutFeedback>
-    )
 });
 
 const mapStateToProps = state => ({

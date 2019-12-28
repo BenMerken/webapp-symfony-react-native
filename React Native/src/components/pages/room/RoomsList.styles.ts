@@ -11,7 +11,11 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: Colors.listItemSeparator
     },
+    navigationItemsContainer: {
+        flex: 1,
+    },
     navigationItem: {
+        flex: 1,
         fontSize: 20,
         margin: 14
     }
