@@ -11,7 +11,7 @@ type Props = {
 const RoomHeader: React.FunctionComponent<Props> = (room): JSX.Element => {
     return (
         <View style={styles.header}>
-            <H1>Room {room.name}</H1>
+            <H1>Room "{room.name}"</H1>
             <View style={styles.roomRow}>
                 <H2>Current happiness score: {room.happinessScore}</H2>
             </View>

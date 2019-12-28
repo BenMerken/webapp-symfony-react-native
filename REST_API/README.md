@@ -1,4 +1,6 @@
-# Project Web and Mobile
+# Project Web and Mobile: WP1
+
+## Symfony
 
 ### Testing the app with postman
 In this repo we have provided a postman collection (Web & Mobile- WP1.postman_collection.json) which you can import into your postman locally.
@@ -48,6 +50,12 @@ After this we have to enable CSRF protection in the framework.yaml in the config
 Code is being covered by writing PHPUnit tests. By using this command, coverage gets exported to html in the "Coverage" directory
 
 ![alt text][img_CodeCoverage]
+
+## React Native
+
+### Allow CORS
+
+
 
 ### Credits
 

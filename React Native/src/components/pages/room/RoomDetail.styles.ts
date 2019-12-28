@@ -22,5 +22,9 @@ export const styles = StyleSheet.create({
         paddingBottom: 16,
         borderBottomWidth: 1,
         borderBottomColor: Colors.accentLight
+    },
+    navigationItem: {
+        fontSize: 20,
+        margin: 14
     }
 });

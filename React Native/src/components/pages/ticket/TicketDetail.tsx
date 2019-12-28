@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableWithoutFeedback} from 'react-native';
 import {Ticket} from '../../../data';
 import {bindActionCreators} from 'redux';
 import {getTicket, upvoteTicket} from '../../../redux/modules/ticket';
@@ -8,6 +8,7 @@ import {Colors} from "../../../styles/_colors";
 import {styles} from "./TicketDetail.styles";
 import TicketHeader from "../../ui/ticket/TicketHeader";
 import {useNavigation} from "../../../hooks";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 type Props = {
     ticket: Ticket;
@@ -39,7 +40,7 @@ const TicketDetail: React.FunctionComponent<Props> & { navigationOptions?: any }
     );
 };
 
-TicketDetail.navigationOptions = () => ({
+TicketDetail.navigationOptions = ({navigation}) => ({
     title: 'Ticket details',
     headerStyle: {
         backgroundColor: Colors.primaryDark
@@ -49,7 +50,12 @@ TicketDetail.navigationOptions = () => ({
     },
     headerBackTitleStyle: {
         color: Colors.fontLight
-    }
+    },
+    headerRight: (
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
+            <Icon name="home" style={styles.navigationItem} color={Colors.fontLight} />
+        </TouchableWithoutFeedback>
+    )
 });
 
 const mapStateToProps = state => ({

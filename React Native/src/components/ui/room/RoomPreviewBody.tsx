@@ -16,7 +16,7 @@ const RoomPreviewBody: React.FunctionComponent<Props> = (room): JSX.Element => {
                     text={room.happinessScore.toString()}
                 />
             </View>
-            <Text style={styles.roomName}>Room {room.name}</Text>
+            <Text style={styles.roomName}>Name: {room.name}</Text>
         </View>
     );
 };

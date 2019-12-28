@@ -1,6 +1,7 @@
 import {Ticket} from "../../data";
 import axios from "axios";
 import {Reducer} from "react";
+import {ToastAndroid} from 'react-native';
 
 // --- API ---
 
@@ -19,6 +20,10 @@ const LOAD_TICKET_DETAIL_FAIL = 'PXLAssetManagementTool/room/LOAD_TICKET_FAIL';
 const UPVOTE_TICKET = 'PXLAssetManagementTool/room/UPVOTE_TICKET';
 const UPVOTE_TICKET_SUCCESS = 'PXLAssetManagementTool/room/UPVOTE_TICKET_SUCCESS';
 const UPVOTE_TICKET_FAIL = 'PXLAssetManagementTool/room/UPVOTE_TICKET_FAIL';
+
+const FILTER_TICKET_LIST = 'PXLAssetManagementTool/room/FILTER_TICKET_LIST';
+const FILTER_TICKET_LIST_SUCCESS = 'PXLAssetManagementTool/room/FILTER_TICKET_LIST_SUCCESS';
+const FILTER_TICKET_LIST_FAIL = 'PXLAssetManagementTool/room/FILTER_TICKET_LIST_LIST';
 
 // -- Action Creators ---
 
@@ -39,7 +44,7 @@ type GetTicketListActionFail = {
 
 type GetTicketDetailAction = {
     type: typeof LOAD_TICKET_DETAIL;
-    payload: { id: number };
+    payload: {};
 };
 
 type GetTicketDetailActionSuccess = {
@@ -67,6 +72,21 @@ type UpvoteTicketActionFail = {
     payload: {};
 };
 
+type FilterTicketListAction = {
+    type: typeof FILTER_TICKET_LIST;
+    payload: any;
+};
+
+type FilterTicketListActionSuccess = {
+    type: typeof FILTER_TICKET_LIST_SUCCESS;
+    payload: number;
+};
+
+type FilterTicketListActionFail = {
+    type: typeof FILTER_TICKET_LIST_FAIL;
+    payload: [];
+};
+
 type ActionTypes =
     | GetTicketListAction
     | GetTicketListActionSuccess
@@ -76,7 +96,10 @@ type ActionTypes =
     | GetTicketDetailActionFail
     | UpvoteTicketAction
     | UpvoteTicketActionSuccess
-    | UpvoteTicketActionFail;
+    | UpvoteTicketActionFail
+    | FilterTicketListAction
+    | FilterTicketListActionSuccess
+    | FilterTicketListActionFail;
 
 // --- State Type ---
 
@@ -86,6 +109,8 @@ type  TicketState = {
     detail: Ticket;
     isLoadingDetail: boolean;
     isUpvotingTicket: boolean;
+    filteredList: Ticket[];
+    isFilteringList: boolean;
 };
 
 // --- Action Creators ---
@@ -102,19 +127,19 @@ export const getTicketList = (assetName: string) => {
     };
 };
 
-const setIsLoadingList = () => ({
+const setIsLoadingList = (): GetTicketListAction => ({
     type: LOAD_TICKET_LIST,
     payload: {}
 });
 
-const getTicketListSuccess = (tickets: Ticket[]) => ({
+const getTicketListSuccess = (tickets: Ticket[]): GetTicketListActionSuccess => ({
     type: LOAD_TICKET_LIST_SUCCESS,
     payload: tickets
 });
 
-const getTicketListFail = () => ({
+const getTicketListFail = (): GetTicketListActionFail => ({
     type: LOAD_TICKET_LIST_FAIL,
-    payload: {}
+    payload: []
 });
 
 export const getTicket = (id: number) => {
@@ -129,17 +154,17 @@ export const getTicket = (id: number) => {
     };
 };
 
-const setIsLoadingDetail = () => ({
+const setIsLoadingDetail = (): GetTicketDetailAction => ({
     type: LOAD_TICKET_DETAIL,
     payload: {}
 });
 
-const getTicketSuccess = (ticket: Ticket) => ({
+const getTicketSuccess = (ticket: Ticket): GetTicketDetailActionSuccess => ({
     type: LOAD_TICKET_DETAIL_SUCCESS,
     payload: ticket
 });
 
-const getTicketFail = () => ({
+const getTicketFail = (): GetTicketDetailActionFail => ({
     type: LOAD_TICKET_DETAIL_FAIL,
     payload: {}
 });
@@ -150,25 +175,53 @@ export const upvoteTicket = (id: number) => {
         try {
             await axios.patch(`${BASE_URL}${id}`);
             dispatch(upvoteTicketSuccess(id));
+            ToastAndroid.show('Ticket upvoted successfully.', ToastAndroid.SHORT)
         } catch (error) {
             dispatch(upvoteTicketFail());
+            ToastAndroid.show('This ticket could not be upvoted.', ToastAndroid.SHORT)
         }
     };
 };
 
-const setIsUpvotingTicket = () => ({
+const setIsUpvotingTicket = (): UpvoteTicketAction => ({
     type: UPVOTE_TICKET,
     payload: {}
 });
 
-const upvoteTicketSuccess = (id: number) => ({
+const upvoteTicketSuccess = (id: number): UpvoteTicketActionSuccess => ({
     type: UPVOTE_TICKET_SUCCESS,
     payload: {data: id}
 });
 
-const upvoteTicketFail = () => ({
+const upvoteTicketFail = (): UpvoteTicketActionFail => ({
     type: UPVOTE_TICKET_FAIL,
     payload: {}
+});
+
+export const filterTicketList = (numberOfVotes: number) => {
+    return async dispatch => {
+        dispatch(setIsFilteringList());
+        try {
+            dispatch(filterTicketListSuccess(numberOfVotes));
+        } catch (error) {
+            dispatch(filterTicketListFail());
+        }
+    };
+};
+
+const setIsFilteringList = (): FilterTicketListAction => ({
+    type: FILTER_TICKET_LIST,
+    payload: {}
+});
+
+const filterTicketListSuccess = (numberOfVotes: number): FilterTicketListActionSuccess => ({
+    type: FILTER_TICKET_LIST_SUCCESS,
+    payload: numberOfVotes
+});
+
+const filterTicketListFail = (): FilterTicketListActionFail => ({
+    type: FILTER_TICKET_LIST_FAIL,
+    payload: []
 });
 
 // -- Reducer ---
@@ -179,7 +232,9 @@ const reducer: Reducer<TicketState, ActionTypes> = (
         isLoadingList: true,
         detail: null,
         isLoadingDetail: true,
-        isUpvotingTicket: false
+        isUpvotingTicket: false,
+        filteredList: [],
+        isFilteringList: false
     },
     action
 ) => {
@@ -187,7 +242,7 @@ const reducer: Reducer<TicketState, ActionTypes> = (
         case LOAD_TICKET_LIST:
             return {...state, isLoadingList: true};
         case LOAD_TICKET_LIST_SUCCESS:
-            return {...state, list: action.payload, isLoadingList: false};
+            return {...state, list: action.payload, filteredList: action.payload, isLoadingList: false};
         case LOAD_TICKET_LIST_FAIL:
             return {...state, isLoadingList: false};
         case LOAD_TICKET_DETAIL:
@@ -210,6 +265,16 @@ const reducer: Reducer<TicketState, ActionTypes> = (
             };
         case UPVOTE_TICKET_FAIL:
             return {...state, isUpvotingTicket: false};
+        case FILTER_TICKET_LIST:
+            return {...state, isFilteringList: true};
+        case FILTER_TICKET_LIST_SUCCESS:
+            return {
+                ...state,
+                filteredList: state.list.filter(ticket => ticket.numberOfVotes >= action.payload),
+                isFilteringList: false
+            };
+        case FILTER_TICKET_LIST_FAIL:
+            return {...state, isFilteringList: false};
         default:
             return state;
     }
