@@ -111,7 +111,7 @@ class PDORoomModel implements RoomModel
         $statement->bindColumn(1, $id, \PDO::PARAM_INT);
         $statement->bindColumn(2, $name, \PDO::PARAM_STR);
         $statement->bindColumn(3, $happinessScore, \PDO::PARAM_INT);
-        $rooms = null;
+        $rooms = [];
         while ($statement->fetch(\PDO::FETCH_BOUND)) {
             $room = [
                 'id' => $id,

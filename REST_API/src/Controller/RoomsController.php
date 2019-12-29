@@ -20,16 +20,19 @@ class RoomsController extends AbstractController
     /**
      * @Route("/rooms/", methods={"GET"}, name="GetRooms")
      */
-    public function getRooms()
+    public function getRooms(Request $request)
     {
         $statuscode = 200;
-        $rooms = null;
+        $rooms = [];
 
         try {
-            $rooms = $this->roomModel->getRooms();
-            if ($rooms == null) {
-                $statuscode = 404;
+            $score = (int)$request->query->get('lowerThanScore');
+            if ($score) {
+                $rooms = $this->roomModel->getRoomsWithHappinessScoreLessThan($score);
+            } else {
+                $rooms = $this->roomModel->getRooms();
             }
+
         } catch (\InvalidArgumentException $exception) {
             $statuscode = 400;
         } catch (\PDOException $exception) {
@@ -63,33 +66,6 @@ class RoomsController extends AbstractController
 
         return new JsonResponse($room, $statuscode);
     }
-
-    /**
-     * @Route("/rooms", methods={"GET"}, name="GetLowerThanHappinessScoreRoom")
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getLowerThanHappinessScoreRoom(Request $request)
-    {
-        $statuscode = 200;
-        $rooms = null;
-
-        $score = (int)$request->query->get('lowerThanScore');
-
-        try {
-            $rooms = $this->roomModel->getRoomsWithHappinessScoreLessThan($score);
-            if ($rooms == null) {
-                $statuscode = 404;
-            }
-        } catch (\InvalidArgumentException $exception) {
-            $statuscode = 400;
-        } catch (\PDOException $exception) {
-            $statuscode = 500;
-        }
-
-        return new JsonResponse($rooms, $statuscode);
-    }
-
 
     /**
      * @Route("/rooms/{name}/{happiness}", methods={"PATCH"}, name="HappyOrNot")

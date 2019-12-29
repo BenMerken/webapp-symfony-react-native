@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {View, Text, FlatList, RefreshControl} from "react-native";
+import {View, Text, FlatList, RefreshControl, TouchableWithoutFeedback} from "react-native";
 import {SearchBar} from "react-native-elements";
 import RoomPreview from '../../ui/room/RoomPreview';
 import {styles} from "./RoomsList.styles";
@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 import {useNavigation} from "../../../hooks";
 import {Colors} from "../../../styles/_colors";
 import {bindActionCreators} from 'redux'
+import Icon from "react-native-vector-icons/FontAwesome";
 
 type Props = {
     rooms: Room[];
@@ -76,7 +77,7 @@ const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
     );
 };
 
-RoomsList.navigationOptions = () => ({
+RoomsList.navigationOptions = ({navigation}) => ({
     title: 'List of rooms',
     headerStyle: {
         backgroundColor: Colors.primary
@@ -84,6 +85,11 @@ RoomsList.navigationOptions = () => ({
     headerTitleStyle: {
         color: Colors.fontDark
     },
+    headerRight: (
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('RoomsByHappinessScore')}>
+            <Icon name="filter" style={styles.navigationItem} color={Colors.fontDark} />
+        </TouchableWithoutFeedback>
+    )
 });
 
 const mapStateToProps = state => ({
