@@ -65,14 +65,14 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
                 )
                 : (
                     <View style={styles.bodyContainer}>
-                        <View style={styles.headerContainer}>
-                            <RoomHeader {...props.room}/>
-                        </View>
                         <SearchBar
                             placeholder="Enter asset name..."
                             onChangeText={updateFilter}
                             value={filter}
                         />
+                        <View style={styles.headerContainer}>
+                            <RoomHeader {...props.room}/>
+                        </View>
                         <FlatList
                             data={props.filteredAssets}
                             renderItem={renderItem}
