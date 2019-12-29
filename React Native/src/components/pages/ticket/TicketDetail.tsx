@@ -15,6 +15,7 @@ type Props = {
     isLoadingTicket: boolean;
     getTicket: (id: number) => (dispatch: any) => Promise<void>;
     upvoteTicket: (id: number) => (dispatch: any) => Promise<any>;
+    isUpvotingTicket: boolean;
 };
 
 const TicketDetail: React.FunctionComponent<Props> & { navigationOptions?: any } = (props): JSX.Element => {
@@ -33,7 +34,7 @@ const TicketDetail: React.FunctionComponent<Props> & { navigationOptions?: any }
                 )
                 : (
                     <View style={styles.headerContainer}>
-                        <TicketHeader {...props.ticket} upvoteTicket={props.upvoteTicket}/>
+                        <TicketHeader {...props.ticket} isUpvotingTicket={props.isUpvotingTicket} upvoteTicket={props.upvoteTicket}/>
                     </View>
                 )}
         </View>
@@ -60,7 +61,8 @@ TicketDetail.navigationOptions = ({navigation}) => ({
 
 const mapStateToProps = state => ({
     ticket: state.ticket.detail,
-    isLoadingTicket: state.ticket.isLoadingDetail
+    isLoadingTicket: state.ticket.isLoadingDetail,
+    isUpvotingTicket: state.ticket.isUpvotingTicket
 });
 
 const mapDispatchToProps = dispatch => ({

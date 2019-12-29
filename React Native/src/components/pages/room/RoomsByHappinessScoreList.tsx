@@ -36,42 +36,40 @@ const RoomsByHappinessScoreList: React.FunctionComponent<Props> & { navigationOp
 
     return (
         <View style={styles.bodyContainer}>
-            <View style={styles.bodyContainer}>
-                <View style={styles.headerContainer}>
-                    <RoomFilterHeader/>
-                </View>
-                <View style={styles.happinessScoreForm}>
-                    <Input
-                        placeholder="Please enter an upper boundary..."
-                        onChangeText={updateFilter}
-                    />
-                    <Button
-                        title="Search"
-                        onPress={() => props.getRoomList(Number.parseInt(filter))}
-                        color={Colors.primary}
-                    />
-                </View>
-                <View style={styles.roomsListContainer}>
-                    {props.list.length === 0 || props.isLoadingList
-                        ? (
-                            <View style={styles.noRoomsTextContainer}>
-                                {props.isLoadingList
-                                    ? (
-                                        <Text style={styles.noRoomsText}>Loading rooms...</Text>
-                                    ) : (
-                                        <Text style={styles.noRoomsText}>No rooms to display.</Text>
-                                    )
-                                }
-                            </View>
-                        ) : (
-                            <FlatList
-                                data={props.list}
-                                renderItem={renderItem}
-                                ItemSeparatorComponent={renderSeparator}
-                                keyExtractor={asset => asset.name}
-                            />
-                        )}
-                </View>
+            <View style={styles.headerContainer}>
+                <RoomFilterHeader/>
+            </View>
+            <View style={styles.happinessScoreForm}>
+                <Input
+                    placeholder="Please enter an upper boundary..."
+                    onChangeText={updateFilter}
+                />
+                <Button
+                    title="Search"
+                    onPress={() => props.getRoomList(Number.parseInt(filter))}
+                    color={Colors.primaryDark}
+                />
+            </View>
+            <View style={styles.roomsListContainer}>
+                {props.list.length === 0 || props.isLoadingList
+                    ? (
+                        <View style={styles.noRoomsTextContainer}>
+                            {props.isLoadingList
+                                ? (
+                                    <Text style={styles.noRoomsText}>Loading rooms...</Text>
+                                ) : (
+                                    <Text style={styles.noRoomsText}>No rooms to display.</Text>
+                                )
+                            }
+                        </View>
+                    ) : (
+                        <FlatList
+                            data={props.list}
+                            renderItem={renderItem}
+                            ItemSeparatorComponent={renderSeparator}
+                            keyExtractor={asset => asset.name}
+                        />
+                    )}
             </View>
         </View>
     );

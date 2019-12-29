@@ -4,7 +4,7 @@ import {useNavigation} from '../../../hooks';
 import {connect} from 'react-redux';
 import {getRoom} from "../../../redux/modules/room";
 import {filterAssetList, getAssetList} from "../../../redux/modules/asset";
-import {View, Text, FlatList, TouchableWithoutFeedback, RefreshControl} from "react-native";
+import {View, Text, FlatList, TouchableWithoutFeedback, RefreshControl, Button} from "react-native";
 import {SearchBar} from "react-native-elements";
 import {styles} from "./RoomDetail.styles";
 import {Colors} from "../../../styles/_colors";
@@ -65,24 +65,45 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
                 )
                 : (
                     <View style={styles.bodyContainer}>
-                        <View style={styles.headerContainer}>
-                            <RoomHeader {...props.room}/>
-                        </View>
-                        <SearchBar
-                            placeholder="Enter asset name..."
-                            onChangeText={updateFilter}
-                            value={filter}
-                        />
-                        <FlatList
-                            data={props.filteredAssets}
-                            renderItem={renderItem}
-                            ItemSeparatorComponent={renderSeparator}
-                            keyExtractor={asset => asset.name}
-                            refreshControl={
-                                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-                            }
-                        />
+                        {props.assets.length !== 0
+                            ? (
+                                <View style={styles.bodyContainer}>
+                                    <SearchBar
+                                        placeholder="Enter asset name..."
+                                        onChangeText={updateFilter}
+                                        value={filter}
+                                    />
+                                    <View style={styles.headerContainer}>
+                                        <RoomHeader {...props.room}/>
+                                    </View>
+                                    <FlatList
+                                        data={props.filteredAssets}
+                                        renderItem={renderItem}
+                                        ItemSeparatorComponent={renderSeparator}
+                                        keyExtractor={asset => asset.name}
+                                        refreshControl={
+                                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                                        }
+                                    />
+                                </View>
+                            ) : (
+                                <View style={styles.errorContainer}>
+                                    <View style={styles.headerContainer}>
+                                        <RoomHeader {...props.room}/>
+                                    </View>
+                                    <Text style={{...styles.errorItem, fontSize: 22}}>No assets found.</Text>
+                                    <View style={styles.errorItem}>
+                                        <Button
+                                            title="Try again"
+                                            onPress={() => props.getAssetList(id)}
+                                            color={Colors.primary}
+                                        />
+                                    </View>
+                                </View>
+                            )
+                        }
                     </View>
+
                 )}
         </View>
     );
@@ -101,7 +122,7 @@ RoomDetail.navigationOptions = ({navigation}) => ({
     },
     headerRight: (
         <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
-            <Icon name="home" style={styles.navigationItem} color={Colors.fontLight} />
+            <Icon name="home" style={styles.navigationItem} color={Colors.fontLight}/>
         </TouchableWithoutFeedback>
     )
 });

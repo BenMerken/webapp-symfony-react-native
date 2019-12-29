@@ -2,6 +2,9 @@ import {StyleSheet} from "react-native";
 import {Colors} from "../../../styles/_colors";
 
 export const styles = StyleSheet.create({
+    listContainer: {
+        flex: 1
+    },
     roomContainer: {
         flex: 1,
         margin: 8
@@ -18,5 +21,15 @@ export const styles = StyleSheet.create({
         flex: 1,
         fontSize: 20,
         margin: 14
+    },
+    errorContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 16,
+        marginVertical: 32
+    },
+    errorItem: {
+        flex: 1
     }
 });

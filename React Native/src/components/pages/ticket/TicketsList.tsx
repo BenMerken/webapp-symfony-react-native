@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {Ticket} from "../../../data";
-import {View, Text, FlatList, TouchableWithoutFeedback, RefreshControl} from "react-native";
+import {View, Text, FlatList, TouchableWithoutFeedback, RefreshControl, Button} from "react-native";
 import {SearchBar} from "react-native-elements";
 import {bindActionCreators} from "redux";
 import {filterTicketList, getTicketList} from "../../../redux/modules/ticket";
@@ -29,6 +29,7 @@ const TicketsList: React.FunctionComponent<Props> & { navigationOptions?: any } 
 
     useEffect(() => {
         props.getTicketList(assetName);
+        navigation.setParams(assetName);
     }, [assetName]);
 
     const onRefresh = () => {
@@ -50,27 +51,43 @@ const TicketsList: React.FunctionComponent<Props> & { navigationOptions?: any } 
     const renderSeparator = (): JSX.Element => <View style={styles.separator}/>;
 
     return (
-        <View>
+        <View style={styles.bodyContainer}>
             {props.isLoading
                 ? (
                     <Text>Loading tickets...</Text>
                 )
                 : (
-                    <View>
-                        <SearchBar
-                            placeholder="Enter number of votes lower boundary..."
-                            onChangeText={updateFilter}
-                            value={filter}
-                        />
-                        <FlatList
-                            data={props.filteredTickets}
-                            renderItem={renderItem}
-                            ItemSeparatorComponent={renderSeparator}
-                            keyExtractor={ticket => ticket.description}
-                            refreshControl={
-                                <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
-                            }
-                        />
+                    <View style={styles.bodyContainer}>
+                        {props.tickets.length !== 0
+                            ? (
+                                <View>
+                                    <SearchBar
+                                        placeholder="Enter number of votes lower boundary..."
+                                        onChangeText={updateFilter}
+                                        value={filter}
+                                    />
+                                    <FlatList
+                                        data={props.filteredTickets}
+                                        renderItem={renderItem}
+                                        ItemSeparatorComponent={renderSeparator}
+                                        keyExtractor={ticket => ticket.description}
+                                        refreshControl={
+                                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                                        }
+                                    />
+                                </View>
+                            ) : (
+                                <View style={styles.errorContainer}>
+                                    <Text style={{...styles.errorItem, fontSize: 22}}>No tickets found.</Text>
+                                    <View style={styles.errorItem}>
+                                        <Button
+                                            title="Try again"
+                                            onPress={() => props.getTicketList(assetName)}
+                                            color={Colors.primary}
+                                        />
+                                    </View>
+                                </View>
+                            )}
                     </View>
                 )}
         </View>
@@ -89,9 +106,15 @@ TicketsList.navigationOptions = ({navigation}) => ({
         color: Colors.fontLight
     },
     headerRight: (
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
-            <Icon name="home" style={styles.navigationItem} color={Colors.fontLight}/>
-        </TouchableWithoutFeedback>
+        <View style={styles.headerRightContainer}>
+            <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('CreateTicket', navigation.getParam('assetName'))}>
+                <Icon name="plus" style={styles.navigationItem} color={Colors.fontLight}/>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
+                <Icon name="home" style={styles.navigationItem} color={Colors.fontLight}/>
+            </TouchableWithoutFeedback>
+        </View>
     )
 });
 

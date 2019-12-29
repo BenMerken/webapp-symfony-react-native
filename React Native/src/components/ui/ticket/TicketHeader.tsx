@@ -9,6 +9,7 @@ type Props = {
     numberOfVotes: number;
     description: string;
     upvoteTicket: (id: number) => void;
+    isUpvotingTicket: boolean
 };
 
 const TicketHeader: React.FunctionComponent<Props> = (ticket): JSX.Element => (
@@ -24,8 +25,9 @@ const TicketHeader: React.FunctionComponent<Props> = (ticket): JSX.Element => (
             <View style={styles.upvoteButton}>
                 <Button
                     onPress={() => ticket.upvoteTicket(ticket.id)}
-                    title={"Upvote Ticket"}
+                    title={ticket.isUpvotingTicket ? 'Upvoting...' : 'Upvote ticket'}
                     color={Colors.primary}
+                    disabled={ticket.isUpvotingTicket}
                 />
             </View>
         </View>

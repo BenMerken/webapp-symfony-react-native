@@ -26,5 +26,15 @@ export const styles = StyleSheet.create({
     navigationItem: {
         fontSize: 20,
         margin: 14
+    },
+    errorContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 16,
+        marginVertical: 32
+    },
+    errorItem: {
+        flex: 1
     }
 });

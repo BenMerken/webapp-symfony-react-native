@@ -1,4 +1,4 @@
-import {Ticket} from "../../data";
+import {Ticket, TicketForCreate} from "../../data";
 import axios from "axios";
 import {Reducer} from "react";
 import {ToastAndroid} from 'react-native';
@@ -24,6 +24,10 @@ const UPVOTE_TICKET_FAIL = 'PXLAssetManagementTool/room/UPVOTE_TICKET_FAIL';
 const FILTER_TICKET_LIST = 'PXLAssetManagementTool/room/FILTER_TICKET_LIST';
 const FILTER_TICKET_LIST_SUCCESS = 'PXLAssetManagementTool/room/FILTER_TICKET_LIST_SUCCESS';
 const FILTER_TICKET_LIST_FAIL = 'PXLAssetManagementTool/room/FILTER_TICKET_LIST_LIST';
+
+const CREATE_TICKET = 'PXLAssetManagementTool/room/CREATE_TICKET';
+const CREATE_TICKET_SUCCESS = 'PXLAssetManagementTool/room/CREATE_TICKET_SUCCESS';
+const CREATE_TICKET_FAIL = 'PXLAssetManagementTool/room/CREATE_TICKET_FAIL';
 
 // -- Action Creators ---
 
@@ -64,7 +68,7 @@ type UpvoteTicketAction = {
 
 type UpvoteTicketActionSuccess = {
     type: typeof UPVOTE_TICKET_SUCCESS;
-    payload: { data: number };
+    payload: number;
 };
 
 type UpvoteTicketActionFail = {
@@ -87,6 +91,21 @@ type FilterTicketListActionFail = {
     payload: [];
 };
 
+type CreateTicketAction = {
+    type: typeof CREATE_TICKET;
+    payload: any;
+};
+
+type CreateTicketActionSuccess = {
+    type: typeof CREATE_TICKET_SUCCESS;
+    payload: any
+};
+
+type CreateTicketActionFail = {
+    type: typeof CREATE_TICKET_FAIL;
+    payload: {};
+};
+
 type ActionTypes =
     | GetTicketListAction
     | GetTicketListActionSuccess
@@ -99,7 +118,10 @@ type ActionTypes =
     | UpvoteTicketActionFail
     | FilterTicketListAction
     | FilterTicketListActionSuccess
-    | FilterTicketListActionFail;
+    | FilterTicketListActionFail
+    | CreateTicketAction
+    | CreateTicketActionSuccess
+    | CreateTicketActionFail;
 
 // --- State Type ---
 
@@ -111,6 +133,7 @@ type  TicketState = {
     isUpvotingTicket: boolean;
     filteredList: Ticket[];
     isFilteringList: boolean;
+    isCreating: boolean;
 };
 
 // --- Action Creators ---
@@ -190,7 +213,7 @@ const setIsUpvotingTicket = (): UpvoteTicketAction => ({
 
 const upvoteTicketSuccess = (id: number): UpvoteTicketActionSuccess => ({
     type: UPVOTE_TICKET_SUCCESS,
-    payload: {data: id}
+    payload: id
 });
 
 const upvoteTicketFail = (): UpvoteTicketActionFail => ({
@@ -224,6 +247,42 @@ const filterTicketListFail = (): FilterTicketListActionFail => ({
     payload: []
 });
 
+export const createTicket = (assetName: string, ticket: TicketForCreate) => {
+    return async dispatch => {
+        dispatch(setIsCreatingTicket());
+        try {
+            await axios.post(`${BASE_URL}?assetName=${assetName}`, ticket);
+            dispatch(createTicketSuccess());
+            ToastAndroid.show('Ticket successfully created.', ToastAndroid.SHORT);
+            dispatch(getTicketList(assetName));
+        } catch (error) {
+            dispatch(createTicketFail());
+            if (error.message.includes('400')) {
+                ToastAndroid.show('Your ticket data contained invalid data.', ToastAndroid.SHORT)
+            } else if (error.message.includes('500')) {
+                ToastAndroid.show('The server experienced an error. Please, try again later.', ToastAndroid.LONG)
+            } else {
+                ToastAndroid.show('An error occurred.', ToastAndroid.SHORT)
+            }
+        }
+    };
+};
+
+const setIsCreatingTicket = (): CreateTicketAction => ({
+    type: CREATE_TICKET,
+    payload: {}
+});
+
+const createTicketSuccess = () => ({
+    type: CREATE_TICKET_SUCCESS,
+    payload: {}
+});
+
+const createTicketFail = () => ({
+    type: CREATE_TICKET_FAIL,
+    payload: {}
+});
+
 // -- Reducer ---
 
 const reducer: Reducer<TicketState, ActionTypes> = (
@@ -234,7 +293,8 @@ const reducer: Reducer<TicketState, ActionTypes> = (
         isLoadingDetail: true,
         isUpvotingTicket: false,
         filteredList: [],
-        isFilteringList: false
+        isFilteringList: false,
+        isCreating: false
     },
     action
 ) => {
@@ -256,10 +316,14 @@ const reducer: Reducer<TicketState, ActionTypes> = (
         case UPVOTE_TICKET_SUCCESS:
             return {
                 ...state,
-                list: state.list.map(ticket => ticket.id === action.payload.data ? {
-                    ...ticket,
-                    numberOfVotes: ticket.numberOfVotes + 1
-                } : {...ticket}),
+                list: state.list.map(ticket => ticket.id === action.payload
+                    ? {
+                        ...ticket, numberOfVotes: ticket.numberOfVotes + 1
+                    } : {...ticket}),
+                filteredList: state.filteredList.map(ticket => ticket.id === action.payload
+                    ? {
+                        ...ticket, numberOfVotes: ticket.numberOfVotes + 1
+                    } : {...ticket}),
                 detail: {...state.detail, numberOfVotes: state.detail.numberOfVotes + 1},
                 isUpvotingTicket: false
             };
@@ -275,6 +339,12 @@ const reducer: Reducer<TicketState, ActionTypes> = (
             };
         case FILTER_TICKET_LIST_FAIL:
             return {...state, isFilteringList: false};
+        case CREATE_TICKET:
+            return {...state, isCreating: true};
+        case CREATE_TICKET_SUCCESS:
+            return {...state, isCreating: false};
+        case CREATE_TICKET_FAIL:
+            return {...state, isCreating: false};
         default:
             return state;
     }

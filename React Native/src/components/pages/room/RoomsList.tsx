@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {View, Text, FlatList, RefreshControl, TouchableWithoutFeedback} from "react-native";
+import {View, Text, FlatList, RefreshControl, TouchableWithoutFeedback, Button} from "react-native";
 import {SearchBar} from "react-native-elements";
 import RoomPreview from '../../ui/room/RoomPreview';
 import {styles} from "./RoomsList.styles";
@@ -14,7 +14,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 type Props = {
     rooms: Room[];
     isLoading: boolean;
-    getRoomList: () => (dispatch: any) => Promise<void>;
+    getRoomList: () => (dispatch: any) => Promise<any>;
     filteredRooms: Room[];
     isFiltering: boolean;
     filterList: (name: string) => (dispatch: any) => Promise<any>;
@@ -50,27 +50,44 @@ const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
     const RenderSeparator = (): JSX.Element => <View style={styles.separator}/>;
 
     return (
-        <View>
+        <View style={styles.listContainer}>
             {props.isLoading
                 ? (<Text>Loading rooms...</Text>)
                 : (
-                    <View>
-                        <SearchBar
-                            placeholder="Enter room name..."
-                            onChangeText={updateFilter}
-                            value={filter}
-                        />
-                        <FlatList
-                            data={props.filteredRooms}
-                            renderItem={renderItem}
-                            ItemSeparatorComponent={RenderSeparator}
-                            keyExtractor={room => room.name}
-                            refreshControl={
-                                <RefreshControl
-                                    refreshing={refreshing} onRefresh={onRefresh}
-                                />
-                            }
-                        />
+                    <View style={styles.listContainer}>
+                        {props.rooms.length !== 0
+                            ? (
+                                <View>
+                                    <SearchBar
+                                        placeholder="Enter room name..."
+                                        onChangeText={updateFilter}
+                                        value={filter}
+                                    />
+                                    <FlatList
+                                        data={props.filteredRooms}
+                                        renderItem={renderItem}
+                                        ItemSeparatorComponent={RenderSeparator}
+                                        keyExtractor={room => room.name}
+                                        refreshControl={
+                                            <RefreshControl
+                                                refreshing={refreshing} onRefresh={onRefresh}
+                                            />
+                                        }
+                                    />
+                                </View>
+                            ) : (
+                                <View style={styles.errorContainer}>
+                                    <Text style={{...styles.errorItem, fontSize: 22}}>No rooms found.</Text>
+                                    <View style={styles.errorItem}>
+                                        <Button
+                                            title="Try again"
+                                            onPress={() =>props.getRoomList()}
+                                            color={Colors.primaryDark}
+                                        />
+                                    </View>
+                                </View>
+                            )
+                        }
                     </View>
                 )}
         </View>
@@ -87,7 +104,7 @@ RoomsList.navigationOptions = ({navigation}) => ({
     },
     headerRight: (
         <TouchableWithoutFeedback onPress={() => navigation.navigate('RoomsByHappinessScore')}>
-            <Icon name="filter" style={styles.navigationItem} color={Colors.fontDark} />
+            <Icon name="filter" style={styles.navigationItem} color={Colors.fontDark}/>
         </TouchableWithoutFeedback>
     )
 });

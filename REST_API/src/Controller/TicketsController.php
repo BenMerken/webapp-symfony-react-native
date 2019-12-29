@@ -73,7 +73,7 @@ class TicketsController extends AbstractController
     }
 
     /**
-     * @Route("/tickets", methods={"POST"}, name="createTicketForAsset")
+     * @Route("/tickets/", methods={"POST"}, name="createTicketForAsset")
      */
     public function createTicketForAsset(Request $request)
     {
