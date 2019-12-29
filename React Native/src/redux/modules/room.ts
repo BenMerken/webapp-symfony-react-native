@@ -198,7 +198,7 @@ export const getRoomListByHappinessScore = (happinessScore: number) => {
     return async dispatch => {
         dispatch(setIsLoadingListByHappinessScore());
         try {
-            const response = await axios.get(`${BASE_URL}?lowerThanScore=${happinessScore}`);
+            const response = await axios.get(`${BASE_URL}?lowerThanScore=${happinessScore ? happinessScore : -1}`);
             dispatch(getRoomListByHappinessScoreSuccess(response.data));
             ToastAndroid.show('Search completed successfully.', ToastAndroid.SHORT)
         } catch (error) {

@@ -76,7 +76,7 @@ const RoomsByHappinessScoreList: React.FunctionComponent<Props> & { navigationOp
 };
 
 RoomsByHappinessScoreList.navigationOptions = () => ({
-    title: 'Filter rooms by happiness score',
+    title: 'Happiness score filter',
     headerStyle: {
         backgroundColor: Colors.primary
     },
