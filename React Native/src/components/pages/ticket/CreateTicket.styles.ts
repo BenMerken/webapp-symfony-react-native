@@ -2,18 +2,19 @@ import {StyleSheet} from "react-native";
 import {Colors} from "../../../styles/_colors";
 
 export const styles = StyleSheet.create({
-    separator: {
-        marginHorizontal: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.listItemSeparator
-    },
-    ticketContainer: {
-        margin: 8
-    },
-    headerRightContainer: {
+    formContainer: {
         flex: 1,
-        flexDirection: 'row'
-
+        padding: 8
+    },
+    input: {
+        flex: 1,
+        borderBottomColor: Colors.accentLight,
+        borderBottomWidth: 1,
+        textAlignVertical: 'top'
+    },
+    lastInput: {
+        flex: 1,
+        textAlignVertical: 'top'
     },
     navigationItem: {
         flex: 1,
