@@ -202,7 +202,6 @@ export const getRoomListByHappinessScore = (happinessScore: number) => {
             dispatch(getRoomListByHappinessScoreSuccess(response.data));
             ToastAndroid.show('Search completed successfully.', ToastAndroid.SHORT)
         } catch (error) {
-            console.log(error);
             dispatch(getRoomListByHappinessScoreFail());
             ToastAndroid.show('An error occurred.', ToastAndroid.SHORT);
         }

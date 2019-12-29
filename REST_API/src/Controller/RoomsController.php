@@ -23,7 +23,7 @@ class RoomsController extends AbstractController
     public function getRooms(Request $request)
     {
         $statuscode = 200;
-        $rooms = null;
+        $rooms = [];
 
         try {
             $score = (int)$request->query->get('lowerThanScore');
@@ -33,9 +33,6 @@ class RoomsController extends AbstractController
                 $rooms = $this->roomModel->getRooms();
             }
 
-            if ($rooms == null) {
-                $statuscode = 404;
-            }
         } catch (\InvalidArgumentException $exception) {
             $statuscode = 400;
         } catch (\PDOException $exception) {

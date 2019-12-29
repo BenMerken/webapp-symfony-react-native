@@ -48,6 +48,7 @@ const RoomsByHappinessScoreList: React.FunctionComponent<Props> & { navigationOp
                     <Button
                         title="Search"
                         onPress={() => props.getRoomList(Number.parseInt(filter))}
+                        color={Colors.primary}
                     />
                 </View>
                 <View style={styles.roomsListContainer}>
@@ -79,13 +80,13 @@ const RoomsByHappinessScoreList: React.FunctionComponent<Props> & { navigationOp
 RoomsByHappinessScoreList.navigationOptions = () => ({
     title: 'Filter rooms by happiness score',
     headerStyle: {
-        backgroundColor: Colors.primaryDark
+        backgroundColor: Colors.primary
     },
     headerTitleStyle: {
-        color: Colors.fontLight
+        color: Colors.fontDark
     },
     headerBackTitleStyle: {
-        color: Colors.fontLight
+        color: Colors.fontDark
     },
 });
 
