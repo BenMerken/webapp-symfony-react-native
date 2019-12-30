@@ -20,9 +20,9 @@ const LOAD_ROOM_LIST = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST';
 const LOAD_ROOM_LIST_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_SUCCESS';
 const LOAD_ROOM_LIST_FAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_FAIL';
 
-const LOAD_ROOM_DETAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL';
-const LOAD_ROOM_DETAIL_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL_SUCCESS';
-const LOAD_ROOM_DETAIL_FAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_DETAIL_FAIL';
+const LOAD_HAPPINESS_SCORE = 'PXLAssetManagementTool/room/LOAD_HAPPINESS_SCORE';
+const LOAD_HAPPINESS_SCORE_SUCCESS = 'PXLAssetManagementTool/room/LOAD_HAPPINESS_SCORE_SUCCESS';
+const LOAD_HAPPINESS_SCORE_FAIL = 'PXLAssetManagementTool/room/LOAD_HAPPINESS_SCORE_FAIL';
 
 const FILTER_ROOM_LIST = 'PXLAssetManagementTool/room/FILTER_ROOM_LIST';
 const FILTER_ROOM_LIST_SUCCESS = 'PXLAssetManagementTool/room/FILTER_ROOM_LIST_SUCCESS';
@@ -51,18 +51,18 @@ type GetRoomListActionFail = {
     payload: [];
 };
 
-type GetRoomDetailAction = {
-    type: typeof LOAD_ROOM_DETAIL;
+type GetHappinessScoreAction = {
+    type: typeof LOAD_HAPPINESS_SCORE;
     payload: any
 };
 
-type GetRoomDetailActionSuccess = {
-    type: typeof LOAD_ROOM_DETAIL_SUCCESS;
-    payload: Room
+type GetHappinessScoreActionSuccess = {
+    type: typeof LOAD_HAPPINESS_SCORE_SUCCESS;
+    payload: number
 };
 
-type GetRoomDetailActionFail = {
-    type: typeof LOAD_ROOM_DETAIL_FAIL;
+type GetHappinessScoreActionFail = {
+    type: typeof LOAD_HAPPINESS_SCORE_FAIL;
     payload: {}
 };
 
@@ -115,9 +115,9 @@ type ActionTypes =
     | GetRoomListAction
     | GetRoomListActionSuccess
     | GetRoomListActionFail
-    | GetRoomDetailAction
-    | GetRoomDetailActionSuccess
-    | GetRoomDetailActionFail
+    | GetHappinessScoreAction
+    | GetHappinessScoreActionSuccess
+    | GetHappinessScoreActionFail
     | FilterRoomListAction
     | FilterRoomListActionSuccess
     | FilterRoomListActionFail
@@ -133,8 +133,8 @@ type ActionTypes =
 type RoomState = {
     list: Room[];
     isLoadingList: boolean;
-    detail: Room;
-    isLoadingDetail: boolean;
+    happinessScore: number;
+    isLoadingHappinessScore: boolean;
     filteredList: Room[];
     isFilteringList: boolean;
     listByHappinessScore: Room[];
@@ -171,30 +171,30 @@ const getRoomListFail = (): GetRoomListActionFail => ({
     payload: []
 });
 
-export const getRoom = (name: string) => {
+export const getHappinessScore = (name: string) => {
     return async dispatch => {
-        dispatch(setIsLoadingDetail());
+        dispatch(isLoadingHappinessScore());
         try {
             const response = await axios.get(BASE_URL + name);
-            dispatch(getRoomDetailSuccess(response.data));
+            dispatch(getHappinessScoreSuccess(response.data['happinessScore']));
         } catch (error) {
-            dispatch(getRoomDetailFail())
+            dispatch(getHappinessScoreFail())
         }
     };
 };
 
-const setIsLoadingDetail = (): GetRoomDetailAction => ({
-    type: LOAD_ROOM_DETAIL,
+const isLoadingHappinessScore = (): GetHappinessScoreAction => ({
+    type: LOAD_HAPPINESS_SCORE,
     payload: {}
 });
 
-const getRoomDetailSuccess = (room: Room): GetRoomDetailActionSuccess => ({
-    type: LOAD_ROOM_DETAIL_SUCCESS,
-    payload: room
+const getHappinessScoreSuccess = (happinessScore: number): GetHappinessScoreActionSuccess => ({
+    type: LOAD_HAPPINESS_SCORE_SUCCESS,
+    payload: happinessScore
 });
 
-const getRoomDetailFail = (): GetRoomDetailActionFail => ({
-    type: LOAD_ROOM_DETAIL_FAIL,
+const getHappinessScoreFail = (): GetHappinessScoreActionFail => ({
+    type: LOAD_HAPPINESS_SCORE_FAIL,
     payload: {}
 });
 
@@ -310,8 +310,8 @@ const reducer: Reducer<RoomState, ActionTypes> = (
     state = {
         list: [],
         isLoadingList: true,
-        detail: null,
-        isLoadingDetail: true,
+        happinessScore: null,
+        isLoadingHappinessScore: true,
         filteredList: [],
         isFilteringList: false,
         listByHappinessScore: [],
@@ -327,12 +327,12 @@ const reducer: Reducer<RoomState, ActionTypes> = (
             return {...state, list: action.payload, filteredList: action.payload, isLoadingList: false};
         case LOAD_ROOM_LIST_FAIL:
             return {...state, list: action.payload, isLoadingList: false};
-        case LOAD_ROOM_DETAIL:
-            return {...state, isLoadingDetail: true};
-        case LOAD_ROOM_DETAIL_SUCCESS:
-            return {...state, detail: action.payload, isLoadingDetail: false};
-        case LOAD_ROOM_DETAIL_FAIL:
-            return {...state, isLoadingDetail: false};
+        case LOAD_HAPPINESS_SCORE:
+            return {...state, isLoadingHappinessScore: true};
+        case LOAD_HAPPINESS_SCORE_SUCCESS:
+            return {...state, happinessScore: action.payload, isLoadingHappinessScore: false};
+        case LOAD_HAPPINESS_SCORE_FAIL:
+            return {...state, isLoadingHappinessScore: false};
         case FILTER_ROOM_LIST:
             return {...state, isFilteringList: true};
         case FILTER_ROOM_LIST_SUCCESS:
@@ -360,7 +360,7 @@ const reducer: Reducer<RoomState, ActionTypes> = (
                 filteredList: state.filteredList.map(room => room.name === action.payload.roomName
                     ? {...room, happinessScore: room.happinessScore + action.payload.toAddOrSubtract}
                     : {...room}),
-                detail: {...state.detail, happinessScore: state.detail.happinessScore + action.payload.toAddOrSubtract},
+                happinessScore: state.happinessScore + action.payload.toAddOrSubtract,
                 isUpdatingHappinessScore: false
             };
         default:

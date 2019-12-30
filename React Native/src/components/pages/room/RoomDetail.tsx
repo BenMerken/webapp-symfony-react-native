@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Asset, Room} from '../../../data';
+import {Asset} from '../../../data';
 import {useNavigation} from '../../../hooks';
 import {connect} from 'react-redux';
-import {getRoom, updateRoomHappinessScore} from "../../../redux/modules/room";
+import {getHappinessScore, updateRoomHappinessScore} from "../../../redux/modules/room";
 import {filterAssetList, getAssetList} from "../../../redux/modules/asset";
 import {View, Text, FlatList, TouchableWithoutFeedback, RefreshControl, Button} from "react-native";
 import {SearchBar, Overlay} from "react-native-elements";
@@ -15,9 +15,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import RoomHappinessScoreDropdown from "../../ui/room/RoomHappinessScoreDropDown";
 
 type Props = {
-    room: Room;
-    isLoadingRoom: boolean;
-    getRoom: (name: string) => (dispatch: any) => Promise<void>;
+    happinessScore: number,
+    isLoadingHappinessScore: boolean;
+    getHappinessScore: (name: string) => (dispatch: any) => Promise<void>;
     assets: Asset[];
     isLoadingAssets: boolean;
     getAssetList: (id: number) => (dispatch: any) => Promise<void>
@@ -38,14 +38,14 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
     const id = navigation.state.params.roomId;
 
     useEffect(() => {
-        props.getRoom(name);
+        props.getHappinessScore(name);
         props.getAssetList(id);
         navigation.setParams({setOverlayVisible});
     }, [name, id]);
 
     const onRefresh = () => {
         setRefreshing(false);
-        props.getRoom(name);
+        props.getHappinessScore(name);
         props.getAssetList(id);
     };
 
@@ -64,7 +64,7 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
 
     return (
         <View style={styles.bodyContainer}>
-            {props.isLoadingRoom || props.isLoadingAssets
+            {props.isLoadingHappinessScore || props.isLoadingAssets
                 ? (
                     <Text>Loading room and assets...</Text>
                 )
@@ -79,7 +79,7 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
                                         value={filter}
                                     />
                                     <View style={styles.headerContainer}>
-                                        <RoomHeader {...props.room}/>
+                                        <RoomHeader name={name} happinessScore={props.happinessScore}/>
                                     </View>
                                     <FlatList
                                         data={props.filteredAssets}
@@ -94,7 +94,7 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
                             ) : (
                                 <View style={styles.errorContainer}>
                                     <View style={styles.headerContainer}>
-                                        <RoomHeader {...props.room}/>
+                                        <RoomHeader name={name} happinessScore={props.happinessScore}/>
                                     </View>
                                     <Text style={{...styles.errorItem, fontSize: 22}}>No assets found.</Text>
                                     <View style={styles.errorItem}>
@@ -156,8 +156,8 @@ RoomDetail.navigationOptions = ({navigation}) => ({
 });
 
 const mapStateToProps = state => ({
-    room: state.room.detail,
-    isLoadingRoom: state.room.isLoadingDetail,
+    happinessScore: state.room.happinessScore,
+    isLoadingHappinessScore: state.room.isLoadingHappinessScore,
     assets: state.asset.list,
     isLoadingAssets: state.asset.isLoadingList,
     filteredAssets: state.asset.filteredList,
@@ -165,7 +165,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    getRoom: bindActionCreators(getRoom, dispatch),
+    getHappinessScore: bindActionCreators(getHappinessScore, dispatch),
     getAssetList: bindActionCreators(getAssetList, dispatch),
     filterList: bindActionCreators(filterAssetList, dispatch),
     updateHappinessScore: bindActionCreators(updateRoomHappinessScore, dispatch)
