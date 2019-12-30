@@ -257,7 +257,7 @@ export const updateRoomHappinessScore = (roomName: string, happyOrNot: string) =
     return async dispatch => {
         dispatch(setIsUpdatingRoomHappinessScore());
         try {
-            await axios.patch(`${BASE_URL}${roomName}${happyOrNot}`);
+            await axios.patch(`${BASE_URL}${roomName}/${happyOrNot}`);
             let toAddOrSubtract = 0;
             switch (happyOrNot) {
                 case HAPPY:
@@ -273,7 +273,7 @@ export const updateRoomHappinessScore = (roomName: string, happyOrNot: string) =
                     toAddOrSubtract = -2;
             }
             dispatch(updateRoomHappinessScoreSuccess(roomName, toAddOrSubtract));
-            ToastAndroid.show('', ToastAndroid.SHORT);
+            ToastAndroid.show('Happiness score updated successfully.', ToastAndroid.SHORT);
         } catch (error) {
             dispatch(updateRoomHappinessScoreFail());
             if (error.message.includes('400')) {
