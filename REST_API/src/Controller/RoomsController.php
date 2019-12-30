@@ -33,6 +33,10 @@ class RoomsController extends AbstractController
                 $rooms = $this->roomModel->getRooms();
             }
 
+            if (count($rooms) === 0) {
+                $statuscode = 404;
+            }
+
         } catch (\InvalidArgumentException $exception) {
             $statuscode = 400;
         } catch (\PDOException $exception) {
