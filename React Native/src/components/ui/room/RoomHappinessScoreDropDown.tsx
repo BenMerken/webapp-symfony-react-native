@@ -4,7 +4,7 @@ import RoomHappinessScoreOption from "./RoomHappinessScoreOption";
 
 type Props = {
     roomName: string;
-    updateHappinessScore: (roomName: string, toAddOrSubtract: number) => void;
+    updateHappinessScore: (roomName: string, happyOrNot: string) => void;
 };
 
 const RoomHappinessScoreDropdown: React.FunctionComponent<Props> = (props): JSX.Element => {
@@ -13,28 +13,28 @@ const RoomHappinessScoreDropdown: React.FunctionComponent<Props> = (props): JSX.
             <View>
                 <RoomHappinessScoreOption
                     roomName={props.roomName}
-                    toAddOrSubtract={2}
+                    happyOrNot={'happy'}
                     icon={'smile-o'}
                     text={'Happy'}
                     updateHappinessScore={props.updateHappinessScore}
                 />
                 <RoomHappinessScoreOption
                     roomName={props.roomName}
-                    toAddOrSubtract={1}
+                    happyOrNot={'somewhatHappy'}
                     icon={'smile-o'}
                     text={'Somewhat happy'}
                     updateHappinessScore={props.updateHappinessScore}
                 />
                 <RoomHappinessScoreOption
                     roomName={props.roomName}
-                    toAddOrSubtract={-1}
+                    happyOrNot={'somewhatUnhappy'}
                     icon={'meh-o'}
                     text={'Somewhat unhappy'}
                     updateHappinessScore={props.updateHappinessScore}
                 />
                 <RoomHappinessScoreOption
                     roomName={props.roomName}
-                    toAddOrSubtract={-2}
+                    happyOrNot={'unhappy'}
                     icon={'frown-o'}
                     text={'Unhappy'}
                     updateHappinessScore={props.updateHappinessScore}

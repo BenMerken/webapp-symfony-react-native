@@ -4,15 +4,15 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 type Props = {
     roomName: string;
-    toAddOrSubtract: number;
+    happyOrNot: string;
     icon: string;
     text: string;
-    updateHappinessScore: (roomName: string, toAddOrSubtract: number) => void;
+    updateHappinessScore: (roomName: string, happyOrNot: string) => void;
 };
 
 const RoomHappinessScoreOption: React.FunctionComponent<Props> = (props): JSX.Element => {
     return (
-        <TouchableOpacity onPress={() => props.updateHappinessScore(props.roomName, props.toAddOrSubtract)}>
+        <TouchableOpacity onPress={() => props.updateHappinessScore(props.roomName, props.happyOrNot)}>
             <View>
                 <Icon name={props.icon}/>
                 <Text>{props.text}</Text>

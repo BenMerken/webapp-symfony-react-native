@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Asset, Room} from '../../../data';
 import {useNavigation} from '../../../hooks';
 import {connect} from 'react-redux';
-import {getRoom} from "../../../redux/modules/room";
+import {getRoom, updateRoomHappinessScore} from "../../../redux/modules/room";
 import {filterAssetList, getAssetList} from "../../../redux/modules/asset";
 import {View, Text, FlatList, TouchableWithoutFeedback, RefreshControl, Button} from "react-native";
 import {SearchBar, Overlay} from "react-native-elements";
@@ -24,7 +24,7 @@ type Props = {
     filteredAssets: Asset[];
     isFilteringList: boolean;
     filterList: (name: string) => (dispatch: any) => Promise<any>;
-    updateHappinessScore: (roomName: string, toAddOrSubtract: number) => (dispatch: any) => Promise<void>;
+    updateHappinessScore: (roomName: string, happyOrNot: string) => (dispatch: any) => Promise<void>;
 };
 
 const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } = (props): JSX.Element => {
@@ -167,7 +167,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     getRoom: bindActionCreators(getRoom, dispatch),
     getAssetList: bindActionCreators(getAssetList, dispatch),
-    filterList: bindActionCreators(filterAssetList, dispatch)
+    filterList: bindActionCreators(filterAssetList, dispatch),
+    updateHappinessScore: bindActionCreators(updateRoomHappinessScore, dispatch)
 });
 
 const RoomDetailPage = connect(mapStateToProps, mapDispatchToProps)(RoomDetail);
