@@ -33,6 +33,10 @@ class RoomsController extends AbstractController
                 $rooms = $this->roomModel->getRooms();
             }
 
+            if (count($rooms) === 0) {
+                $statuscode = 404;
+            }
+
         } catch (\InvalidArgumentException $exception) {
             $statuscode = 400;
         } catch (\PDOException $exception) {
@@ -46,14 +50,14 @@ class RoomsController extends AbstractController
      * @param $name
      * @return JsonResponse
      */
-    public function getRoomByName($name)
+    public function getHappinessScore($name)
     {
         $statuscode = 200;
         $room = null;
 
         try {
 
-            $room = $this->roomModel->getRoomByName($name);
+            $room = $this->roomModel->getHappinessScoreRoom($name);
 
             if ($room == null) {
                 $statuscode = 404;
