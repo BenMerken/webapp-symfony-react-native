@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {Ticket} from "../../../data";
-import {View, Text, FlatList, TouchableWithoutFeedback, RefreshControl, Button} from "react-native";
+import {ActivityIndicator, View, Text, FlatList, TouchableWithoutFeedback, RefreshControl, Button} from "react-native";
 import {SearchBar} from "react-native-elements";
 import {bindActionCreators} from "redux";
 import {filterTicketList, getTicketList} from "../../../redux/modules/ticket";
@@ -54,7 +54,13 @@ const TicketsList: React.FunctionComponent<Props> & { navigationOptions?: any } 
         <View style={styles.bodyContainer}>
             {props.isLoading
                 ? (
-                    <Text>Loading tickets...</Text>
+                    <View style={styles.errorContainer}>
+                        <ActivityIndicator
+                        size="large"
+                        color={Colors.primaryDark}
+                        />
+                        <Text>Loading tickets...</Text>
+                    </View>
                 )
                 : (
                     <View style={styles.bodyContainer}>

@@ -3,8 +3,10 @@ import {StyleSheet} from "react-native";
 export const styles = StyleSheet.create({
     loadingContainer: {
         flex: 1,
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
+        marginHorizontal: 16,
+        marginVertical: 32
     },
     bodyContainer: {
         flex: 1

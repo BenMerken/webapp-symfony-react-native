@@ -1,6 +1,6 @@
 import React from "react";
 import {bindActionCreators} from "redux";
-import {Button, Text, TextInput, TouchableWithoutFeedback, View} from "react-native";
+import {Button, TextInput, TouchableWithoutFeedback, View} from "react-native";
 import {connect} from 'react-redux';
 import {TicketForCreate} from "../../../data";
 import {createTicket} from "../../../redux/modules/ticket";
@@ -8,6 +8,7 @@ import {styles} from "./CreateTicket.styles";
 import {Colors} from "../../../styles/_colors";
 import {useNavigation} from "../../../hooks";
 import Icon from "react-native-vector-icons/FontAwesome";
+import {H2} from "../../ui";
 
 type Props = {
     postTicket: (assetName: string, ticket: TicketForCreate) => (dispatch: any) => Promise<void>
@@ -28,7 +29,7 @@ const CreateTicket: React.FunctionComponent<Props> & { navigationOptions?: any }
 
     return (
         <View style={styles.formContainer}>
-            <Text>Fill in this form to register a ticket for your problem:</Text>
+            <H2>Fill in this form to register a ticket for your problem:</H2>
             <TextInput
                 key="description"
                 style={styles.input}
