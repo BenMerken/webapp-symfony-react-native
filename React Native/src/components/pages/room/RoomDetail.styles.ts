@@ -16,6 +16,11 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    headerRightContainer: {
+    flex: 1,
+        flexDirection: 'row'
+
+},
     assetListContainer: {
         flex: 2,
         marginHorizontal: 16,
@@ -36,5 +41,13 @@ export const styles = StyleSheet.create({
     },
     errorItem: {
         flex: 1
+    },
+    roomHappinessScoreDropdown: {
+        flex: 1,
+        marginHorizontal: 16,
+        marginVertical: 16,
+        paddingHorizontal: 16,
+        paddingVertical: 16,
+        backgroundColor: '#FFF'
     }
 });

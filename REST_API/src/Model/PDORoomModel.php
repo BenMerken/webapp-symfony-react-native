@@ -90,7 +90,7 @@ class PDORoomModel implements RoomModel
             case 'somewhatHappy':
                 return 1;
                 break;
-            case 'somewhatUnHappy':
+            case 'somewhatUnhappy':
                 return -1;
                 break;
             case 'unhappy':

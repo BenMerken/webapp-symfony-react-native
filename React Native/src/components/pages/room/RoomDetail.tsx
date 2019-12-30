@@ -2,16 +2,17 @@ import React, {useEffect, useState} from 'react';
 import {Asset, Room} from '../../../data';
 import {useNavigation} from '../../../hooks';
 import {connect} from 'react-redux';
-import {getRoom} from "../../../redux/modules/room";
+import {getRoom, updateRoomHappinessScore} from "../../../redux/modules/room";
 import {filterAssetList, getAssetList} from "../../../redux/modules/asset";
 import {View, Text, FlatList, TouchableWithoutFeedback, RefreshControl, Button} from "react-native";
-import {SearchBar} from "react-native-elements";
+import {SearchBar, Overlay} from "react-native-elements";
 import {styles} from "./RoomDetail.styles";
 import {Colors} from "../../../styles/_colors";
 import {bindActionCreators} from 'redux';
 import RoomHeader from "../../ui/room/RoomHeader";
 import AssetPreview from "../../ui/asset/AssetPreview";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import RoomHappinessScoreDropdown from "../../ui/room/RoomHappinessScoreDropDown";
 
 type Props = {
     room: Room;
@@ -23,11 +24,14 @@ type Props = {
     filteredAssets: Asset[];
     isFilteringList: boolean;
     filterList: (name: string) => (dispatch: any) => Promise<any>;
+    updateHappinessScore: (roomName: string, happyOrNot: string) => (dispatch: any) => Promise<void>;
 };
 
 const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } = (props): JSX.Element => {
     const [filter, setFilter] = useState('');
     const [refreshing, setRefreshing] = useState(false);
+    const [overlayVisible, setOverlayVisible] = useState(false);
+
     const navigation = useNavigation();
     const navigateTicket = (assetName: string) => navigation.navigate('Tickets', {assetName});
     const name = navigation.state.params.name;
@@ -36,6 +40,7 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
     useEffect(() => {
         props.getRoom(name);
         props.getAssetList(id);
+        navigation.setParams({setOverlayVisible});
     }, [name, id]);
 
     const onRefresh = () => {
@@ -103,8 +108,21 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
                             )
                         }
                     </View>
-
-                )}
+                )
+            }
+            {overlayVisible
+                ? (
+                    <Overlay
+                        isVisible={overlayVisible}
+                        onBackdropPress={() => setOverlayVisible(false)}
+                    >
+                        <RoomHappinessScoreDropdown
+                            roomName={name}
+                            updateHappinessScore={props.updateHappinessScore}
+                        />
+                    </Overlay>
+                ) : null
+            }
         </View>
     );
 };
@@ -121,9 +139,19 @@ RoomDetail.navigationOptions = ({navigation}) => ({
         color: Colors.fontLight
     },
     headerRight: (
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
-            <Icon name="home" style={styles.navigationItem} color={Colors.fontLight}/>
-        </TouchableWithoutFeedback>
+        <View style={styles.headerRightContainer}>
+            <TouchableWithoutFeedback
+                onPress={() => navigation.getParam('setOverlayVisible')(true)}
+                style={styles.navigationItem}
+            >
+                <Icon name="smile-o" style={styles.navigationItem} color={Colors.fontLight}/>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('Home')}
+            >
+                <Icon name="home" style={styles.navigationItem} color={Colors.fontLight}/>
+            </TouchableWithoutFeedback>
+        </View>
     )
 });
 
@@ -139,7 +167,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     getRoom: bindActionCreators(getRoom, dispatch),
     getAssetList: bindActionCreators(getAssetList, dispatch),
-    filterList: bindActionCreators(filterAssetList, dispatch)
+    filterList: bindActionCreators(filterAssetList, dispatch),
+    updateHappinessScore: bindActionCreators(updateRoomHappinessScore, dispatch)
 });
 
 const RoomDetailPage = connect(mapStateToProps, mapDispatchToProps)(RoomDetail);

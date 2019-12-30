@@ -3,6 +3,13 @@ import {Reducer} from "react";
 import axios from "axios";
 import {ToastAndroid} from 'react-native';
 
+// --- Application Constants
+
+const HAPPY = 'happy';
+const SOMEWHAT_HAPPY = 'somewhatHappy';
+const SOMEWHAT_UNHAPPY = 'somewhatUnhappy';
+const UNHAPPY = 'unhappy';
+
 // --- API ---
 
 const BASE_URL = 'http://localhost:8000/rooms/';
@@ -24,6 +31,10 @@ const FILTER_ROOM_LIST_FAIL = 'PXLAssetManagementTool/room/FILTER_ROOM_LIST_FAIL
 const LOAD_ROOM_LIST_BY_HAPPINESS_SCORE = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_BY_HAPPINESS_SCORE';
 const LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_SUCCESS = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_SUCCESS';
 const LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_FAIL = 'PXLAssetManagementTool/room/LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_FAIL';
+
+const UPDATE_ROOM_HAPPINESS_SCORE = 'PXLAssetManagementTool/room/UPDATE_ROOM_HAPPINESS_SCORE';
+const UPDATE_ROOM_HAPPINESS_SCORE_SUCCESS = 'PXLAssetManagementTool/room/UPDATE_ROOM_HAPPINESS_SCORE_SUCCESS';
+const UPDATE_ROOM_HAPPINESS_SCORE_FAIL = 'PXLAssetManagementTool/room/UPDATE_ROOM_HAPPINESS_SCORE_FAIL';
 
 type GetRoomListAction = {
     type: typeof LOAD_ROOM_LIST;
@@ -85,6 +96,21 @@ type GetRoomListByHappinessScoreActionFail = {
     payload: [];
 };
 
+type UpdateRoomHappinessScoreAction = {
+    type: typeof UPDATE_ROOM_HAPPINESS_SCORE,
+    payload: any
+};
+
+type UpdateRoomHappinessScoreActionSuccess = {
+    type: typeof UPDATE_ROOM_HAPPINESS_SCORE_SUCCESS,
+    payload: { roomName: string, toAddOrSubtract: number }
+};
+
+type UpdateRoomHappinessScoreActionFail = {
+    type: typeof UPDATE_ROOM_HAPPINESS_SCORE_FAIL,
+    payload: any
+};
+
 type ActionTypes =
     | GetRoomListAction
     | GetRoomListActionSuccess
@@ -97,7 +123,10 @@ type ActionTypes =
     | FilterRoomListActionFail
     | GetRoomListByHappinessScoreAction
     | GetRoomListByHappinessScoreActionSuccess
-    | GetRoomListByHappinessScoreActionFail;
+    | GetRoomListByHappinessScoreActionFail
+    | UpdateRoomHappinessScoreAction
+    | UpdateRoomHappinessScoreActionSuccess
+    | UpdateRoomHappinessScoreActionFail;
 
 // --- State Type ---
 
@@ -109,7 +138,8 @@ type RoomState = {
     filteredList: Room[];
     isFilteringList: boolean;
     listByHappinessScore: Room[];
-    isLoadingListByHappinessScore: boolean;
+    isLoadingListByHappinessScore: boolean
+    isUpdatingHappinessScore: boolean;
 };
 
 // --- Action Creators ---
@@ -198,7 +228,7 @@ export const getRoomListByHappinessScore = (happinessScore: number) => {
     return async dispatch => {
         dispatch(setIsLoadingListByHappinessScore());
         try {
-            const response = await axios.get(`${BASE_URL}?lowerThanScore=${happinessScore}`);
+            const response = await axios.get(`${BASE_URL}?lowerThanScore=${happinessScore ? happinessScore : -1}`);
             dispatch(getRoomListByHappinessScoreSuccess(response.data));
             ToastAndroid.show('Search completed successfully.', ToastAndroid.SHORT)
         } catch (error) {
@@ -223,6 +253,57 @@ const getRoomListByHappinessScoreFail = (): GetRoomListByHappinessScoreActionFai
     payload: []
 });
 
+export const updateRoomHappinessScore = (roomName: string, happyOrNot: string) => {
+    return async dispatch => {
+        dispatch(setIsUpdatingRoomHappinessScore());
+        try {
+            await axios.patch(`${BASE_URL}${roomName}/${happyOrNot}`);
+            let toAddOrSubtract = 0;
+            switch (happyOrNot) {
+                case HAPPY:
+                    toAddOrSubtract = 2;
+                    break;
+                case SOMEWHAT_HAPPY:
+                    toAddOrSubtract = 1;
+                    break;
+                case SOMEWHAT_UNHAPPY:
+                    toAddOrSubtract = -1;
+                    break;
+                case UNHAPPY:
+                    toAddOrSubtract = -2;
+            }
+            dispatch(updateRoomHappinessScoreSuccess(roomName, toAddOrSubtract));
+            ToastAndroid.show('Happiness score updated successfully.', ToastAndroid.SHORT);
+        } catch (error) {
+            dispatch(updateRoomHappinessScoreFail());
+            if (error.message.includes('400')) {
+                ToastAndroid.show('Your request contained invalid data.', ToastAndroid.SHORT);
+            } else if (error.message.includes('404')) {
+                ToastAndroid.show(`No room found with name ${roomName}.`, ToastAndroid.SHORT);
+            } else if (error.message.includes('500')) {
+                ToastAndroid.show('The server experienced an error. Please, try again later.', ToastAndroid.LONG);
+            } else {
+                ToastAndroid.show('An error occurred.', ToastAndroid.SHORT);
+            }
+        }
+    };
+};
+
+const setIsUpdatingRoomHappinessScore = (): UpdateRoomHappinessScoreAction => ({
+    type: UPDATE_ROOM_HAPPINESS_SCORE,
+    payload: {}
+});
+
+const updateRoomHappinessScoreSuccess = (roomName: string, toAddOrSubtract: number): UpdateRoomHappinessScoreActionSuccess => ({
+    type: UPDATE_ROOM_HAPPINESS_SCORE_SUCCESS,
+    payload: {roomName, toAddOrSubtract}
+});
+
+const updateRoomHappinessScoreFail = (): UpdateRoomHappinessScoreActionFail => ({
+    type: UPDATE_ROOM_HAPPINESS_SCORE_FAIL,
+    payload: {}
+});
+
 // --- Reducer ---
 
 const reducer: Reducer<RoomState, ActionTypes> = (
@@ -234,7 +315,8 @@ const reducer: Reducer<RoomState, ActionTypes> = (
         filteredList: [],
         isFilteringList: false,
         listByHappinessScore: [],
-        isLoadingListByHappinessScore: false
+        isLoadingListByHappinessScore: false,
+        isUpdatingHappinessScore: false
     },
     action
 ) => {
@@ -267,6 +349,20 @@ const reducer: Reducer<RoomState, ActionTypes> = (
             return {...state, listByHappinessScore: action.payload, isLoadingListByHappinessScore: false};
         case LOAD_ROOM_LIST_BY_HAPPINESS_SCORE_FAIL:
             return {...state, listByHappinessScore: action.payload, isLoadingListByHappinessScore: false};
+        case UPDATE_ROOM_HAPPINESS_SCORE:
+            return {...state, isUpdatingHappinessScore: true};
+        case UPDATE_ROOM_HAPPINESS_SCORE_SUCCESS:
+            return {
+                ...state,
+                list: state.list.map(room => room.name === action.payload.roomName
+                    ? {...room, happinessScore: room.happinessScore + action.payload.toAddOrSubtract}
+                    : {...room}),
+                filteredList: state.filteredList.map(room => room.name === action.payload.roomName
+                    ? {...room, happinessScore: room.happinessScore + action.payload.toAddOrSubtract}
+                    : {...room}),
+                detail: {...state.detail, happinessScore: state.detail.happinessScore + action.payload.toAddOrSubtract},
+                isUpdatingHappinessScore: false
+            };
         default:
             return state;
     }
