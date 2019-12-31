@@ -233,7 +233,13 @@ export const getRoomListByHappinessScore = (happinessScore: number) => {
             ToastAndroid.show('Search completed successfully.', ToastAndroid.SHORT)
         } catch (error) {
             dispatch(getRoomListByHappinessScoreFail());
-            ToastAndroid.show('An error occurred.', ToastAndroid.SHORT);
+            if (error.message.includes('404')) {
+                ToastAndroid.show('No rooms found.', ToastAndroid.SHORT);
+            } else if (error.message.includes('400')) {
+                ToastAndroid.show('Your input was invalid.', ToastAndroid.SHORT);
+            } else {
+                ToastAndroid.show('An error occurred.', ToastAndroid.SHORT);
+            }
         }
     };
 };

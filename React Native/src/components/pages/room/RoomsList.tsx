@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {View, Text, FlatList, RefreshControl, TouchableWithoutFeedback, Button} from "react-native";
+import {ActivityIndicator, View, Text, FlatList, RefreshControl, TouchableWithoutFeedback, Button} from "react-native";
 import {SearchBar} from "react-native-elements";
 import RoomPreview from '../../ui/room/RoomPreview';
 import {styles} from "./RoomsList.styles";
@@ -52,7 +52,15 @@ const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
     return (
         <View style={styles.listContainer}>
             {props.isLoading
-                ? (<Text>Loading rooms...</Text>)
+                ? (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator
+                            size="large"
+                            color={Colors.primary}
+                        />
+                        <Text>Loading rooms...</Text>
+                    </View>
+                )
                 : (
                     <View style={styles.listContainer}>
                         {props.rooms.length !== 0
@@ -81,7 +89,7 @@ const RoomsList: React.FunctionComponent<Props> & { navigationOptions?: any }
                                     <View style={styles.errorItem}>
                                         <Button
                                             title="Try again"
-                                            onPress={() =>props.getRoomList()}
+                                            onPress={() => props.getRoomList()}
                                             color={Colors.primaryDark}
                                         />
                                     </View>

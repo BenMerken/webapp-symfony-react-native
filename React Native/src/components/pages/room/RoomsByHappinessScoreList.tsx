@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, FlatList, Text, View} from "react-native";
+import {ActivityIndicator, Button, FlatList, Text, View} from "react-native";
 import {styles} from "./RoomsByHappinessScoreList.styles";
 import {Room} from "../../../data";
 import RoomFilterHeader from "../../ui/room/RoomFilterHeader";
@@ -46,7 +46,7 @@ const RoomsByHappinessScoreList: React.FunctionComponent<Props> & { navigationOp
                 />
                 <Button
                     title="Search"
-                    onPress={() => props.getRoomList(Number.parseInt(filter))}
+                    onPress={() => props.getRoomList(Number.parseInt(filter) ? Number.parseInt(filter) : 0)}
                     color={Colors.primaryDark}
                 />
             </View>
@@ -56,7 +56,13 @@ const RoomsByHappinessScoreList: React.FunctionComponent<Props> & { navigationOp
                         <View style={styles.noRoomsTextContainer}>
                             {props.isLoadingList
                                 ? (
-                                    <Text style={styles.noRoomsText}>Loading rooms...</Text>
+                                    <View>
+                                        <ActivityIndicator
+                                            size="large"
+                                            color={Colors.primary}
+                                        />
+                                        <Text style={styles.noRoomsText}>Loading rooms...</Text>
+                                    </View>
                                 ) : (
                                     <Text style={styles.noRoomsText}>No rooms to display.</Text>
                                 )

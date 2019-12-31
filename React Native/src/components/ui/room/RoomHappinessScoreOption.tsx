@@ -1,7 +1,8 @@
 import React from "react";
-import {Text, TouchableOpacity, View} from "react-native";
+import {TouchableOpacity, View} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {styles} from "./RoomHappinessScoreOption.styles";
+import {H3} from "../headers/TextHeaders";
 
 type Props = {
     roomName: string;
@@ -20,7 +21,7 @@ const RoomHappinessScoreOption: React.FunctionComponent<Props> = (props): JSX.El
         >
             <View style={styles.optionContainer}>
                 <Icon style={{...styles.icon, color: props.color}} name={props.icon}/>
-                <Text style={styles.text}>{props.text}</Text>
+                <H3>{props.text}</H3>
             </View>
         </TouchableOpacity>
     )

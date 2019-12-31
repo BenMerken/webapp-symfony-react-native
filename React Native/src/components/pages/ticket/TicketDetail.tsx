@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {View, Text, TouchableWithoutFeedback} from 'react-native';
+import {ActivityIndicator, View, Text, TouchableWithoutFeedback} from 'react-native';
 import {Ticket} from '../../../data';
 import {bindActionCreators} from 'redux';
 import {getTicket, upvoteTicket} from '../../../redux/modules/ticket';
@@ -30,11 +30,18 @@ const TicketDetail: React.FunctionComponent<Props> & { navigationOptions?: any }
         <View style={styles.bodyContainer}>
             {props.isLoadingTicket
                 ? (
-                    <Text>Loading ticket...</Text>
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator
+                            size="large"
+                            color={Colors.primaryDark}
+                        />
+                        <Text>Loading ticket...</Text>
+                    </View>
                 )
                 : (
                     <View style={styles.headerContainer}>
-                        <TicketHeader {...props.ticket} isUpvotingTicket={props.isUpvotingTicket} upvoteTicket={props.upvoteTicket}/>
+                        <TicketHeader {...props.ticket} isUpvotingTicket={props.isUpvotingTicket}
+                                      upvoteTicket={props.upvoteTicket}/>
                     </View>
                 )}
         </View>
@@ -54,7 +61,7 @@ TicketDetail.navigationOptions = ({navigation}) => ({
     },
     headerRight: (
         <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
-            <Icon name="home" style={styles.navigationItem} color={Colors.fontLight} />
+            <Icon name="home" style={styles.navigationItem} color={Colors.fontLight}/>
         </TouchableWithoutFeedback>
     )
 });

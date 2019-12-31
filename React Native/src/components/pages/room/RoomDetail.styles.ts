@@ -32,6 +32,13 @@ export const styles = StyleSheet.create({
         fontSize: 20,
         margin: 14
     },
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 16,
+        marginVertical: 32
+    },
     errorContainer: {
         flex: 1,
         alignItems: 'center',

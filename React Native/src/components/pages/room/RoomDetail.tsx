@@ -4,7 +4,7 @@ import {useNavigation} from '../../../hooks';
 import {connect} from 'react-redux';
 import {getHappinessScore, updateRoomHappinessScore} from "../../../redux/modules/room";
 import {filterAssetList, getAssetList} from "../../../redux/modules/asset";
-import {View, Text, FlatList, TouchableWithoutFeedback, RefreshControl, Button} from "react-native";
+import {ActivityIndicator, View, Text, FlatList, TouchableWithoutFeedback, RefreshControl, Button} from "react-native";
 import {SearchBar, Overlay} from "react-native-elements";
 import {styles} from "./RoomDetail.styles";
 import {Colors} from "../../../styles/_colors";
@@ -66,7 +66,13 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
         <View style={styles.bodyContainer}>
             {props.isLoadingHappinessScore || props.isLoadingAssets
                 ? (
-                    <Text>Loading room and assets...</Text>
+                    <View style={styles.errorContainer}>
+                        <ActivityIndicator
+                            size="large"
+                            color={Colors.primaryDark}
+                        />
+                        <Text>Loading room and assets...</Text>
+                    </View>
                 )
                 : (
                     <View style={styles.bodyContainer}>
