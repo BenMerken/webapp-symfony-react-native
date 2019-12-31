@@ -46,7 +46,7 @@ const RoomsByHappinessScoreList: React.FunctionComponent<Props> & { navigationOp
                 />
                 <Button
                     title="Search"
-                    onPress={() => props.getRoomList(Number.parseInt(filter) ? Number.parseInt(filter) : 0)}
+                    onPress={() => props.getRoomList(Number.parseInt(filter))}
                     color={Colors.primaryDark}
                 />
             </View>
