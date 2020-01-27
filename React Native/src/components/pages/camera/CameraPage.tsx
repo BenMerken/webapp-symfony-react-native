@@ -4,14 +4,16 @@ import {Camera} from "expo-camera";
 import * as Permissions from 'expo-permissions';
 import {Colors} from "../../../styles/_colors";
 import {styles} from "./CameraPage.styles";
+import CameraToolBar from "../../ui/camera/CameraToolBar";
 
 type Props = {
-    assetId: number
+    assetId: number,
 };
 
 const CameraPage: React.FunctionComponent<Props> & { navigationOptions: any } = (props): JSX.Element => {
     const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
-    const [hasPermissions, setHasPermissions] = useState(null);
+    const [flashType, setFlashType] = useState(Camera.Constants.FlashMode.off);
+    const [, setHasPermissions] = useState(null);
     let camera = null;
 
     useEffect(() => {
@@ -28,14 +30,35 @@ const CameraPage: React.FunctionComponent<Props> & { navigationOptions: any } = 
     };
 
     return (
-        <View>
-            <Camera
-                style={styles.cameraContainer}
-                type={cameraType}
-                ref={ref => {
-                    camera = ref;
-                }}
-            />
+        <View style={styles.container}>
+            <View>
+                <Camera
+                    style={styles.preview}
+                    type={cameraType}
+                    flashMode={flashType}
+                    ref={ref => {
+                        camera = ref;
+                    }}
+                    onTouchStart={() => snap()}
+                />
+            </View>
+            <View style={styles.toolBar}>
+                <CameraToolBar
+                    cameraType={cameraType}
+                    flashMode={flashType}
+                    setCameraType={() => setCameraType(
+                        cameraType === Camera.Constants.Type.back
+                            ? Camera.Constants.Type.front
+                            : Camera.Constants.Type.back
+                    )}
+                    setFlashType={() => setFlashType(
+                        flashType === Camera.Constants.FlashMode.on
+                            ? Camera.Constants.FlashMode.off
+                            : Camera.Constants.FlashMode.on
+                    )}
+                    snap={snap}
+                />
+            </View>
         </View>
     );
 };

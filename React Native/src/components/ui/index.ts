@@ -1,5 +1,6 @@
 export * from './asset/AssetPreview';
 export * from './asset/AssetPreviewBody';
+export * from './camera/CameraToolBar';
 export * from './details/CircleDetail';
 export * from './headers/TextHeaders';
 export * from './room/RoomFilterHeader';
