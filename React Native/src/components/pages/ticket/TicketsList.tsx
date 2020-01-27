@@ -10,6 +10,7 @@ import TicketPreview from "../../ui/ticket/TicketPreview";
 import {styles} from "./TicketsList.styles";
 import {Colors} from "../../../styles/_colors";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {Camera} from "expo-camera";
 
 type Props = {
     tickets: Ticket[];
@@ -116,6 +117,10 @@ TicketsList.navigationOptions = ({navigation}) => ({
             <TouchableWithoutFeedback
                 onPress={() => navigation.navigate('CreateTicket', navigation.getParam('assetName'))}>
                 <Icon name="plus" style={styles.navigationItem} color={Colors.fontLight}/>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+            onPress={() => navigation.navigate('Camera')}>
+                <Icon name="camera" style={styles.navigationItem} color={Colors.fontLight} />
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
                 <Icon name="home" style={styles.navigationItem} color={Colors.fontLight}/>
