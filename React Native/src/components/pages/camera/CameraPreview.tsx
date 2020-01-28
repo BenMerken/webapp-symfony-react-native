@@ -3,17 +3,24 @@ import {View, Text} from "react-native";
 import {Camera} from "expo-camera";
 import * as Permissions from 'expo-permissions';
 import {Colors} from "../../../styles/_colors";
-import {styles} from "./CameraPage.styles";
+import {styles} from "./CameraPreview.styles";
 import CameraToolBar from "../../ui/camera/CameraToolBar";
+import {bindActionCreators} from "redux";
+import {connect} from 'react-redux';
+import {addAssetPicture} from "../../../redux/modules/asset";
+import {AssetImage} from "../../../data";
+import {useNavigation} from "../../../hooks";
 
 type Props = {
-    assetId: number,
+    addAssetPicture: (picture: AssetImage) => (dispatch: any) => Promise<void>
 };
 
-const CameraPage: React.FunctionComponent<Props> & { navigationOptions: any } = (props): JSX.Element => {
+const CameraPreview: React.FunctionComponent<Props> & { navigationOptions: any } = (props): JSX.Element => {
     const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
     const [flashType, setFlashType] = useState(Camera.Constants.FlashMode.off);
     const [hasPermissions, setHasPermissions] = useState(null);
+    const navigation = useNavigation();
+    const assetId = navigation.state.params.assetId;
     let camera = null;
 
     useEffect(() => {
@@ -25,7 +32,8 @@ const CameraPage: React.FunctionComponent<Props> & { navigationOptions: any } = 
 
     const snap = async () => {
         if (camera) {
-            const photo = await camera.takePictureAsync();
+            const photo = await camera.takePictureAsync({base64: true});
+            props.addAssetPicture({assetId: assetId, bytes: photo.base64});
         }
     };
 
@@ -71,7 +79,7 @@ const CameraPage: React.FunctionComponent<Props> & { navigationOptions: any } = 
     );
 };
 
-CameraPage.navigationOptions = () => ({
+CameraPreview.navigationOptions = () => ({
     title: 'Asset photo',
     headerStyle: {
         backgroundColor: Colors.primaryDark
@@ -84,4 +92,10 @@ CameraPage.navigationOptions = () => ({
     },
 });
 
-export default CameraPage;
+const mapDispatchToPros = dispatch => ({
+    addAssetPicture: bindActionCreators(addAssetPicture, dispatch)
+});
+
+const CameraPreviewPage = connect(() => ({}), mapDispatchToPros)(CameraPreview);
+
+export default CameraPreviewPage;

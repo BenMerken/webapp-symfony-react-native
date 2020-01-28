@@ -30,7 +30,7 @@ const TicketsList: React.FunctionComponent<Props> & { navigationOptions?: any } 
 
     useEffect(() => {
         props.getTicketList(assetName);
-        navigation.setParams(assetName);
+        navigation.setParams(assetName, );
     }, [assetName]);
 
     const onRefresh = () => {
@@ -119,7 +119,7 @@ TicketsList.navigationOptions = ({navigation}) => ({
                 <Icon name="plus" style={styles.navigationItem} color={Colors.fontLight}/>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback
-            onPress={() => navigation.navigate('Camera')}>
+            onPress={() => navigation.navigate('Camera', navigation.getParam('assetId'))}>
                 <Icon name="camera" style={styles.navigationItem} color={Colors.fontLight} />
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
