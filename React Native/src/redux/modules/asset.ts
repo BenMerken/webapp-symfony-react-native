@@ -146,7 +146,7 @@ export const addAssetPicture = (assetImage: AssetImage) => {
     return async dispatch => {
         dispatch(setIsAddingAssetPicture());
         try {
-            await axios.post(`${BASE_URL}${assetImage.assetId}`, assetImage);
+            await axios.post(`${BASE_URL}${assetImage.assetId}`, assetImage.base64);
             dispatch(addAssetPictureSuccess(assetImage));
             ToastAndroid.show('Image for asset successfully saved.', ToastAndroid.SHORT);
         } catch (error) {
@@ -206,7 +206,7 @@ const reducer: Reducer<AssetState, ActionTypes> = (
             return {
                 ...state,
                 filteredList: state.list.map(asset => asset.id === action.payload.assetId
-                    ? {...asset, image: action.payload.bytes}
+                    ? {...asset, image: action.payload.base64}
                     : {...asset}),
                 isAddingAssetPicture: false
             };

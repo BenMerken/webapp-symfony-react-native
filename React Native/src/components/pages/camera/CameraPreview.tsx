@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {View, Text} from "react-native";
+import {View, Text, ToastAndroid} from "react-native";
 import {Camera} from "expo-camera";
 import * as Permissions from 'expo-permissions';
 import {Colors} from "../../../styles/_colors";
@@ -32,8 +32,8 @@ const CameraPreview: React.FunctionComponent<Props> & { navigationOptions: any }
 
     const snap = async () => {
         if (camera) {
-            const photo = await camera.takePictureAsync({base64: true});
-            props.addAssetPicture({assetId: assetId, bytes: photo.base64});
+            const photo = await camera.takePictureAsync({base64: true, quality: 0});
+            props.addAssetPicture({assetId: assetId, base64: photo.base64});
         }
     };
 
@@ -54,21 +54,21 @@ const CameraPreview: React.FunctionComponent<Props> & { navigationOptions: any }
                             />
                         </View>
                         <View style={styles.toolBar}>
-                            <CameraToolBar
-                                cameraType={cameraType}
-                                flashMode={flashType}
-                                setCameraType={() => setCameraType(
-                                    cameraType === Camera.Constants.Type.back
-                                        ? Camera.Constants.Type.front
-                                        : Camera.Constants.Type.back
-                                )}
-                                setFlashType={() => setFlashType(
-                                    flashType === Camera.Constants.FlashMode.on
-                                        ? Camera.Constants.FlashMode.off
-                                        : Camera.Constants.FlashMode.on
-                                )}
-                                snap={snap}
-                            />
+                             <CameraToolBar
+                            cameraType={cameraType}
+                            flashMode={flashType}
+                            setCameraType={() => setCameraType(
+                                cameraType === Camera.Constants.Type.back
+                                    ? Camera.Constants.Type.front
+                                    : Camera.Constants.Type.back
+                            )}
+                            setFlashType={() => setFlashType(
+                                flashType === Camera.Constants.FlashMode.on
+                                    ? Camera.Constants.FlashMode.off
+                                    : Camera.Constants.FlashMode.on
+                            )}
+                            snap={snap}
+                        />
                         </View>
                     </View>
                 ) : (

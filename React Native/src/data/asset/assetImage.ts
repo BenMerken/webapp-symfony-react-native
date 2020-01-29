@@ -1,4 +1,4 @@
 export type AssetImage = {
     assetId: number;
-    bytes: string;
+    base64: string;
 };
