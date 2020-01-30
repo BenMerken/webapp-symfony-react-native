@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {View, Text, ToastAndroid} from "react-native";
+import {View, Text} from "react-native";
 import {Camera} from "expo-camera";
 import * as Permissions from 'expo-permissions';
 import {Colors} from "../../../styles/_colors";
