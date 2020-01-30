@@ -23,17 +23,19 @@ class PDOAssetModel implements AssetModel
         $query = "SELECT * FROM assets WHERE roomId = :roomId;";
         $statement = $pdo->prepare($query);
         $statement->bindParam(":roomId", $roomId, PDO::PARAM_INT);
-        $statement->bindColumn(1, $id, \PDO::PARAM_INT);
-        $statement->bindColumn(2, $room, \PDO::PARAM_INT);
-        $statement->bindColumn(3, $name, \PDO::PARAM_STR);
+        $statement->bindColumn(1, $id, PDO::PARAM_INT);
+        $statement->bindColumn(2, $room, PDO::PARAM_INT);
+        $statement->bindColumn(3, $name, PDO::PARAM_STR);
+        $statement->bindColumn(4, $image, PDO::PARAM_STR);
         $statement->execute();
 
         $assets = [];
-        while ($statement->fetch(\PDO::FETCH_BOUND)) {
+        while ($statement->fetch(PDO::FETCH_BOUND)) {
             $asset = [
                 'id' => $id,
                 'roomId' => $room,
-                'name' => $name
+                'name' => $name,
+                'image' => $image
             ];
             $assets[] = $asset;
         }
@@ -62,6 +64,19 @@ class PDOAssetModel implements AssetModel
     {
         if (!(is_string($name) && strlen($name) <= 45 && strlen($name) >= 5)) {
             throw new InvalidArgumentException("The name must be a string no longer than 45 characters and no less than 5");
+        }
+    }
+
+    public function addAssetImageForId($id, $base64)
+    {
+        $pdo = $this->connection->getPDO();
+        $query = "UPDATE assets SET image = :base64 WHERE id = :id;";
+        $statement = $pdo->prepare($query);
+        $statement->bindParam(":base64", $base64);
+        $statement->bindParam(":id", $id);
+        $statement->execute();
+        if ($statement->rowCount() == 0) {
+            throw new NotFoundHttpException("There is no asset with id $id.");
         }
     }
 }
