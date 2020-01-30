@@ -146,12 +146,19 @@ export const addAssetPicture = (assetImage: AssetImage) => {
     return async dispatch => {
         dispatch(setIsAddingAssetPicture());
         try {
-            await axios.post(`${BASE_URL}${assetImage.assetId}`, assetImage.base64);
+            await axios.patch(`${BASE_URL}${assetImage.assetId}`, assetImage.base64);
             dispatch(addAssetPictureSuccess(assetImage));
             ToastAndroid.show('Image for asset successfully saved.', ToastAndroid.SHORT);
         } catch (error) {
             dispatch(addAssetPictureFail());
-            ToastAndroid.show('Error during saving image to database.', ToastAndroid.SHORT);
+            if (error.message.includes('404')) {
+                ToastAndroid.show('404.', ToastAndroid.SHORT);
+            } else if (error.message.includes('400')) {
+                ToastAndroid.show('400.', ToastAndroid.SHORT);
+            } else if (error.message.includes('500')) {
+                ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+            }
+            //ToastAndroid.show('Error during saving image to database.', ToastAndroid.SHORT);
         }
     };
 };
@@ -205,7 +212,7 @@ const reducer: Reducer<AssetState, ActionTypes> = (
         case ADD_ASSET_PICTURE_SUCCESS:
             return {
                 ...state,
-                filteredList: state.list.map(asset => asset.id === action.payload.assetId
+                filteredList: state.list.map(asset => asset.id.toString() === action.payload.assetId
                     ? {...asset, image: action.payload.base64}
                     : {...asset}),
                 isAddingAssetPicture: false

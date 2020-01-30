@@ -31,11 +31,17 @@ class PDOAssetModel implements AssetModel
 
         $assets = [];
         while ($statement->fetch(PDO::FETCH_BOUND)) {
+            $base64 = null;
+
+            if (file_exists($image)) {
+                $base64 = file_get_contents($image);
+            }
+
             $asset = [
                 'id' => $id,
                 'roomId' => $room,
                 'name' => $name,
-                'image' => $image
+                'image' => $base64 ? $base64 : null
             ];
             $assets[] = $asset;
         }
@@ -67,12 +73,12 @@ class PDOAssetModel implements AssetModel
         }
     }
 
-    public function addAssetImageForId($id, $base64)
+    public function addAssetImageForId($id, $imageURI)
     {
         $pdo = $this->connection->getPDO();
-        $query = "UPDATE assets SET image = :base64 WHERE id = :id;";
+        $query = "UPDATE assets SET image = :imageURI WHERE id = :id;";
         $statement = $pdo->prepare($query);
-        $statement->bindParam(":base64", $base64);
+        $statement->bindParam(":imageURI", $imageURI);
         $statement->bindParam(":id", $id);
         $statement->execute();
         if ($statement->rowCount() == 0) {

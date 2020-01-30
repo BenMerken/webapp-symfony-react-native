@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `assets`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `roomId` int(11) DEFAULT 0,
   `name` varchar(45) DEFAULT NULL,
-  `image` mediumtext DEFAULT NULL,
+  `image` varchar(6000) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 

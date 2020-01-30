@@ -12,5 +12,5 @@ interface AssetModel
 
     public function validateName($name);
 
-    public function addAssetImageForId($id, $base64);
+    public function addAssetImageForId($id, $imageURI);
 }

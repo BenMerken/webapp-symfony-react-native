@@ -1,6 +1,5 @@
 import React from "react";
-import {Room} from "../../../data";
-import {View, Text, TouchableOpacity} from "react-native";
+import {View, TouchableOpacity} from "react-native";
 import {styles} from "./AssetPreview.styles";
 import AssetPreviewBody from "./AssetPreviewBody";
 

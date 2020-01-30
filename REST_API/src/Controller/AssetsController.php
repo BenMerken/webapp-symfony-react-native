@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\AssetModel;
+use App\services\GUID;
 use InvalidArgumentException;
 use PDOException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,20 +47,22 @@ class AssetsController extends AbstractController
     /**
      * @Route("/assets/{id}", methods={"PATCH", "OPTIONS"}, name="AddAssetImageForId")
      */
-    public function AddAssetImageForId($id, Request $request)
+    public function AddAssetImageForId(Request $request, $id)
     {
         $statuscode = 204;
         $base64 = $request->getContent();
+        $guid = GUID::getGuid();
+        $imageURI = '/home/vagrant/WP1_images/' . $guid . '.png';
+        file_put_contents($imageURI, $base64);
 
         try {
-            $this->assetModel->addAssetImageForId(intval($id), $base64);
+            $this->assetModel->addAssetImageForId(intval($id), $imageURI);
         } catch (InvalidArgumentException $exception) {
             $statuscode = 400;
         } catch (NotFoundHttpException $exception) {
             $statuscode = 404;
         } catch (PDOException $exception) {
             $statuscode = 500;
-            file_put_contents('/home/vagrant/data.txt', $exception->getMessage());
         }
 
         return new JsonResponse(null, $statuscode);
