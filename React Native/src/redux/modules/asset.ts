@@ -212,6 +212,9 @@ const reducer: Reducer<AssetState, ActionTypes> = (
         case ADD_ASSET_PICTURE_SUCCESS:
             return {
                 ...state,
+                list: state.list.map(asset => asset.id.toString() === action.payload.assetId
+                    ? {...asset, image: action.payload.base64}
+                    : {...asset}),
                 filteredList: state.list.map(asset => asset.id.toString() === action.payload.assetId
                     ? {...asset, image: action.payload.base64}
                     : {...asset}),

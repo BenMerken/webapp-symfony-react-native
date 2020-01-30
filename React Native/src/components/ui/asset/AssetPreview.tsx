@@ -7,6 +7,7 @@ type Props = {
     id: number;
     roomId: number;
     name: string;
+    image: string,
     navigateTicket: (assetName: string, assetId: number) => void;
 };
 

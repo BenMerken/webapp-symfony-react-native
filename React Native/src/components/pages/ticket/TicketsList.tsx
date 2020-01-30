@@ -9,7 +9,6 @@ import {
     TouchableWithoutFeedback,
     RefreshControl,
     Button,
-    ToastAndroid
 } from "react-native";
 import {SearchBar} from "react-native-elements";
 import {bindActionCreators} from "redux";
