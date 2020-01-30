@@ -1,6 +1,7 @@
-import {Asset} from "../../data";
+import {Asset, AssetImage} from "../../data";
 import {Reducer} from "react";
 import axios from "axios";
+import {ToastAndroid} from "react-native";
 
 // --- API ---
 
@@ -15,6 +16,10 @@ const LOAD_ASSET_LIST_FAIL = 'PXLAssetManagementTool/room/LOAD_ASSET_LIST_FAIL';
 const FILTER_ASSET_LIST = 'PXLAssetManagementTool/room/FILTER_ASSET_LIST';
 const FILTER_ASSET_LIST_SUCCESS = 'PXLAssetManagementTool/room/FILTER_ASSET_LIST_SUCCESS';
 const FILTER_ASSET_LIST_FAIL = 'PXLAssetManagementTool/room/FILTER_ASSET_LIST_FAIL';
+
+const ADD_ASSET_PICTURE = 'PXLAssetManagementTool/room/ADD_ASSET_PICTURE';
+const ADD_ASSET_PICTURE_SUCCESS = 'PXLAssetManagementTool/room/ADD_ASSET_PICTURE_SUCCESS';
+const ADD_ASSET_PICTURE_FAIL = 'PXLAssetManagementTool/room/ADD_ASSET_PICTURE_FAIL';
 
 type GetAssetListAction = {
     type: typeof LOAD_ASSET_LIST;
@@ -46,13 +51,31 @@ type FilterAssetListActionFail = {
     payload: [];
 };
 
+type AddAssetPictureAction = {
+    type: typeof ADD_ASSET_PICTURE;
+    payload: any;
+};
+
+type AddAssetPictureActionSuccess = {
+    type: typeof ADD_ASSET_PICTURE_SUCCESS;
+    payload: AssetImage;
+};
+
+type AddAssetPictureActionFail = {
+    type: typeof ADD_ASSET_PICTURE_FAIL;
+    payload: null
+};
+
 type ActionTypes =
     | GetAssetListAction
     | GetAssetListActionSuccess
     | GetAssetListActionFail
     | FilterAssetListAction
     | FilterAssetListActionSuccess
-    | FilterAssetListActionFail;
+    | FilterAssetListActionFail
+    | AddAssetPictureAction
+    | AddAssetPictureActionSuccess
+    | AddAssetPictureActionFail;
 
 // --- State Type ---
 
@@ -61,6 +84,7 @@ type AssetState = {
     isLoadingList: boolean;
     filteredList: Asset[];
     isFilteringList: boolean;
+    isAddingAssetPicture: boolean;
 };
 
 // --- Action Creators ---
@@ -118,6 +142,42 @@ const filterAssetListFail = (): FilterAssetListActionFail => ({
     payload: []
 });
 
+export const addAssetPicture = (assetImage: AssetImage) => {
+    return async dispatch => {
+        dispatch(setIsAddingAssetPicture());
+        try {
+            await axios.patch(`${BASE_URL}${assetImage.assetId}`, assetImage.base64);
+            dispatch(addAssetPictureSuccess(assetImage));
+            ToastAndroid.show('Image for asset successfully saved.', ToastAndroid.SHORT);
+        } catch (error) {
+            dispatch(addAssetPictureFail());
+            if (error.message.includes('404')) {
+                ToastAndroid.show('404.', ToastAndroid.SHORT);
+            } else if (error.message.includes('400')) {
+                ToastAndroid.show('400.', ToastAndroid.SHORT);
+            } else if (error.message.includes('500')) {
+                ToastAndroid.show(`${error.message}`, ToastAndroid.SHORT);
+            }
+            //ToastAndroid.show('Error during saving image to database.', ToastAndroid.SHORT);
+        }
+    };
+};
+
+const setIsAddingAssetPicture = (): AddAssetPictureAction => ({
+    type: ADD_ASSET_PICTURE,
+    payload: {}
+});
+
+const addAssetPictureSuccess = (asetImage: AssetImage): AddAssetPictureActionSuccess => ({
+    type: ADD_ASSET_PICTURE_SUCCESS,
+    payload: asetImage
+});
+
+const addAssetPictureFail = (): AddAssetPictureActionFail => ({
+    type: ADD_ASSET_PICTURE_FAIL,
+    payload: null
+});
+
 // --- Reducer ---
 
 const reducer: Reducer<AssetState, ActionTypes> = (
@@ -125,7 +185,8 @@ const reducer: Reducer<AssetState, ActionTypes> = (
         list: [],
         isLoadingList: true,
         filteredList: [],
-        isFilteringList: false
+        isFilteringList: false,
+        isAddingAssetPicture: false
     },
     action
 ) => {
@@ -146,6 +207,21 @@ const reducer: Reducer<AssetState, ActionTypes> = (
             };
         case FILTER_ASSET_LIST_FAIL:
             return {...state, isFilteringList: false};
+        case ADD_ASSET_PICTURE:
+            return {...state, isAddingAssetPicture: true};
+        case ADD_ASSET_PICTURE_SUCCESS:
+            return {
+                ...state,
+                list: state.list.map(asset => asset.id.toString() === action.payload.assetId
+                    ? {...asset, image: action.payload.base64}
+                    : {...asset}),
+                filteredList: state.list.map(asset => asset.id.toString() === action.payload.assetId
+                    ? {...asset, image: action.payload.base64}
+                    : {...asset}),
+                isAddingAssetPicture: false
+            };
+        case ADD_ASSET_PICTURE_FAIL:
+            return {...state, isAddingAssetPicture: false};
         default:
             return state;
     }

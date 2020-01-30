@@ -24,9 +24,11 @@ const CircleDetail: React.FunctionComponent<Props> = (detail) => {
         }
     });
 
-    return (<View style={styles.detailStyle}>
-        <Text style={{color: detail.textColor ? detail.textColor: Colors.fontDark}}>{detail.text}</Text>
-    </View>)
+    return (
+        <View style={styles.detailStyle}>
+            <Text style={{color: detail.textColor ? detail.textColor : Colors.fontDark}}>{detail.text}</Text>
+        </View>
+    )
 };
 
 

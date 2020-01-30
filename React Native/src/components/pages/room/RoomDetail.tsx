@@ -33,7 +33,7 @@ const RoomDetail: React.FunctionComponent<Props> & { navigationOptions?: any } =
     const [overlayVisible, setOverlayVisible] = useState(false);
 
     const navigation = useNavigation();
-    const navigateTicket = (assetName: string) => navigation.navigate('Tickets', {assetName});
+    const navigateTicket = (assetName: string, assetId: number) => navigation.navigate('Tickets', {assetName, assetId});
     const name = navigation.state.params.name;
     const id = navigation.state.params.roomId;
 

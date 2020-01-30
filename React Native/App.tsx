@@ -9,6 +9,7 @@ import TicketsListPage from "./src/components/pages/ticket/TicketsList";
 import TicketDetailPage from "./src/components/pages/ticket/TicketDetail";
 import RoomsByHappinessScorePage from "./src/components/pages/room/RoomsByHappinessScoreList";
 import CreateTicketPage from "./src/components/pages/ticket/CreateTicket";
+import CameraPreviewPage from "./src/components/pages/camera/CameraPreview";
 
 const App: React.FunctionComponent = () => {
     const Stack = createStackNavigator({
@@ -29,6 +30,9 @@ const App: React.FunctionComponent = () => {
         },
         CreateTicket: {
             screen: CreateTicketPage
+        },
+        Camera: {
+            screen: CameraPreviewPage
         }
     });
 

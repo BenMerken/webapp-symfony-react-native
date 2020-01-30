@@ -1,7 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {Ticket} from "../../../data";
-import {ActivityIndicator, View, Text, FlatList, TouchableWithoutFeedback, RefreshControl, Button} from "react-native";
+import {
+    ActivityIndicator,
+    View,
+    Text,
+    FlatList,
+    TouchableWithoutFeedback,
+    RefreshControl,
+    Button,
+} from "react-native";
 import {SearchBar} from "react-native-elements";
 import {bindActionCreators} from "redux";
 import {filterTicketList, getTicketList} from "../../../redux/modules/ticket";
@@ -10,6 +18,7 @@ import TicketPreview from "../../ui/ticket/TicketPreview";
 import {styles} from "./TicketsList.styles";
 import {Colors} from "../../../styles/_colors";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {Camera} from "expo-camera";
 
 type Props = {
     tickets: Ticket[];
@@ -26,11 +35,12 @@ const TicketsList: React.FunctionComponent<Props> & { navigationOptions?: any } 
     const navigation = useNavigation();
     const navigateTicket = (id: number) => navigation.navigate('Ticket', {id});
     const assetName = navigation.state.params.assetName;
+    const assetId = navigation.state.params.assetId;
 
     useEffect(() => {
         props.getTicketList(assetName);
-        navigation.setParams(assetName);
-    }, [assetName]);
+        navigation.setParams({...navigation.state.params});
+    }, [assetName, assetId]);
 
     const onRefresh = () => {
         setRefreshing(false);
@@ -56,8 +66,8 @@ const TicketsList: React.FunctionComponent<Props> & { navigationOptions?: any } 
                 ? (
                     <View style={styles.errorContainer}>
                         <ActivityIndicator
-                        size="large"
-                        color={Colors.primaryDark}
+                            size="large"
+                            color={Colors.primaryDark}
                         />
                         <Text>Loading tickets...</Text>
                     </View>
@@ -114,8 +124,12 @@ TicketsList.navigationOptions = ({navigation}) => ({
     headerRight: (
         <View style={styles.headerRightContainer}>
             <TouchableWithoutFeedback
-                onPress={() => navigation.navigate('CreateTicket', navigation.getParam('assetName'))}>
+                onPress={() => navigation.navigate('CreateTicket', navigation.state.params.assetName)}>
                 <Icon name="plus" style={styles.navigationItem} color={Colors.fontLight}/>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+                onPress={() => navigation.navigate('Camera', navigation.state.params.assetId)}>
+                <Icon name="camera" style={styles.navigationItem} color={Colors.fontLight}/>
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={() => navigation.navigate('Home')}>
                 <Icon name="home" style={styles.navigationItem} color={Colors.fontLight}/>

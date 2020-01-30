@@ -33,7 +33,7 @@ INSERT INTO `rooms` (`id`, `name`, `happinessScore`) VALUES
 (443, 'B051', 3445),
 (444, 'B052', 1000),
 (445, 'B053', 5000)
--- ,(446, 'B054', 666)
+ ,(446, 'B054', 666)
 ;
 
 -- --------------------------------------------------------
@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `assets`(
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `roomId` int(11) DEFAULT 0,
   `name` varchar(45) DEFAULT NULL,
+  `image` varchar(6000) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -82,8 +83,9 @@ CREATE TABLE IF NOT EXISTS `tickets`(
 INSERT INTO `tickets` (`id`, `assetId`, `numberOfVotes`, `description`) VALUES
 (32, 223, 1, 'beamer does not show correct colours'),
 (33, 224, 5, 'computer fan does not spin'),
-(34, 225, 100, 'router does not want to start'),
-(35, 226, 666, 'Somebody smashed the router!');
+(34, 225, 100, 'router does not want to start')
+-- ,(35, 226, 666, 'Somebody smashed the router! Please, contact Sales and order a new one!')
+;
 
 -- --------------------------------------------------------
 -- adding constraints
