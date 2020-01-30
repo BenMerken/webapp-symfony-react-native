@@ -1,6 +1,5 @@
 import React from "react";
-import {Image, StyleSheet, View} from "react-native";
-import {Colors} from "../../../styles/_colors";
+import {Image, StyleSheet} from "react-native";
 import CircleDetail from "./CircleDetail";
 
 type Props = {
